@@ -210,6 +210,39 @@ def main():
             if t in low:
                 findings['7-generic-service'].append((f, t))
 
+    # S8 network egress — no-telemetry enforcement (Halakukhan's point:
+    # a stated rule isn't enforced; the scanner is the enforcement).
+    # Scans for NETWORK-EGRESS PRIMITIVES, not just imports: http.client,
+    # urllib, requests, socket, subprocess-with-network-args. Applies to
+    # Python sources across the committed tree — the setup agent's interview
+    # path must make ZERO network egress calls (answers stay in-process,
+    # touch only the params file).
+    # Primitive-level scan: imports, aliased imports, direct calls, and
+    # subprocess strings carrying network args. This is a FAIL surface —
+    # any hit blocks the commit.
+    _EGRESS_IMPORT_RE = re.compile(
+        r"^\s*(?:import|from)\s+(http\.client|http\.server|urllib(?:\.\w+)*|"
+        r"requests|socket|ftplib|smtplib|telnetlib|imaplib|poplib)\b",
+        re.M | re.I)
+    _EGRESS_CALL_RE = re.compile(
+        r"\b(?:requests\.|urllib\.(?:request|parse)\.|http\.client\.|"
+        r"socket\.|ftplib\.|smtplib\.|telnetlib\.|imaplib\.|poplib\.)"
+        r"[A-Za-z_]\w*\s*\(", re.I)
+    _SUBPROCESS_NET_RE = re.compile(
+        r"subprocess\.[A-Za-z_]*\([^)]*(?:curl|wget|nc\s|ncat|telnet|"
+        r"http://|https://)", re.I | re.S)
+    for f in committed_files():
+        if f in SELF_EXCLUDE:
+            continue
+        if not f.endswith('.py'):
+            continue
+        src = open(os.path.join(ROOT, f), encoding='utf-8',
+                   errors='replace').read()
+        if (_EGRESS_IMPORT_RE.search(src)
+                or _EGRESS_CALL_RE.search(src)
+                or _SUBPROCESS_NET_RE.search(src)):
+            findings['8-network-egress'].append((f, 'network primitive'))
+
     # ---- report ----
     total = 0
     warns = 0
@@ -223,7 +256,8 @@ def main():
             total += scan_surface(name, findings[name])
     # report clean surfaces too
     scanned = {'1-content', '2-filenames', '3-headers', '4-script-paths',
-               '5-config-defaults', '6-gitignore', '7-reachability'}
+               '5-config-defaults', '6-gitignore', '7-reachability',
+               '8-network-egress'}
     for s in sorted(scanned - set(findings.keys())):
         print(f"S{s}: clean")
     print("-" * 60)
@@ -233,7 +267,7 @@ def main():
         print(f"FAIL — {total} leak(s) across "
               f"{len(set(findings) - {'7-generic-service'})} surface(s).")
         return 1
-    print("PASS — 0 instance leaks across all 7 surfaces.")
+    print("PASS — 0 instance leaks across all 8 surfaces.")
     return 0
 
 
