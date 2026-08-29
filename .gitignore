@@ -1,0 +1,13 @@
+# Generated / instance-specific artifacts — NEVER commit to the fork.
+# The manifest and review are regenerated per instance by the gates
+# (sweep-gate.py REGENERATE step). The kits/ layer is generated output —
+# the fork dry-run proved committed kits/ is destroyed by `hermes update`.
+manifest.tsv
+manifest.md
+REVIEW.md
+genericization-report.md
+dist/
+kits/
+identifiers.yaml
+__pycache__/
+*.pyc

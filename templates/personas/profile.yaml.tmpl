@@ -1,0 +1,27 @@
+# profile.yaml.tmpl — per-profile config, fully templated at instantiation
+# TEMPLATE row (REDACTABLE→TEMPLATE seam): config surface, no authored prose.
+# Substitutions: {PROFILE_NAME}, {MODEL_PROVIDER}, {MODEL_NAME}, {BASE_URL}
+
+agent:
+  name: {PROFILE_NAME}
+  model: {MODEL_NAME}
+  provider: {MODEL_PROVIDER}
+
+model:
+  provider: {MODEL_PROVIDER}
+  name: {MODEL_NAME}
+  base_url: {BASE_URL}
+  reasoning_effort: low
+
+tools:
+  enabled: true
+
+memory:
+  enabled: true
+
+checkpoints:
+  enabled: true
+  max_snapshots: 20
+  max_total_size_mb: 500
+  auto_prune: true
+  retention_days: 7

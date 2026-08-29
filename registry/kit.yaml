@@ -1,0 +1,53 @@
+# kit.yaml — per-kit manifest + git-registry install contract
+# Distribution contract (spec section 5). One kit.yaml per kit.
+# Install: `kit install <registry>/<team>` (Claude Code marketplace pattern).
+
+name: airefea-kit
+version: 0.1.0
+description: >
+  Team6-style multi-agent persona kit — identity archetypes, orchestration
+  choreography, governance rules, and an instantiable generator. Open core
+  under Apache-2.0; vertical packs are proprietary parameter files.
+
+registry: git@github.com:{ORG}/airefea-kit.git
+
+templates:
+  hash: sha256:{TEMPLATES_HASH}      # set at build; any drift = build failure
+  dir: templates/
+  rows: 126                          # TEMPLATE rows in manifest.tsv (live)
+
+build:
+  engine: build/generate.py          # the ONLY assembly path
+  gates:
+    - build/sweep-gate.py            # precondition: source clean + classified
+    - build/review-gate.py           # semantic sign-off (4/4 checkboxes)
+  strict: --strict                   # paid packs: unresolved placeholder = FAIL
+
+# Declared-schema contract (team, asymmetric):
+#   declared ⊆ resolved = FAIL (pack promised a placeholder, didn't deliver — typo case)
+#   resolved ∖ declared = WARN (extra tokens like {BK} are legit code literals / drift)
+#   unresolved tokens   = WARN in open core (generic by design), FAIL with --strict
+placeholders: [TEAM_NAME, DIRECTOR_NAME, AGENT_NAME, PROFILE_NAME,
+               ROLE_NAME, ROLE_MISSION, ROLE_PURPOSE,
+               MODEL_PROVIDER, MODEL_NAME, BASE_URL,
+               CLIENT, RELATIONSHIP, AMOUNT, HABIT, MODEL, PROFILES]
+
+required_env:                        # set by the installer at instantiation
+  - MODEL_PROVIDER
+  - MODEL_NAME
+
+packs:                               # vertical packs = parameter files, NOT forks
+  consulting-agency: registry/packs/consulting-agency.yaml   # first pack (draft)
+  research-analysis: registry/packs/research-analysis.yaml   # planned
+
+install:
+  method: git-registry               # marketplace pattern; no new infra
+  steps:
+    - clone registry into kits cache
+    - run build/generate.py --params <pack> --out <workspace>
+    - run sweep-gate + review-gate preconditions
+    - emit AUDIT.md provenance trail
+
+license:
+  core: Apache-2.0
+  packs: proprietary-by-contract     # parameter files + service, never a fork

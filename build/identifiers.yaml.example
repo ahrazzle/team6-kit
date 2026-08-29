@@ -1,0 +1,19 @@
+# build/identifiers.yaml.example — commit this EMPTY template to the fork.
+# Instance operators copy it to identifiers.yaml and fill in their own values.
+# The loader falls back to this template when identifiers.yaml is absent.
+
+team_handles:
+
+venture_names:
+
+user_handles:
+
+client_names:
+
+path_markers:
+
+habit_phrases:
+
+codename_terms:
+
+protected_terms:
