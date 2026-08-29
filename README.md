@@ -1,5 +1,15 @@
 # airefea-kit — Multi-Agent Team Kit (open core)
 
+> **What this is:** the reusable layer that turns a single agent engine into a
+> *disciplined multi-agent team* — identity archetypes, orchestration
+> choreography, governance rules, and a generator that assembles them.
+>
+> **Why it's standalone, not a fork:** we build on Hermes (MIT) rather than
+> vendoring it. That keeps the kit's boundary honest — the engine stays
+> upstream and unmodified; everything this repo adds lives in its own licensed
+> zones. You get the same credibility as a fork with none of the tree
+> confusion: `airefea-kit` reads as a product, not a clone.
+
 Instantiable multi-agent team: identity archetypes + orchestration choreography
 + governance rules + a generator. One engine, two products.
 
@@ -38,9 +48,16 @@ does not exist. The generator is the only assembly path.
 
 ## License
 
-- Open core: Apache-2.0 (see LICENSE).
-- Vertical packs: proprietary by contract — parameter files + service, never
-  a fork of the engine.
+- **Built on Hermes (MIT)** — the engine is Nous Research's, MIT-licensed
+  (provenance; engine-derived tooling becomes MIT when it lands here, see
+  LICENSING.md). This repo is NOT a git-fork of Hermes; it is a standalone
+  product with a generated kits layer.
+- **Kits layer: Apache-2.0** (see LICENSE) — our identity archetypes,
+  orchestration, governance, and build tooling.
+- **Vertical packs: proprietary by contract** — parameter files + service,
+  never committed to this repo, never a fork of the engine.
+
+See `LICENSING.md` for the full four-zone statement.
 
 ## Status
 
