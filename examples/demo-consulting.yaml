@@ -1,0 +1,21 @@
+# demo-consulting.yaml — Example parameter file for the instantiation contract
+#
+# This is the PROOF POINT: one params file -> a configured team, via
+# build/generate.py. Values are fictional/neutral — no instance data.
+#
+# Reproduce:
+#   python3 build/generate.py --params examples/demo-consulting.yaml \
+#     --out /tmp/demo-team
+#
+# See examples/README.md for the walkthrough.
+
+TEAM_NAME: Northwind Advisory
+DIRECTOR_NAME: Elena
+AGENT_NAME: Coder
+ROLE_NAME: Coder
+ROLE_MISSION: build and ship working software
+ROLE_PURPOSE: write the code the team ships
+PROFILE_NAME: nw-coder
+MODEL_PROVIDER: nous
+MODEL_NAME: nous/deepseek/deepseek-v4-flash-0731
+BASE_URL: ""

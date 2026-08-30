@@ -121,6 +121,20 @@ def find_source(rel):
     return None
 
 
+def dest_path(out, rel):
+    """THE ONLY destination-path constructor in the generator.
+
+    Every path the generator writes — template, skill, OR keep-review —
+    passes through sanitize_path() here, by construction. No output surface
+    can carry a raw instance-token name, because there is no other way to
+    compute a destination. Same discipline as the S8 network-egress rule:
+    the generator cannot write a raw path, the way the agent cannot reach
+    the network. (sanitize_path is idempotent on already-sanitized paths —
+    placeholders like {CLIENT} contain no instance tokens — so routing an
+    already-sanitized template path through it again is safe.)"""
+    return os.path.join(out, sanitize_path(rel))
+
+
 def load_pack_schema(params_path):
     """Read the vertical pack's declared placeholder contract from its
     kit.yaml (placeholders: [A, B]). Returns set or None if absent."""
@@ -268,7 +282,7 @@ def main():
                 unresolved_union.update(missing)
                 provenance.append(
                     f"# WARN: {rel} — unresolved placeholders: {missing}")
-            dst = os.path.join(out, tpl)
+            dst = dest_path(out, tpl)
         else:  # KEEP-REVIEW — ship as-is ONLY if the semantic pass signed it.
             signed = review.get(rel, (0, 0))
             if signed[0] < signed[1]:
@@ -290,7 +304,7 @@ def main():
             # tokens live in source filenames (client-asset-audit.md) and the
             # raw rel would ship them in the committed tree. The semantic pass
             # signs content; the path needs the same treatment.
-            dst = os.path.join(out, "keep-review", sanitize_path(rel))
+            dst = dest_path(out, os.path.join("keep-review", rel))
             provenance.append(
                 f"# KEEP-REVIEW: {rel} — ships as-is (signed {signed[0]}/{signed[1]})")
         os.makedirs(os.path.dirname(dst), exist_ok=True)
