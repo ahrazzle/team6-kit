@@ -19,13 +19,33 @@ import importlib.util
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
 MANIFEST = os.path.join(HERE, "manifest.tsv")
 REVIEW = os.path.join(HERE, "REVIEW.md")
+TEMPLATES = os.path.join(ROOT, "templates")
 
 # Mirrors sweep-gate.py — config surfaces that ship fully templated.
 REVIEW_EXEMPT = {
     "profile.yaml": "config surface, fully templated at instantiation",
 }
+
+
+def target_exists(rel):
+    """True if this manifest row actually ships — its template target exists
+    under templates/. The kit's SHIPPED SURFACE is templates/, not the whole
+    live-fleet manifest (which regenerates from ~/.hermes/profiles and grows
+    as skills are added long after the kit was authored). Scope the gate to
+    what ships, or it becomes a standing veto on everything."""
+    base = os.path.basename(rel)
+    if base == "profile.yaml":
+        return os.path.isfile(os.path.join(TEMPLATES, "personas", "profile.yaml.tmpl"))
+    if base in ("SOUL.md", "AGENTS.md", "USER.md", "HERMES.md"):
+        return os.path.isfile(os.path.join(TEMPLATES, "personas", f"{base}.tmpl"))
+    if rel.startswith("skills/"):
+        from genericize import sanitize_path
+        p = sanitize_path(rel[len("skills/"):])
+        return os.path.isfile(os.path.join(TEMPLATES, "skills", p))
+    return os.path.isfile(os.path.join(TEMPLATES, rel))
 
 
 def load_manifest(path):
@@ -73,9 +93,16 @@ def main():
     manifest = load_manifest(MANIFEST)
     review = parse_review(REVIEW)
 
+    # SCOPE BOUNDARY: only rows whose template target actually exists under
+    # templates/ (the shipped surface) gate the build. Rows from skills added
+    # to the live profiles after the kit was authored are NOT in the shipped
+    # surface — they must not block instantiation. Drift within the shipped
+    # scope still fails the build; drift outside it is invisible to the gate.
+    shipped = {rel: v for rel, v in manifest.items() if target_exists(rel)}
+
     unsigned = []
     missing = []
-    for rel, (cls, np_, th, verdict) in manifest.items():
+    for rel, (cls, np_, th, verdict) in shipped.items():
         if verdict not in ("TEMPLATE", "KEEP-REVIEW"):
             continue
         if rel in REVIEW_EXEMPT:
@@ -88,9 +115,10 @@ def main():
             unsigned.append((rel, ticked, total))
 
     print("=" * 60)
-    print("REVIEW GATE — semantic sign-off enforcement")
+    print("REVIEW GATE — semantic sign-off enforcement (shipped surface)")
     print("=" * 60)
-    print(f"  shipping rows    : {sum(1 for v in manifest.values() if v[3] in ('TEMPLATE','KEEP-REVIEW'))}")
+    print(f"  manifest rows    : {len(manifest)}")
+    print(f"  shipped surface  : {len(shipped)} (templates/ targets present)")
     print(f"  review entries   : {len(review)}")
     print(f"  unsigned         : {len(unsigned)}")
     print(f"  missing entry    : {len(missing)}")

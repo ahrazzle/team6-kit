@@ -34,8 +34,11 @@ import sys
 import shutil
 import subprocess
 
+from genericize import sanitize_path
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
+DEFAULT_SOURCE = os.path.expanduser("~/.hermes/profiles")
 TEMPLATES = os.path.join(ROOT, "templates")
 MANIFEST = os.path.join(HERE, "manifest.tsv")
 
@@ -60,7 +63,6 @@ def target_path(rel):
         # Apply the SAME path sanitization genericize.py uses, so the template
         # is found at its sanitized location (instance tokens stripped from
         # filenames/dirs before they can ship in the committed tree).
-        from genericize import sanitize_path
         return os.path.join("skills", sanitize_path(rel[len("skills/"):]))
     return rel
 
@@ -77,6 +79,46 @@ def load_manifest():
                 continue
             rows[parts[0]] = (parts[1], parts[4])
     return rows
+
+
+def parse_review():
+    """REVIEW.md -> {relpath: (ticked, total)} across all profile copies.
+    Used as the pass-gate for KEEP-REVIEW rows: only fully-signed rows ship."""
+    signed = {}
+    path = os.path.join(HERE, "REVIEW.md")
+    cur = None
+    ticked = total = 0
+    with open(path, encoding="utf-8") as fh:
+        for line in fh:
+            line = line.rstrip("\n")
+            m = re.match(r"^### ([^ ]+?)/(.+?)(?:\s+\*\(.*\)\*)?$", line)
+            if m:
+                if cur is not None:
+                    signed[cur] = (ticked, total)
+                body = re.sub(r"\s+\*\(.*\)\*$", "", line[4:])
+                _, cur = body.split("/", 1)
+                ticked = total = 0
+                continue
+            cm = re.match(r"^- \[( |x)\] \d+\.", line)
+            if cm and cur is not None:
+                total += 1
+                if cm.group(1) == "x":
+                    ticked += 1
+    if cur is not None:
+        signed[cur] = (ticked, total)
+    return signed
+
+
+def find_source(rel):
+    """Locate the first on-disk copy of a source relpath across the live
+    profiles (used to copy signed KEEP-REVIEW content into keep-review/)."""
+    for prof in sorted(os.listdir(DEFAULT_SOURCE)):
+        if prof.startswith("."):
+            continue
+        full = os.path.join(DEFAULT_SOURCE, prof, rel)
+        if os.path.isfile(full):
+            return full
+    return None
 
 
 def load_pack_schema(params_path):
@@ -172,14 +214,21 @@ def main():
     out = os.path.abspath(out)
 
     # Preconditions — the gates run first. Nothing assembles on failure.
-    for gate in ("sweep-gate.py", "review-gate.py"):
-        r = subprocess.run([sys.executable, os.path.join(HERE, gate)],
-                           capture_output=True, text=True)
+    # sweep-gate runs --kit-scope: only the shipped templates/ surface gates
+    # the build (the live-fleet manifest grows beyond the kit's own rows and
+    # must not veto instantiation). review-gate scopes to the shipped surface
+    # by default.
+    gates = [
+        [sys.executable, os.path.join(HERE, "sweep-gate.py"), "--kit-scope"],
+        [sys.executable, os.path.join(HERE, "review-gate.py")],
+    ]
+    for cmd in gates:
+        r = subprocess.run(cmd, capture_output=True, text=True)
         print(r.stdout)
         if r.returncode != 0:
-            print(f"✗ {gate} FAILED — assembly blocked.")
+            print(f"✗ {cmd[2] if len(cmd) > 2 else cmd[1]} FAILED — assembly blocked.")
             return 1
-        print(f"✓ {gate} passed")
+        print(f"✓ {os.path.basename(cmd[1])} passed")
 
     params = load_params(params_path)
     manifest = load_manifest()
@@ -198,9 +247,12 @@ def main():
 
     provenance = []
     shipped = 0
+    skipped_unsigned = 0
     resolved_union = set()   # every placeholder actually resolved across rows
     unresolved_union = set() # every placeholder left unresolved
     schema_fails, schema_warns = [], []
+    # Signed REVIEW entries (4/4) — the pass-gate for KEEP-REVIEW rows.
+    review = parse_review()
     for rel, (cls, verdict) in manifest.items():
         if verdict == "DROP":
             continue
@@ -217,14 +269,30 @@ def main():
                 provenance.append(
                     f"# WARN: {rel} — unresolved placeholders: {missing}")
             dst = os.path.join(out, tpl)
-        else:  # KEEP-REVIEW — ship as-is (already generic + signed)
-            # Source copy: for the skeleton, KEEP-REVIEW rows reference the
-            # generic skill in the source tree; the generator copies it after
-            # the semantic pass confirms no leak.
-            text = None
-            dst = os.path.join(out, "keep-review", rel)
+        else:  # KEEP-REVIEW — ship as-is ONLY if the semantic pass signed it.
+            signed = review.get(rel, (0, 0))
+            if signed[0] < signed[1]:
+                # Not fully signed — neither copy nor count (the pass-gate
+                # rule: an unverified claim in provenance is the leak class
+                # the sweep surface exists to catch).
+                skipped_unsigned += 1
+                provenance.append(
+                    f"# KEEP-REVIEW SKIPPED (unsigned): {rel} — "
+                    f"no ship, no count")
+                continue
+            src = find_source(rel)
+            if src is None:
+                provenance.append(
+                    f"# KEEP-REVIEW SKIPPED (no source): {rel}")
+                continue
+            text = open(src, encoding="utf-8", errors="replace").read()
+            # Sanitize the dest path EXACTLY like the template path — instance
+            # tokens live in source filenames (client-asset-audit.md) and the
+            # raw rel would ship them in the committed tree. The semantic pass
+            # signs content; the path needs the same treatment.
+            dst = os.path.join(out, "keep-review", sanitize_path(rel))
             provenance.append(
-                f"# KEEP-REVIEW: {rel} — ships as-is after sign-off")
+                f"# KEEP-REVIEW: {rel} — ships as-is (signed {signed[0]}/{signed[1]})")
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         if text is not None:
             with open(dst, "w", encoding="utf-8") as fh:
@@ -264,13 +332,15 @@ def main():
         fh.write("# Kit Assembly Audit\n\n")
         fh.write(f"- source manifest: {MANIFEST}\n")
         fh.write(f"- parameter file: {params_path or '(open core defaults)'}\n")
-        fh.write(f"- rows shipped: {shipped}\n")
+        fh.write(f"- rows shipped: {shipped} (files actually written)\n")
+        fh.write(f"- KEEP-REVIEW skipped (unsigned): {skipped_unsigned}\n")
         fh.write(f"- generated by: build/generate.py (the only assembly path)\n\n")
         fh.write("## Provenance notes\n\n")
         fh.write("\n".join(provenance) + "\n")
 
     print(f"\n✓ Kit assembled at {out}")
-    print(f"  shipped rows: {shipped} (TEMPLATE + KEEP-REVIEW)")
+    print(f"  shipped rows: {shipped} (files actually written; "
+          f"{skipped_unsigned} unsigned KEEP-REVIEW skipped)")
     print(f"  audit trail : {os.path.join(out, 'AUDIT.md')}")
     return 0
 

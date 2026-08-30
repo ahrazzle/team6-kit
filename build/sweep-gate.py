@@ -43,6 +43,7 @@ import importlib.util
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
 DEFAULT_SOURCE = os.path.expanduser("~/.hermes/profiles")
 
 # Files that ship via TEMPLATE but need no soft-leak review: they are
@@ -136,9 +137,27 @@ def regenerate_manifest():
     return os.path.join(HERE, "manifest.tsv")
 
 
+def target_exists(rel):
+    """True if this manifest row ships — its template target exists under
+    templates/. Used by --kit-scope: the gate then checks ONLY the kit's
+    shipped surface, not the whole live-fleet manifest (which grows as skills
+    are added to profiles long after the kit was authored)."""
+    base = os.path.basename(rel)
+    t = os.path.join(ROOT, "templates")
+    if base == "profile.yaml":
+        return os.path.isfile(os.path.join(t, "personas", "profile.yaml.tmpl"))
+    if base in ("SOUL.md", "AGENTS.md", "USER.md", "HERMES.md"):
+        return os.path.isfile(os.path.join(t, "personas", f"{base}.tmpl"))
+    if rel.startswith("skills/"):
+        from genericize import sanitize_path
+        return os.path.isfile(os.path.join(t, "skills", sanitize_path(rel[len("skills/"):])))
+    return os.path.isfile(os.path.join(t, rel))
+
+
 def main():
     args = sys.argv[1:]
     regenerate = "--no-regenerate" not in args
+    kit_scope = "--kit-scope" in args
     source = DEFAULT_SOURCE
     out = HERE
     if "--source" in args:
@@ -161,8 +180,19 @@ def main():
     manifest = load_manifest(manifest_path)
     review = parse_review(os.path.join(out, "REVIEW.md"))
 
+    # SCOPE BOUNDARY (--kit-scope): only rows whose template target exists
+    # under templates/ gate the build. The live-fleet manifest grows as
+    # skills are added to profiles long after the kit was authored — those
+    # rows are NOT the kit's shipped surface and must not veto instantiation.
+    if kit_scope:
+        manifest = {rel: v for rel, v in manifest.items() if target_exists(rel)}
+        notes.append("kit-scope: gate limited to shipped templates/ surface")
+
     # 2. COVERAGE — every live source file must have a verdict
     live = live_scan(ei, source)
+    if kit_scope:
+        # Only source files that map to shipped templates matter here.
+        live = {rel: cls for rel, cls in live.items() if rel in manifest}
     unclassified = sorted(set(live) - set(manifest))
     if unclassified:
         problems.append(
