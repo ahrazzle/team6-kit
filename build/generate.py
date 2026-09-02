@@ -41,6 +41,8 @@ ROOT = os.path.dirname(HERE)
 DEFAULT_SOURCE = os.path.expanduser("~/.hermes/profiles")
 TEMPLATES = os.path.join(ROOT, "templates")
 MANIFEST = os.path.join(HERE, "manifest.tsv")
+MANIFEST_FROZEN = os.path.join(HERE, "manifest.frozen.tsv")
+REVIEW_FROZEN = os.path.join(HERE, "REVIEW.frozen.md")
 
 DEFAULT_PARAMS = {
     "TEAM_NAME": "Your Team",
@@ -68,8 +70,12 @@ def target_path(rel):
 
 
 def load_manifest():
+    """Live-fleet manifest if present, else the committed frozen one — a fresh
+    clone has no fleet, so instantiation falls back to the frozen shipped
+    surface (self-contained)."""
+    path = MANIFEST if os.path.isfile(MANIFEST) else MANIFEST_FROZEN
     rows = {}
-    with open(MANIFEST, encoding="utf-8") as fh:
+    with open(path, encoding="utf-8") as fh:
         for line in fh:
             line = line.rstrip("\n")
             if not line or line.startswith("relpath"):
@@ -83,9 +89,11 @@ def load_manifest():
 
 def parse_review():
     """REVIEW.md -> {relpath: (ticked, total)} across all profile copies.
-    Used as the pass-gate for KEEP-REVIEW rows: only fully-signed rows ship."""
+    Used as the pass-gate for KEEP-REVIEW rows: only fully-signed rows ship.
+    Falls back to the frozen committed review on a fresh clone."""
     signed = {}
-    path = os.path.join(HERE, "REVIEW.md")
+    path = REVIEW_FROZEN if not os.path.isfile(os.path.join(HERE, "REVIEW.md")) \
+        else os.path.join(HERE, "REVIEW.md")
     cur = None
     ticked = total = 0
     with open(path, encoding="utf-8") as fh:
@@ -228,19 +236,22 @@ def main():
     out = os.path.abspath(out)
 
     # Preconditions — the gates run first. Nothing assembles on failure.
-    # sweep-gate runs --kit-scope: only the shipped templates/ surface gates
-    # the build (the live-fleet manifest grows beyond the kit's own rows and
-    # must not veto instantiation). review-gate scopes to the shipped surface
-    # by default.
-    gates = [
-        [sys.executable, os.path.join(HERE, "sweep-gate.py"), "--kit-scope"],
-        [sys.executable, os.path.join(HERE, "review-gate.py")],
-    ]
-    for cmd in gates:
+    # Gate mode is decided by artifact presence, not by params: if the live
+    # fleet manifest is absent (fresh clone), sweep-gate runs --frozen against
+    # the committed artifacts so instantiation is self-contained. If the live
+    # manifest exists, the live path runs (with review-gate's staleness check
+    # protecting buyer-side builds).
+    use_frozen = not os.path.isfile(MANIFEST)
+    sweep_cmd = [sys.executable, os.path.join(HERE, "sweep-gate.py"),
+                 "--kit-scope"] + (["--frozen"] if use_frozen else [])
+    review_cmd = [sys.executable, os.path.join(HERE, "review-gate.py")]
+    if params_path and os.path.isfile(params_path):
+        review_cmd += ["--params", params_path]
+    for cmd in (sweep_cmd, review_cmd):
         r = subprocess.run(cmd, capture_output=True, text=True)
         print(r.stdout)
         if r.returncode != 0:
-            print(f"✗ {cmd[2] if len(cmd) > 2 else cmd[1]} FAILED — assembly blocked.")
+            print(f"✗ {os.path.basename(cmd[1])} FAILED — assembly blocked.")
             return 1
         print(f"✓ {os.path.basename(cmd[1])} passed")
 

@@ -4,6 +4,7 @@
 # the fork dry-run proved committed kits/ is destroyed by `hermes update`.
 manifest.tsv
 manifest.md
+!templates/MANIFEST.md
 REVIEW.md
 genericization-report.md
 dist/

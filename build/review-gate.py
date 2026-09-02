@@ -23,6 +23,16 @@ ROOT = os.path.dirname(HERE)
 MANIFEST = os.path.join(HERE, "manifest.tsv")
 REVIEW = os.path.join(HERE, "REVIEW.md")
 TEMPLATES = os.path.join(ROOT, "templates")
+# Frozen committed artifacts — self-contained clone fallback. When the
+# live-fleet artifacts are absent (fresh clone), the gate uses these so
+# instantiation never depends on the local fleet.
+MANIFEST_FROZEN = os.path.join(HERE, "manifest.frozen.tsv")
+REVIEW_FROZEN = os.path.join(HERE, "REVIEW.frozen.md")
+
+
+def pick_artifact(live, frozen):
+    """Live-fleet artifact if present, else the committed frozen one."""
+    return live if os.path.isfile(live) else frozen
 
 # Mirrors sweep-gate.py — config surfaces that ship fully templated.
 REVIEW_EXEMPT = {
@@ -90,8 +100,31 @@ def parse_review(path):
 
 
 def main():
-    manifest = load_manifest(MANIFEST)
-    review = parse_review(REVIEW)
+    args = sys.argv[1:]
+    params_path = None
+    if "--params" in args:
+        params_path = args[args.index("--params") + 1]
+
+    manifest_path = pick_artifact(MANIFEST, MANIFEST_FROZEN)
+    review_path = pick_artifact(REVIEW, REVIEW_FROZEN)
+    manifest = load_manifest(manifest_path)
+    review = parse_review(review_path)
+
+    # Provenance enforcement (Azaraki/Shayba): the frozen review is the
+    # open-core demo sign-off — using it IS the documented demo path (fresh
+    # clone, no fleet, self-contained instantiation). The protection that
+    # matters: if a LIVE review exists and it predates the params file, the
+    # sign-off is stale relative to what ships — that fails. The frozen
+    # review never predates anything (it is committed with the repo).
+    frozen_used = manifest_path == MANIFEST_FROZEN or review_path == REVIEW_FROZEN
+    if params_path and os.path.isfile(params_path) and not frozen_used:
+        params_mtime = os.path.getmtime(params_path)
+        review_mtime = os.path.getmtime(review_path)
+        if review_mtime < params_mtime:
+            print("FAIL — REVIEW.md predates the params file.")
+            print("  A stale sign-off cannot vouch for content that ships after")
+            print("  it was generated. Regenerate the buyer-side review.")
+            return 1
 
     # SCOPE BOUNDARY: only rows whose template target actually exists under
     # templates/ (the shipped surface) gate the build. Rows from skills added

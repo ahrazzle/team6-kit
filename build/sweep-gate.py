@@ -45,6 +45,8 @@ from collections import defaultdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 DEFAULT_SOURCE = os.path.expanduser("~/.hermes/profiles")
+MANIFEST_FROZEN = os.path.join(HERE, "manifest.frozen.tsv")
+REVIEW_FROZEN = os.path.join(HERE, "REVIEW.frozen.md")
 
 # Files that ship via TEMPLATE but need no soft-leak review: they are
 # configuration surfaces fully substituted at instantiation, not authored
@@ -158,6 +160,7 @@ def main():
     args = sys.argv[1:]
     regenerate = "--no-regenerate" not in args
     kit_scope = "--kit-scope" in args
+    frozen = "--frozen" in args
     source = DEFAULT_SOURCE
     out = HERE
     if "--source" in args:
@@ -169,16 +172,25 @@ def main():
     problems = []
     notes = []
 
-    # 1. REGENERATE — fresh manifest
-    if regenerate:
+    # 1. REGENERATE — fresh manifest. Skipped in --frozen mode: the frozen
+    #    manifest is the committed, self-contained artifact; regeneration
+    #    would scan the live fleet, which a fresh clone doesn't have.
+    if frozen:
+        manifest_path = MANIFEST_FROZEN
+        review_path = REVIEW_FROZEN
+        notes.append("frozen mode: committed manifest + review (self-contained)")
+        regenerate = False
+    elif regenerate:
         manifest_path = regenerate_manifest()
         notes.append("manifest regenerated (live)")
+        review_path = os.path.join(out, "REVIEW.md")
     else:
         manifest_path = os.path.join(out, "manifest.tsv")
+        review_path = os.path.join(out, "REVIEW.md")
         notes.append("manifest used as-is (--no-regenerate)")
 
     manifest = load_manifest(manifest_path)
-    review = parse_review(os.path.join(out, "REVIEW.md"))
+    review = parse_review(review_path)
 
     # SCOPE BOUNDARY (--kit-scope): only rows whose template target exists
     # under templates/ gate the build. The live-fleet manifest grows as
@@ -188,18 +200,21 @@ def main():
         manifest = {rel: v for rel, v in manifest.items() if target_exists(rel)}
         notes.append("kit-scope: gate limited to shipped templates/ surface")
 
-    # 2. COVERAGE — every live source file must have a verdict
-    live = live_scan(ei, source)
-    if kit_scope:
-        # Only source files that map to shipped templates matter here.
+    # 2. COVERAGE — every live source file must have a verdict.
+    #    Frozen mode: no fleet scan — the frozen manifest IS the shipped
+    #    surface, fully classified by construction. A fresh clone has no
+    #    local fleet, so scanning it would be both wrong and broken.
+    live = {} if frozen else live_scan(ei, source)
+    if not frozen and kit_scope:
         live = {rel: cls for rel, cls in live.items() if rel in manifest}
-    unclassified = sorted(set(live) - set(manifest))
-    if unclassified:
-        problems.append(
-            f"UNCLASSIFIED SOURCE ({len(unclassified)}): "
-            f"no manifest row — run build-manifest.py to assign verdicts")
-        for rel in unclassified[:10]:
-            problems.append(f"    {rel}")
+    if not frozen:
+        unclassified = sorted(set(live) - set(manifest))
+        if unclassified:
+            problems.append(
+                f"UNCLASSIFIED SOURCE ({len(unclassified)}): "
+                f"no manifest row — run build-manifest.py to assign verdicts")
+            for rel in unclassified[:10]:
+                problems.append(f"    {rel}")
 
     # 3. VERDICTS — only TEMPLATE/KEEP-REVIEW may ship
     bad_verdicts = []
@@ -249,7 +264,7 @@ def main():
     for n in notes:
         print(f"  note: {n}")
     print(f"  source : {source}")
-    print(f"  live   : {len(live)} source files")
+    print(f"  live   : {len(live) if not frozen else 'n/a (frozen)'} source files")
     print(f"  manifest: {len(manifest)} rows")
     print(f"  review : {len(review)} entries")
     print()
