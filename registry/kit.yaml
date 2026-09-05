@@ -2,14 +2,14 @@
 # Distribution contract (spec section 5). One kit.yaml per kit.
 # Install: `kit install <registry>/<team>` (Claude Code marketplace pattern).
 
-name: airefea-kit
-version: 0.1.0
+name: team6-kit
+version: 1.0.0
 description: >
-  Team6-style multi-agent persona kit — identity archetypes, orchestration
+  Multi-agent team kit — identity archetypes, orchestration
   choreography, governance rules, and an instantiable generator. Open core
   under Apache-2.0; vertical packs are proprietary parameter files.
 
-registry: git@github.com:{ORG}/airefea-kit.git
+registry: git@github.com:{ORG}/team6-kit.git
 
 templates:
   hash: sha256:{TEMPLATES_HASH}      # set at build; any drift = build failure

@@ -81,10 +81,10 @@ SELF_EXCLUDE = {"build/surface-scan.py"}
 
 # Brand allowlist — terms that are the PRODUCT's own intentional name, not
 # instance leaks. Shayba's reachability test resolves these: reaching
-# "airefea-kit" is reaching the product (a public artifact), never our
+# "Team6-kit" is reaching the product (a public artifact), never our
 # instance. Keep this minimal — it is the ONLY exemption from S1/S2, and
 # adding a term here is a branding decision, not a leak fix.
-BRAND_ALLOWLIST = {"Airefea", "airefea-kit", "airefea"}
+BRAND_ALLOWLIST = {"Team6", "team6-kit", "Team6-kit"}
 
 
 def committed_files():

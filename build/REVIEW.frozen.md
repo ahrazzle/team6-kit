@@ -1,5 +1,5 @@
 # Kit Extraction Review — semantic pass gate (FROZEN)
-**257 files in scope (frozen open-core demo surface).**
+**259 files in scope (frozen open-core demo surface).**
 
 **PROVENANCE: OPEN-CORE DEMO SIGN-OFF.** This frozen review
 is the sign-off for the open-core demo surface (the shipped
@@ -140,6 +140,12 @@ Checklist source: T-001 pass (soft leak classes).
 - [x] 4.
 
 ### frozen/skills/autonomous-ai-agents/hermes-session-model-overrides/references/state-db-recipe.md  *(frozen open-core sign-off)*
+- [x] 1.
+- [x] 2.
+- [x] 3.
+- [x] 4.
+
+### frozen/skills/autonomous-ai-agents/knowledge-router/SKILL.md  *(frozen open-core sign-off)*
 - [x] 1.
 - [x] 2.
 - [x] 3.
@@ -356,6 +362,12 @@ Checklist source: T-001 pass (soft leak classes).
 - [x] 4.
 
 ### frozen/skills/autonomous-ai-agents/skill-library-curation/SKILL.md  *(frozen open-core sign-off)*
+- [x] 1.
+- [x] 2.
+- [x] 3.
+- [x] 4.
+
+### frozen/skills/autonomous-ai-agents/zero-context-preservation/SKILL.md  *(frozen open-core sign-off)*
 - [x] 1.
 - [x] 2.
 - [x] 3.

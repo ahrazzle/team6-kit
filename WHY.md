@@ -1,6 +1,6 @@
-# Why airefea-kit Exists
+# Why Team6-kit Exists
 
-> **Short version:** Hermes is the engine. airefea-kit is the operating layer —
+> **Short version:** Hermes is the engine. Team6-kit is the operating layer —
 > the *crew* and the *playbook* that turn a single agent into a disciplined
 > multi-agent team. Different axis, not a feature add-on.
 
@@ -12,7 +12,7 @@ Hermes is what you install. You get profiles, skills, memory, cron, plugins
 (kanban, accent, etc.), and `hermes setup` for plumbing. It's an *engine* —
 the chassis, the dashboard, the wiring. It is excellent at what it does.
 
-airefea-kit is what you instantiate *on top of* the engine. You get
+Team6-kit is what you instantiate *on top of* the engine. You get
 persona archetypes, orchestration choreography, governance funnels, and a
 generator that turns a parameter file into a configured team. It's an
 *operating layer* — the crew, the playbook, the runbook.
@@ -21,9 +21,9 @@ A plugin (kanban, accent) is a *tool*. The kit is the *crew* that uses the
 tools. They are not competitors any more than a steering wheel competes with
 a driver. If you want a single agent with a task dashboard, you want
 Hermes + kanban. If you want multiple agents working a real workflow with
-governance, you want Hermes + airefea-kit.
+governance, you want Hermes + Team6-kit.
 
-| | Hermes | airefea-kit |
+| | Hermes | Team6-kit |
 |---|---|---|
 | **What it is** | The engine | The operating layer |
 | **What you install** | A binary + profiles | A parameter file + the kit |
@@ -110,23 +110,25 @@ Hermes uses: open-source engine, paid service on top.
 
 ---
 
-## Status as of this writing
+## Status as of v1.0.0 (efficiency update)
 
-- ✅ Open core public (Apache-2.0) on GitHub
+- ✅ Open core public (Apache-2.0) on GitHub — renamed airefea-kit → Team6-kit
 - ✅ Licensing coherent (MIT provenance + Apache-2.0 kits + proprietary-by-contract packs)
 - ✅ 8-surface hygiene gate (including S8 network-egress, enforcing no-telemetry by construction)
-- ✅ Setup-agent spec signed
+- ✅ Knowledge router skill (MoE-style activation) — shipped in templates/
+- ✅ Zero-context preservation skill (direct-execution pivot) — shipped in templates/
+- ✅ Open-core assembly gated (sweep + review + generate) + instantiation proof-point (demo/, examples/)
 - 🔲 Setup agent authored and passing the 8-surface gate
 - 🔲 Upstream PR for the setup agent
 - 🔲 First vertical pack shipped (instance + service)
-- 🔲 First working demonstration end-to-end
 
-The list is honest about what's shipped and what's promised. The proof
-gates — the setup-agent install, the first pack, the first end-to-end
-demonstration — are the deliverables that turn this from a repo into a
-product. Until they land, treat the above as the *plan*, not the result.
+The efficiency update makes the always-on memory footprint lean: knowledge
+router + zero-context preservation are the two reusable patterns extracted
+from running a real six-agent fleet on bounded-context local models. The
+setup-agent install, the first pack, and the first end-to-end demonstration
+remain the proof gates that turn this from a repo into a product.
 
 ---
 
-*Authored for the airefea-kit org. Reviewed by the build team. Open to
+*Authored for the Team6-kit org. Reviewed by the build team. Open to
 refinement as the proof points land.*
