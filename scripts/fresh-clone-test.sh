@@ -80,3 +80,4 @@ echo
 echo "=== FRESH-CLONE TEST: PASS ==="
 echo "A stranger can clone HEAD and reproduce the demo, self-contained."
 [ $KEEP -eq 1 ] && echo "kept workdir: $WORK"
+exit 0

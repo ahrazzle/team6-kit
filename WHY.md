@@ -119,6 +119,40 @@ instantiates, not just the one that built it.
 
 ---
 
+## Why the kit documents a local preprocessing adapter (v1.2.0)
+
+A generated team already sends approved work outward — remote models, shared
+rooms, durable logs. The kit's v1.2.0 addition is a **bounded, local
+preprocessing adapter contract** (`choreography/local-preprocessing.md`): run
+cheap local preprocessing *before* approved text leaves the device when it
+improves privacy, cost, routing, or artifact quality.
+
+Why this shape, and not something grander:
+
+- **It is a contract, not a feature.** The public kit states the decision
+  policy and the adapter requirements in a vendor-neutral way; a generated
+  installation *implements* the contract only as an explicit operator policy.
+  Nothing in the open-core build turns it on by default, and the kit never
+  edits a user's Hermes profile to enable it. This respects the honesty section
+  below — the kit documents the layer, it does not silently impose it.
+- **It is bounded.** It is preprocessing for approved outbound work, never a
+  replacement for a reasoning model, never a provider/router change, and never
+  a high-stakes judgment authority. Ordinary conversation, final synthesis, and
+  legal/financial/security/architecture decisions are excluded by policy.
+- **It is honest about provenance.** Where an implementation (e.g. Desert Ant)
+  is referenced, its models carry a **separate vendor license** that is distinct
+  from the Apache-2.0 kit layer and does not extend to it. The kit links to
+  public implementation docs as an optional reference and copies no code,
+  prompts, or license text. Expected benefits are stated as intended outcomes;
+  no performance or cost numbers are invented.
+
+The adapter follows the same producer/verifier and verification culture that
+the v1.1.0 doctrine encoded: a guarded local call is a first-pass filter, not a
+decision, and any Redact result with address/numeric/uncertain findings is held
+for review before anything is transmitted.
+
+---
+
 ## What the kit does NOT provide (honesty section)
 
 - **No core-engine features.** The kit does not make a single agent
@@ -154,7 +188,18 @@ Hermes uses: open-source engine, paid service on top.
 
 ---
 
-## Status — v1.1.0 (operating upgrades) on top of v1.0.0
+## Status — v1.2.0 (local preprocessing adapter) on top of v1.1.0
+
+### v1.2.0 — local preprocessing adapter contract (2026-09-10)
+
+- ✅ Vendor-neutral local preprocessing adapter contract — `choreography/local-preprocessing.md`
+- ✅ Automatic decision policy (Redact / Gist / Title / opt-in media) + "never applied" exclusions
+- ✅ Hold-for-review rule on address/numeric/uncertain Redact findings; first-pass filter, not anonymization
+- ✅ Adapter requirements (local, guarded, no raw-PII logs, availability + exit + JSON checks, provenance recording)
+- ✅ Desert Ant framed as one optional implementation; separate vendor model license distinct from Apache-2.0 kit
+- ✅ No invented performance/cost figures — expected benefits as intended outcomes
+- ✅ Public docs + website updated to v1.2.0 (README, WHY, CHANGELOG, registry/kit.yaml, LICENSING, index.html)
+- ✅ Public-domain routing: intended public site `team6.askaconsult.com`; fallback/source mirror `ahrazzle.github.io/team6-kit/`; visible nav back to `askaconsult.com/digital/` (DNS/Pages settings untouched)
 
 ### v1.1.0 — operating upgrades (2026-09-09)
 

@@ -57,6 +57,39 @@ declares MIT in its README but ships no committed `LICENSE`; `autonovel` ships
 no committed `LICENSE` — both are therefore used for concept only and carry no
 code into this tree. See `CHANGELOG.md` for per-upgrade evidence classes.
 
+### Local preprocessing model boundary (v1.2.0)
+
+v1.2.0 documents a **vendor-neutral local preprocessing adapter contract**
+(`choreography/local-preprocessing.md`); it does **not** bundle an
+implementation. Where a concrete implementation is referenced (e.g. Desert Ant),
+the boundary is explicit:
+
+- **Desert Ant is an optional reference, not a dependency** — its code, model
+  files, and license text are NOT copied into this repo.
+- **Separate vendor license.** Desert Ant models carry their own
+  **source-available vendor license** (not an OSI open-source license) that is
+  **distinct from the Apache-2.0 kit layer** and does not extend to it. The
+  model license governs the models; the kit license governs this repo.
+  Production distribution of those models is subject to the vendor's
+  attribution and monthly-active-device terms — see the vendor's public docs.
+- **No invented figures.** v1.2.0 states expected benefits as intended
+  outcomes only.
+
+### Public-domain hosting boundary (v1.2.0)
+
+v1.2.0 adopts the public-domain routing decision for the Team6 site:
+
+- **Intended public site:** `https://team6.askaconsult.com` — connected to this
+  kit's GitHub Pages source by the ASKA site team. DNS and GitHub Pages
+  custom-domain settings are **out of scope for this repo** and are not touched
+  here.
+- **Fallback / source mirror retained:** `https://ahrazzle.github.io/team6-kit/`
+  (the repo's existing Pages convention) remains the fallback/source URL when
+  the repo's conventions require it; the repo/source of truth is
+  `https://github.com/ahrazzle/team6-kit`.
+- **Visible navigation back to ASKA Digital:** the Team6 site (`index.html`)
+  carries visible nav + footer links back to `https://askaconsult.com/digital/`.
+
 ## Provenance
 
 - Engine: Hermes by Nous Research — MIT (https://github.com/NousResearch/hermes-agent)

@@ -3,16 +3,22 @@
 # Install: `kit install <registry>/<team>` (Claude Code marketplace pattern).
 
 name: team6-kit
-version: 1.1.0
+version: 1.2.0
 description: >
   Multi-agent team kit — identity archetypes, orchestration
   choreography, governance rules, and an instantiable generator. v1.1.0
   encodes the supervised operating layer (OTP-style supervision, durable
   append-only state, phase-gated pipeline, adversarial QA, served-truth and
-  license/provenance gates). Open core under Apache-2.0; vertical packs are
+  license/provenance gates). v1.2.0 adds a vendor-neutral local preprocessing
+  adapter contract (Redact/Gist/Title + opt-in media) as documentation, not a
+  bundled dependency. Open core under Apache-2.0; vertical packs are
   proprietary parameter files.
 
 registry: git@github.com:{ORG}/team6-kit.git
+home: https://team6.askaconsult.com/      # intended public Team6 site (v1.2.0 public-domain decision)
+source_mirror: https://ahrazzle.github.io/team6-kit/  # fallback/source Pages mirror (repo convention)
+repo: https://github.com/ahrazzle/team6-kit
+links_back: https://askaconsult.com/digital/  # Team6 site -> ASKA Digital
 
 templates:
   hash: sha256:{TEMPLATES_HASH}      # set at build; any drift = build failure

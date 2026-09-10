@@ -32,15 +32,17 @@ team6-kit/
 │   ├── extraction-inventory.py   # classifier + content sweep (source audit)
 │   └── build-manifest.py         # manifest generator
 ├── registry/           # kit.yaml + vertical pack parameter files (NOT forks)
-├── choreography/       # THE differentiator: orchestration, governance, funnel SOPs
+├── choreography/       # THE differentiator: orchestration, governance, funnel SOPs, local-preprocessing adapter contract
 ├── CHANGELOG.md        # dated per-upgrade log: what changed, why, evidence class
 ├── WHY.md              # design axioms + why the operating layer is shaped this way
 └── LICENSE             # Apache-2.0 core; packs proprietary by contract
 ```
 
-Read `choreography/orchestration.md` (how the team works together) and
-`choreography/governance.md` (the rules that keep it honest) first. `WHY.md`
-explains the operating layer; `CHANGELOG.md` tracks what changed per release.
+Read `choreography/orchestration.md` (how the team works together),
+`choreography/governance.md` (the rules that keep it honest), and
+`choreography/local-preprocessing.md` (the optional local preprocessing
+adapter contract) first. `WHY.md` explains the operating layer; `CHANGELOG.md`
+tracks what changed per release.
 
 ## The invariant
 
@@ -68,6 +70,21 @@ does not exist. The generator is the only assembly path.
 - **zero-context-preservation** - the direct-execution pivot: preservation
   dumps + mechanical fleet work done in the shell at zero context cost;
   orchestrator preserves agent identity verbatim.
+
+## Local preprocessing adapter (v1.2.0)
+
+A **bounded, optional local preprocessing layer** that a generated
+installation may apply around approved outbound work — Redact before approved
+outbound text / durable external logs, Gist for bulk routing hints only, Title
+for draft metadata. It is a **contract, not a provider/router replacement**: it
+never handles high-stakes judgment and it never runs for ordinary conversation
+or final synthesis. The public kit documents the contract
+(`choreography/local-preprocessing.md`); a generated installation **implements**
+it only as an explicit operator policy, and the kit never edits a user's Hermes
+profile to enable it. Desert Ant is one possible implementation on macOS, not a
+required dependency, and the models carry a separate vendor license distinct
+from the Apache-2.0 kit layer. Expected benefits are stated as intended
+outcomes — no fabricated performance or cost numbers.
 
 ## Operating upgrades in this release (v1.1.0)
 
@@ -117,12 +134,34 @@ and `CHANGELOG.md`:
   orchestration, governance, knowledge routing, and build tooling.
 - **Vertical packs: proprietary by contract** - parameter files + service,
   never committed to this repo, never a fork of the engine.
+- **Optional local preprocessing models: separate vendor license** — an
+  adapter may reference models (e.g. Desert Ant) that carry their own
+  source-available vendor license; that license governs the models and does
+  not extend to this Apache-2.0 kit layer. See `LICENSING.md` and
+  `choreography/local-preprocessing.md`.
 
 See `LICENSING.md` for the full four-zone statement.
 
+**Where Team6 lives (v1.2.0 public-domain decision):** the intended public
+Team6 site is **https://team6.askaconsult.com** — the ASKA site team connects
+the domain to this kit's GitHub Pages source. As a fallback/source mirror, the
+kit's GitHub Pages build also serves at **https://ahrazzle.github.io/team6-kit/**
+(the repo's existing Pages convention); the repo and source of truth remain
+**https://github.com/ahrazzle/team6-kit**. The Team6 site links back to the ASKA
+Digital site at **https://askaconsult.com/digital/**.
+
 ## Status
 
-**1.1.0 - Operating upgrades.** Supervision model, supervised research loops,
+**1.2.0 — Local preprocessing adapter contract.** Documents a bounded, optional
+local preprocessing layer (Redact / Gist / Title + opt-in media) as a
+vendor-neutral adapter contract in `choreography/local-preprocessing.md`. It is
+a contract, not a provider/router replacement; generated installations
+implement it only as an explicit operator policy, and the kit never edits a
+user's Hermes profile. Desert Ant is one optional implementation; its models
+carry a separate vendor license distinct from the Apache-2.0 kit. See
+`CHANGELOG.md`.
+
+**1.1.0 — Operating upgrades.** Supervision model, supervised research loops,
 phase-gated pipeline + corrected single-pass role sequence, producer/verifier
 separation, durable append-only ledgers, adversarial QA gate, live check-ins,
 served-truth/staging-first verification, and the entropy-proof + license/

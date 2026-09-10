@@ -22,6 +22,99 @@ no source code, prompts, anti-slop lists, or prose is copied into this repo.
 `autonovel` ships no committed `LICENSE` — both are therefore treated as
 weaker-than-committed grants and used for concept only. See `LICENSING.md`.
 
+v1.2.0 licensing note: **Desert Ant is referenced as an optional implementation
+only, never bundled.** This repo does not copy Desert Ant code, model files, or
+license text. Desert Ant models carry a separate source-available vendor
+license that is distinct from the Apache-2.0 kit layer and does not extend to
+it. See `choreography/local-preprocessing.md` and `LICENSING.md`.
+
+v1.2.0 hosting note (public-domain decision): the **intended public Team6 site**
+is **https://team6.askaconsult.com** — the ASKA site team connects that domain to
+this kit's GitHub Pages source. The kit **retains a fallback/source mirror** at
+**https://ahrazzle.github.io/team6-kit/** (the repo's existing Pages convention),
+and the repo/source of truth stays at **https://github.com/ahrazzle/team6-kit**.
+The Team6 site carries **visible navigation back to ASKA Digital** at
+**https://askaconsult.com/digital/**. DNS and GitHub Pages custom-domain settings
+are out of scope for this repo — the source tree only declares the intended URL
+(`registry/kit.yaml` `home`/`source_mirror`/`links_back`) and the site surfaces
+it (`index.html` canonical + nav + footer). [VERIFIED — internal operating
+record] the public-domain routing decision; [VERIFIED — public conceptual
+source] the ASKA Digital site the Team6 site links back to.
+
+---
+
+## 1.2.0 — Local preprocessing adapter contract (2026-09-10)
+
+This release documents a **bounded, optional local preprocessing adapter
+contract** in `choreography/local-preprocessing.md`, in a vendor-neutral way.
+It does **not** add a provider/router replacement, and it does **not** handle
+high-stakes judgment. It states the automatic decision policy and the adapter
+requirements; a generated installation implements the contract only as an
+explicit operator policy, and the kit never edits a user's Hermes profile to
+enable it.
+
+### 1. Automatic decision policy (Redact / Gist / Title / media)
+
+- **What:** When approved text is leaving the device for a remote model,
+  external service, shared project room, or durable external log, run a guarded
+  local **Redact** pass first when appropriate. If address, numeric, or
+  uncertain findings require review, **hold the outbound step** and escalate to
+  the operator/user before transmitting. **Gist** is used for cheap bulk
+  routing hints on notes/transcripts/intake — a hint only, never the sole
+  authority. **Title** produces draft metadata for artifacts/transcripts and is
+  read before exposure. **Media** ops are opt-in only and never pull weights
+  automatically during active work.
+- **Exclusions:** ordinary conversation, final synthesis, and legal/financial/
+  security/architecture or other high-stakes judgment are never routed through
+  the layer (unless a call is only a bounded preprocessing step feeding full
+  review).
+- **Why it changed:** a generated team already sends approved work outward; a
+  bounded preprocessing step can reduce exposure, cut cost, and improve
+  metadata before transmission, *without* changing the reasoning model or the
+  routing topology.
+- **Evidence:** [VERIFIED — internal operating record] the Desert Ant local
+  pilot decision policy (guarded wrappers, Redact hold-for-review, Gist-as-hint,
+  Title-as-draft, opt-in media). Policy adopted as a vendor-neutral contract;
+  no Desert Ant code, prompts, or license text is copied into this repo.
+
+### 2. Adapter requirements (the contract)
+
+- **What:** Any implementation claiming this contract MUST run locally, be
+  guarded (no raw CLI in hot paths), log no raw PII (original input and any
+  original→placeholder map never enter logs), check model availability before
+  use, check exit code + JSON parse + required fields after use, and record
+  model id/version/revision provenance when a result becomes durable.
+- **Why it changed:** the preprocessing step must never become a new data
+  exposure or an unverified authority; these requirements keep it local,
+  guarded, and provably-correct-before-use.
+- **Evidence:** [VERIFIED — internal operating record] the Desert Ant local
+  adapter's verified requirements (guarded wrappers, no-raw-PII, availability/
+  exit/JSON checks, provenance recording, no-telemetry-by-construction).
+
+### 3. Desert Ant as one implementation; separate model license
+
+- **What:** Desert Ant is a *possible* implementation on macOS, not a required
+  dependency. The kit does not bundle its code, model files, or license text.
+  The **Apache-2.0 kit layer** and the **Desert Ant model vendor license** are
+  distinct; the model license governs the models and does not extend to the kit.
+- **Why it changed:** the kit's license/provenance gate (`governance.md` §7,
+  `LICENSING.md`) requires that third-party models stay outside the Apache-2.0
+  layer and that any reference be concept/optional only.
+- **Evidence:** [VERIFIED — internal operating record] the Desert Ant pilot
+  receipt; the standing license gate. [VERIFIED — public conceptual source]
+  Desert Ant public docs are linked as an optional implementation reference
+  only.
+
+### 4. Safe provenance and claims
+
+- **What:** No fabricated performance or cost numbers. Expected benefits
+  (reduced exposure, cost, better metadata) are stated as **intended
+  outcomes**, not measured results.
+- **Why it changed:** the honesty gate (WHY.md, governance) forbids invented
+  figures on public surfaces.
+- **Evidence:** [VERIFIED — internal operating record] the team's standing
+  no-invented-numbers / honesty-guard directive.
+
 ---
 
 ## 1.1.0 — Operating upgrades (2026-09-09)
