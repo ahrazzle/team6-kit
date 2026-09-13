@@ -105,10 +105,44 @@ the full chain, not just the merge function:
   cannot keep the row's old Y" — but the row does keep it). Flag the
   docstring, and decide whether the code should also clear the column.
 
-## 4. Re-check after revision
+## 4. Candidate-validation contract (generated or configured work)
 
-If the session history shows the PR was revised mid-review (registry
-stripped, tests removed, force-push), re-verify what survived:
+When a contribution produces a candidate artifact, do not treat a model PASS or a green unit test as acceptance. Record a small evidence packet before review:
+
+```text
+candidate: <path or immutable artifact id>
+source: <base commit, input, or source file>
+overlay: <isolated scratch path; never production>
+gates:
+  structural: PASS | FAIL | UNKNOWN
+  build: PASS | FAIL | UNKNOWN | NOT_RUN
+  tests: PASS | FAIL | UNKNOWN | NOT_RUN
+  runtime: PASS | FAIL | UNKNOWN | NOT_RUN
+  integration: PASS | FAIL | UNKNOWN | NOT_RUN
+verdict: ACCEPT | CONDITIONAL | REJECT | UNVERIFIED
+```
+
+Rules:
+
+1. Run candidate checks in an isolated overlay or disposable worktree. Never let a proof command mutate the source project or production data.
+2. Name the exact commands, inputs, base revision, and tool versions. Prefer argument arrays or an explicit command runner over implicit shell strings.
+3. Treat configured commands as evidence only when the project owner has stated what they validate. A command that exits zero is not proof that it exercised the candidate.
+4. Keep `UNKNOWN` and `NOT_RUN` distinct. Missing evidence blocks an `ACCEPT` verdict; it must not be converted to PASS by omission.
+5. A structural check, build, test, runtime, or integration result can fail independently. Report the first failing gate and preserve the remaining results.
+6. Re-run the packet after every force-push or candidate regeneration. A stale packet describes the old artifact, not the live contribution.
+
+Minimum acceptance policy:
+
+- `ACCEPT` requires the required gates to be PASS and the packet to identify the exact candidate and base revision.
+- `CONDITIONAL` is allowed only when the omitted gate is explicitly non-blocking and the risk is recorded.
+- `REJECT` requires a failing gate or an unresolvable source mismatch.
+- `UNVERIFIED` is the honest result when a required gate was not run or its command was not meaningful.
+
+This is an evidence contract, not a claim of semantic equivalence. Preserve the packet with the review artifact so another agent can reproduce the decision.
+
+## 4b. Re-check after revision
+
+If the session history shows the PR was revised mid-review (registry stripped, tests removed, force-push), re-verify what survived:
 - A property you cared about may have lost its only test when a
   registry-dependent test was deleted. Unknown-key preservation in a
   copy-then-pop-known-keys merge is a property that is trivially true by

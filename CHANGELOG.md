@@ -37,6 +37,14 @@ outside this repository.
 
 ---
 
+## Unreleased — Evidence-backed candidate validation (2026-09-13)
+
+- **What:** extend `code-review-verification` with a generic candidate-validation contract: isolated overlays, explicit structural/build/test/runtime/integration gate states, evidence packets, and honest `ACCEPT` / `CONDITIONAL` / `REJECT` / `UNVERIFIED` verdicts.
+- **Why it changed:** ReAgent demonstrates a useful separation between a generated candidate, the environment that validates it, and the evidence that supports acceptance. Team6 already has separate review and deployment checks, but lacked one compact contract for candidate artifacts and configured commands.
+- **Evidence:** [VERIFIED — public conceptual source] `Dryxio/reagent` 0.4.0, MIT licensed, inspected at commit `d12cea338c61898b06a86fe8adb25275fa9d5615`; adapted as principles only. No source code, prompts, or dependencies copied.
+- **Proof status:** [PROPOSED / PENDING] Team6-kit template change; fresh-clone gates and independent review required before release.
+- **Files:** `templates/skills/software-development/code-review-verification/SKILL.md`.
+
 ## 1.4.0 — Dynamic model-policy catalogue (2026-09-13)
 
 ### Route-based rate-limit protection
