@@ -1,0 +1,40 @@
+{
+  "objective": "Document the run packet contract.",
+  "decisions": [
+    {
+      "decision": "Fail closed on an unbacked live claim",
+      "rationale": "a live status must name its target"
+    }
+  ],
+  "verified_evidence": [
+    {
+      "claim": "the validator rejects this packet",
+      "verified": true,
+      "evidence": "self-test case invalid/live-without-target"
+    }
+  ],
+  "unresolved_items": [],
+  "changed_artifacts": [
+    "choreography/safe-run-packet.md"
+  ],
+  "test_results": [
+    {
+      "name": "self-test",
+      "result": "pass",
+      "evidence": "18 cases behave as specified"
+    }
+  ],
+  "runtime_live_status": {
+    "state": "live",
+    "evidence": "seen in the UI"
+  },
+  "next_gate": "independent review before merge",
+  "provenance": {
+    "produced_by": "build agent",
+    "task_ref": "run-packet-contract"
+  },
+  "redaction_status": {
+    "status": "clean",
+    "method": "surface-scan"
+  }
+}

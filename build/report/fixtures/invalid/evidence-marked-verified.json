@@ -1,0 +1,38 @@
+{
+  "objective": "Document the run packet contract.",
+  "decisions": [
+    {
+      "decision": "Fail closed on unverified evidence",
+      "rationale": "a claim must carry what verifies it"
+    }
+  ],
+  "verified_evidence": [
+    {
+      "claim": "the validator rejects this packet",
+      "verified": true
+    }
+  ],
+  "unresolved_items": [],
+  "changed_artifacts": [
+    "choreography/safe-run-packet.md"
+  ],
+  "test_results": [
+    {
+      "name": "self-test",
+      "result": "pass",
+      "evidence": "18 cases behave as specified"
+    }
+  ],
+  "runtime_live_status": {
+    "state": "not-applicable"
+  },
+  "next_gate": "independent review before merge",
+  "provenance": {
+    "produced_by": "build agent",
+    "task_ref": "run-packet-contract"
+  },
+  "redaction_status": {
+    "status": "clean",
+    "method": "surface-scan"
+  }
+}

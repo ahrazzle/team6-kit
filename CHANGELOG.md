@@ -37,6 +37,36 @@ outside this repository.
 
 ---
 
+## Unreleased — Safe shareable run packet (2026-09-13)
+
+- **What:** add a general safe shareable run packet: `choreography/safe-run-packet.md`
+  (required fields for objective, decisions, verified evidence, unresolved items,
+  changed artifacts, test results, runtime/live status, next gate, provenance, and
+  redaction status; a placeholder convention; and a shareable-surface safety rule)
+  and `build/report/check.py`, a standard-library-only validator with valid and
+  invalid fixtures that fails closed on a missing required field, evidence marked
+  verified without evidence, a live/staged status without target or evidence,
+  omitted unresolved items, an internal local path or profile path, a
+  credential-like value, or a placeholder outside the repository convention. The
+  generator seam is left untouched in this slice; the authored files ship through
+  the same authored-fresh mechanism when registered.
+- **Why it changed:** a finished run must produce one artifact a second person can
+  read and share — what was attempted, what was decided, what is actually
+  verified, what is still open, what changed, how it was tested, whether anything
+  reached a live surface, and what happens next — without leaking an internal path,
+  a profile identity, or a credential value.
+- **Evidence:** [VERIFIED — public conceptual source] the general idea of an
+  Agency Orchestrator-style run report, adopted as a concept. This is a
+  conceptual operating pattern, **not copied Agency Orchestrator code**: no
+  source, prompt, or dependency from any orchestrator project is bundled. The
+  Team6 Kanban board remains the authoritative task record; the packet is a
+  derived shareable report, not a second state store, and adds no runtime
+  integration, provider call, or configuration change.
+- **Proof status:** [PROPOSED / PENDING] documentation contract plus local
+  validator; independent review required before treating it as release policy.
+- **Files:** `choreography/safe-run-packet.md`, `build/report/` (README, checker,
+  fixtures), `README.md`, `CHANGELOG.md`.
+
 ## Unreleased — Side-effect and cost preflight (2026-09-13)
 
 - **What:** add a general side-effect and cost preflight: `choreography/side-effect-cost-preflight.md`

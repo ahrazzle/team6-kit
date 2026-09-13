@@ -83,6 +83,22 @@ rollback. It is a conceptual operating pattern adapted from the general idea
 of agency-orchestration preflight — no Agency Orchestrator code is copied —
 and the Team6 Kanban board remains the authoritative task record.
 
+## Safe shareable run packet
+
+When a run finishes, the people who need to know about it are usually not at the
+terminal that ran it. A run packet is the one artifact that travels: objective,
+decisions, verified evidence, unresolved items, changed artifacts, test results,
+runtime/live status, next gate, provenance, and redaction status.
+`choreography/safe-run-packet.md` defines the contract; `build/report/check.py`
+is a dependency-free validator that fails closed on a missing required field,
+evidence marked verified without evidence, a live status without target or
+evidence, omitted unresolved items, an internal path or profile identity, a
+credential-like value, or an off-convention placeholder. It is a conceptual
+operating pattern adapted from the general idea of an agency-orchestration run
+report — no Agency Orchestrator code is copied — and the Team6 Kanban board
+remains authoritative: the packet is a derived shareable report, not a second
+state store.
+
 ## The main rules
 
 1. **Everything on disk.** Progress is saved to files, so months later you can still pick up where you left off.

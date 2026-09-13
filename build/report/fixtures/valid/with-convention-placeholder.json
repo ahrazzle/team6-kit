@@ -1,0 +1,41 @@
+{
+  "objective": "Document a {CLIENT}-safe handoff artifact for the run.",
+  "decisions": [
+    {
+      "decision": "Abstract the client name with the repository convention",
+      "rationale": "the packet is shared outside the run"
+    }
+  ],
+  "verified_evidence": [
+    {
+      "claim": "the placeholder form matches the repository convention",
+      "verified": true,
+      "evidence": "check.py R9 accepts {CLIENT}"
+    }
+  ],
+  "unresolved_items": [
+    "final {RELATIONSHIP} naming is deferred to review"
+  ],
+  "changed_artifacts": [
+    "choreography/safe-run-packet.md"
+  ],
+  "test_results": [
+    {
+      "name": "placeholder convention",
+      "result": "pass",
+      "evidence": "self-test case valid/convention-placeholder"
+    }
+  ],
+  "runtime_live_status": {
+    "state": "local-only"
+  },
+  "next_gate": "review by the owning agent",
+  "provenance": {
+    "produced_by": "build agent",
+    "task_ref": "run-packet-contract"
+  },
+  "redaction_status": {
+    "status": "redacted",
+    "method": "replaced client and relationship names with convention placeholders"
+  }
+}

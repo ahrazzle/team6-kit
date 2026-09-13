@@ -1,0 +1,35 @@
+{
+  "objective": "Document the run packet contract.",
+  "decisions": [
+    {
+      "decision": "Fail closed on missing fields",
+      "rationale": "an incomplete packet is not safe to share"
+    }
+  ],
+  "verified_evidence": [
+    {
+      "claim": "the validator rejects this packet",
+      "verified": true,
+      "evidence": "self-test case invalid/missing-required-field"
+    }
+  ],
+  "unresolved_items": [],
+  "changed_artifacts": [
+    "choreography/safe-run-packet.md"
+  ],
+  "test_results": [
+    {
+      "name": "self-test",
+      "result": "pass",
+      "evidence": "18 cases behave as specified"
+    }
+  ],
+  "runtime_live_status": {
+    "state": "not-applicable"
+  },
+  "next_gate": "independent review before merge",
+  "redaction_status": {
+    "status": "clean",
+    "method": "surface-scan"
+  }
+}

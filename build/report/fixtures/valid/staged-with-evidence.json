@@ -1,0 +1,43 @@
+{
+  "objective": "Verify the report surface renders the packet on a staging copy.",
+  "decisions": [
+    {
+      "decision": "Stage before publishing",
+      "rationale": "the report surface is user-facing and must be reviewed first"
+    }
+  ],
+  "verified_evidence": [
+    {
+      "claim": "the staging copy rendered the packet",
+      "verified": true,
+      "evidence": "staging URL returned the packet body with HTTP 200"
+    }
+  ],
+  "unresolved_items": [
+    "production publish is not yet approved"
+  ],
+  "changed_artifacts": [
+    "build/report/check.py"
+  ],
+  "test_results": [
+    {
+      "name": "staging render",
+      "result": "pass",
+      "evidence": "packet body present in the staging response"
+    }
+  ],
+  "runtime_live_status": {
+    "state": "staged",
+    "target": "staging copy of the report surface",
+    "evidence": "staging URL rendered the packet without error"
+  },
+  "next_gate": "owner approval before production publish",
+  "provenance": {
+    "produced_by": "build agent",
+    "task_ref": "run-packet-contract"
+  },
+  "redaction_status": {
+    "status": "clean",
+    "method": "surface-scan + manual read of the shared body"
+  }
+}

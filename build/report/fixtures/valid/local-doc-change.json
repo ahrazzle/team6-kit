@@ -1,0 +1,49 @@
+{
+  "objective": "Add a documentation-only contract and a dependency-free validator for the run packet.",
+  "decisions": [
+    {
+      "decision": "Keep the validator standard-library only",
+      "rationale": "it must run on a bare clone with no install step"
+    },
+    {
+      "decision": "Reject ad-hoc redaction markers",
+      "rationale": "only the repository placeholder convention is allowed"
+    }
+  ],
+  "verified_evidence": [
+    {
+      "claim": "the validator self-test passes",
+      "verified": true,
+      "evidence": "python3 check.py --selftest -> PASS"
+    },
+    {
+      "claim": "the new files contain no internal path",
+      "verified": true,
+      "evidence": "surface-scan.py -> 0 leaks"
+    }
+  ],
+  "unresolved_items": [],
+  "changed_artifacts": [
+    "choreography/safe-run-packet.md",
+    "build/report/check.py"
+  ],
+  "test_results": [
+    {
+      "name": "self-test",
+      "result": "pass",
+      "evidence": "18 cases behave as specified"
+    }
+  ],
+  "runtime_live_status": {
+    "state": "not-applicable"
+  },
+  "next_gate": "independent review before merge",
+  "provenance": {
+    "produced_by": "build agent",
+    "task_ref": "run-packet-contract"
+  },
+  "redaction_status": {
+    "status": "clean",
+    "method": "surface-scan + grep sweep"
+  }
+}

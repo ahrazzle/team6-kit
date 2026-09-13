@@ -1,0 +1,39 @@
+{
+  "objective": "Document the run packet contract.",
+  "decisions": [
+    {
+      "decision": "Reject internal paths in a shared packet",
+      "rationale": "a packet carries no local machine path"
+    }
+  ],
+  "verified_evidence": [
+    {
+      "claim": "the validator rejects this packet",
+      "verified": true,
+      "evidence": "self-test case invalid/internal-path"
+    }
+  ],
+  "unresolved_items": [],
+  "changed_artifacts": [
+    "/Users/example/private/notes.txt"
+  ],
+  "test_results": [
+    {
+      "name": "self-test",
+      "result": "pass",
+      "evidence": "18 cases behave as specified"
+    }
+  ],
+  "runtime_live_status": {
+    "state": "not-applicable"
+  },
+  "next_gate": "independent review before merge",
+  "provenance": {
+    "produced_by": "build agent",
+    "task_ref": "run-packet-contract"
+  },
+  "redaction_status": {
+    "status": "clean",
+    "method": "surface-scan"
+  }
+}
