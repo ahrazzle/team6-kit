@@ -55,6 +55,27 @@ outside this repository.
   identified as CC BY-NC-SA 4.0 and is not used.
 - **Files:** `choreography/ai-assisted-development.md` and the README overview.
 
+## 1.4.1 — Router trust-boundary and tool-execution safety (2026-09-13)
+
+- **What:** add `choreography/router-security.md`, a vendor-neutral preflight
+  contract for model routers and relays. It covers endpoint and upstream-path
+  inventory, credential minimization, high-risk tool gates, fail-closed behavior,
+  autonomous-mode parity, metadata-only logging, and conditional/dependency-
+  targeted tampering tests.
+- **Why it changed:** a router can be an application-layer intermediary with
+  visibility into plaintext prompts, tool calls, outputs, and credentials. A
+  schema-valid response is not proof that its semantic action is safe. The kit
+  needed a reusable operating boundary without silently changing provider
+  configuration or adding a dependency.
+- **Evidence:** [VERIFIED — public conceptual source] Liu et al., "Your Agent Is
+  Mine: Measuring Malicious Intermediary Attacks on the LLM Supply Chain,"
+  arXiv:2604.08407v1 (2026), https://arxiv.org/abs/2604.08407. Adopted as a
+  principle only; no attack code, payloads, or provider claims are copied.
+- **Proof status:** [PROPOSED / PENDING] documentation contract; repository
+  gates and independent review required before treating it as a release policy.
+- **Files:** `choreography/router-security.md`, `README.md`, `WHY.md`, and
+  `registry/kit.yaml`.
+
 ## Unreleased — Evidence-backed candidate validation (2026-09-13)
 
 - **What:** extend `code-review-verification` with a generic candidate-validation contract: isolated overlays, explicit structural/build/test/runtime/integration gate states, evidence packets, and honest `ACCEPT` / `CONDITIONAL` / `REJECT` / `UNVERIFIED` verdicts.

@@ -58,6 +58,17 @@ Start with `registry/model-rate-limits.yaml.example` and read
 `choreography/model-policy.md` before adding provider values. Keep the policy
 catalogue separate from profile names and account credentials.
 
+## Router trust-boundary protection
+
+Model routers and relays can see plaintext requests and responses, and may sit
+between a model provider and the tools an agent runs. Read
+`choreography/router-security.md` before enabling one. It provides a generic
+preflight checklist for endpoint trust, credential minimization, high-risk tool
+gates, autonomous execution, metadata-only audit logs, and conditional or
+dependency-targeted tampering tests. It is guidance only: it does not install a
+router, change provider settings, or claim that a route has end-to-end response
+integrity.
+
 ## The main rules
 
 1. **Everything on disk.** Progress is saved to files, so months later you can still pick up where you left off.
@@ -70,9 +81,9 @@ For work performed with an AI coding agent, use the compact
 testing, security checks, scope control, and evidence requirements without
 replacing the Team6 ownership and QA gates.
 
-## What's new in this release (1.4.0)
+## What's new in this release (1.4.1)
 
-The kit now includes a route-based model-policy catalogue for changing provider limits. Unknown limits remain observe-only, while verified limits can use bounded admission and protected reserves. See `CHANGELOG.md` and `choreography/model-policy.md`.
+The kit now includes a route-based model-policy catalogue for changing provider limits, plus a generic router trust-boundary and tool-execution safety contract. Unknown limits remain observe-only, while verified limits can use bounded admission and protected reserves. See `CHANGELOG.md`, `choreography/model-policy.md`, and `choreography/router-security.md`.
 
 ## License
 
