@@ -37,51 +37,42 @@ outside this repository.
 
 ---
 
-<<<<<<< HEAD
-## 1.5.0 — Artifact contract and resume/feedback handoff (2026-09-13)
+## Unreleased — I/O delegation contract (2026-09-13)
 
-### Machine-checkable handoff contracts
+- **What:** add a public, vendor-neutral `choreography/io-delegation.md`
+  contract and `registry/io-delegation.yaml.example` example config. It
+  documents a bounded routing pattern for two narrow work classes — predictable
+  read-heavy summarization and pattern-conforming scaffolding — while the
+  frontier agent keeps edits, debugging, architecture, security/safety-critical
+  work, ambiguous requirements, and final acceptance. Route identity reuses the
+  provider/model/API-host rules in `choreography/model-policy.md`; input must
+  pass the local privacy/redaction policy in
+  `choreography/local-preprocessing.md` first; default mode is `observe` with no
+  invented quotas; worker output is advisory and ephemeral; and every delegation
+  records route, input/output byte counts, latency, status, fallback, and
+  verification result without raw sensitive content. Documentation and an
+  example config only — no executable hooks, network clients, model
+  dependencies, or profile-specific settings are added.
+- **Why it changed:** a large-file offload pattern can reduce frontier-context
+  cost, but it carries real risks (sensitive-data leak, context loss, latency,
+  shallow summaries). The counterargument is met by making it an **opt-in,
+  bounded, audited contract** that is never automatic merely because a file is
+  large and never delegates the work that must stay on the frontier agent.
+- **Evidence:** [VERIFIED — public conceptual source] Spotify Engineering
+  article "Portal by Spotify cut my Claude Code token usage by 90%"
+  (engineering.atspotify.com, 2026-09-03) describing a routing principle that
+  keeps frontier reasoning for edits/debugging/architecture/safety-critical
+  work and routes predictable I/O-heavy work to a cheaper worker. Adopted as a
+  principle only — no code, prompts, or source copied; the linked `shunt`
+  plugin is Apache-2.0 at `spotify/portal-ai-plugins@main/plugins/shunt` but is
+  referenced for the routing principle, not imported. The 90% figure is a
+  **self-reported vendor claim**, not Team6 evidence: Team6 adopts only the
+  routing principle and does not claim this result.
+- **Proof status:** [PROPOSED / PENDING] Team6-kit documentation change;
+  fresh-clone gates and independent review required before release.
+- **Files:** `choreography/io-delegation.md`, `registry/io-delegation.yaml.example`,
+  and the README overview.
 
-- **What:** add a generic handoff-contract format and its dependency-free
-  validator. One file per stage boundary carries: expected artifacts,
-  required sections/markers, size bounds, tests/commands, evidence refs,
-  runtime state (`local` / `staged` / `live`), explicit failure state, last
-  stable phase, resume phase, feedback to apply, artifacts to regenerate, and
-  artifacts **not** to touch. Ships as `choreography/artifact-contract.md`
-  (format + rules), `templates/contracts/artifact-contract.md.tmpl` (fill-in
-  template), `build/check-artifact-contract.py` (validator + 13-case
-  self-test), and valid/invalid examples in `examples/`. The generator ships
-  all five under `contracts/` in the instantiated kit. No second orchestration
-  runtime is added: the checker validates the *document*, never executes a
-  pipeline.
-- **Why it changed:** resumed and review-cycle handoffs kept failing at the
-  artifact level even though `orchestration.md` §6/§7/§11 already demand
-  durable state, read-back receipts, and producer-committed signals —
-  finished work got redone, approved artifacts got silently rewritten, and
-  "done" claims carried no machine-checkable evidence. The missing piece was
-  a *checked* format, not another stated norm.
-- **Provenance:** the pattern is a conceptual adoption from external
-  orchestration recommendations received as documentation only (an
-  Agency-Orchestrator-derived artifact/resume-handoff review). **No Agency
-  Orchestrator code, prompts, or prose were copied** into this repo or the
-  checker; the field set, parser, and rules are Team6's own generic form.
-  **Team6 Kanban remains the state authority** — the contract is a per-handoff
-  snapshot written out of the Kanban record, never a replacement for it.
-- **Evidence:** [VERIFIED — internal operating record] the fleet's
-  resume/handoff failure classes (read-then-die, STABLE-marker deadlock,
-  silent rewrites — see the 1.1.0 item 13 record). [VERIFIED] the checker's
-  self-test: 13/13 pass, including a missing-required-field case that fails
-  and a complete contract that passes, and both repo examples validate to
-  their expected verdicts (valid → exit 0, invalid → exit 1 naming the
-  missing `resume_phase` and the illegal `runtime_state` enum). Public files
-  contain generic names only; the full 8-surface leak scan passes.
-- **Files:** `choreography/artifact-contract.md`,
-  `templates/contracts/artifact-contract.md.tmpl`,
-  `build/check-artifact-contract.py`, `build/generate.py` (contracts/ copy
-  step), `examples/artifact-contract.{valid,invalid}.yaml`, README, CHANGELOG.
-
----
-=======
 ## Unreleased — Side-effect and cost preflight (2026-09-13)
 
 - **What:** add a general side-effect and cost preflight: `choreography/side-effect-cost-preflight.md`
@@ -126,6 +117,51 @@ outside this repository.
   identified as CC BY-NC-SA 4.0 and is not used.
 - **Files:** `choreography/ai-assisted-development.md` and the README overview.
 
+## 1.5.0 — Artifact contract and resume/feedback handoff (2026-09-13)
+
+### Machine-checkable handoff contracts
+
+- **What:** add a generic handoff-contract format and its dependency-free
+  validator. One file per stage boundary carries: expected artifacts,
+  required sections/markers, size bounds, tests/commands, evidence refs,
+  runtime state (`local` / `staged` / `live`), explicit failure state, last
+  stable phase, resume phase, feedback to apply, artifacts to regenerate, and
+  artifacts **not** to touch. Ships as `choreography/artifact-contract.md`
+  (format + rules), `templates/contracts/artifact-contract.md.tmpl` (fill-in
+  template), `build/check-artifact-contract.py` (validator + 16-case
+  self-test), and valid/invalid examples in `examples/`. The generator ships
+  all five under `contracts/` in the instantiated kit. No second orchestration
+  runtime is added: the checker validates the *document*, never executes a
+  pipeline.
+- **Why it changed:** resumed and review-cycle handoffs kept failing at the
+  artifact level even though `orchestration.md` §6/§7/§11 already demand
+  durable state, read-back receipts, and producer-committed signals —
+  finished work got redone, approved artifacts got silently rewritten, and
+  "done" claims carried no machine-checkable evidence. The missing piece was
+  a *checked* format, not another stated norm.
+- **Provenance:** this is a Team6 internal operating record for artifact
+  handoffs. The pattern was designed by Team6 to solve resume/feedback
+  boundary issues in Kanban workflows; it is not derived from external code
+  or documentation, and no external orchestration code, prompts, or prose
+  are bundled. The field set, parser, and rules are Team6's own generic
+  form. **Team6 Kanban remains the state authority** — the contract is a
+  per-handoff snapshot written out of the Kanban record, never a
+  replacement for it.
+- **Evidence:** [VERIFIED — internal operating record] the fleet's
+  resume/handoff failure classes (read-then-die, STABLE-marker deadlock,
+  silent rewrites — see the 1.1.0 item 13 record). [VERIFIED] the checker's
+  self-test: 16/16 pass, including a missing-required-field case that fails
+  and a complete contract that passes, and both repo examples validate to
+  their expected verdicts (valid → exit 0, invalid → exit 1 for the
+  missing `resume_phase` and the illegal `runtime_state` enum). Public files
+  contain generic names only; the full 8-surface leak scan passes.
+- **Files:** `choreography/artifact-contract.md`,
+  `templates/contracts/artifact-contract.md.tmpl`,
+  `build/check-artifact-contract.py`, `build/generate.py` (contracts/ copy
+  step), `examples/artifact-contract.{valid,invalid}.yaml`, README, CHANGELOG.
+
+---
+
 ## 1.4.1 — Router trust-boundary and tool-execution safety (2026-09-13)
 
 - **What:** add `choreography/router-security.md`, a vendor-neutral preflight
@@ -154,7 +190,6 @@ outside this repository.
 - **Evidence:** [VERIFIED — public conceptual source] `Dryxio/reagent` 0.4.0, MIT licensed, inspected at commit `d12cea338c61898b06a86fe8adb25275fa9d5615`; adapted as principles only. No source code, prompts, or dependencies copied.
 - **Proof status:** [PROPOSED / PENDING] Team6-kit template change; fresh-clone gates and independent review required before release.
 - **Files:** `templates/skills/software-development/code-review-verification/SKILL.md`.
->>>>>>> origin/main
 
 ## 1.4.0 — Dynamic model-policy catalogue (2026-09-13)
 
@@ -403,7 +438,7 @@ explains each upgrade and why it changed.
 - **What:** Stage execution is modeled on Erlang/OTP supervision trees. Workers
   do work; the orchestrator (Director) monitors and restarts; the hierarchy is
   the phase pipeline. Each dispatched stage carries an explicit per-role task
-  contract — role id, entry criteria, restart type
+  contract — role id, entry criteria, restart type,
   (permanent / transient / temporary), restart budget (intensity per period),
   shutdown policy (graceful-window vs hard-kill), deliverable path, and
   verification bar. Restarts are bounded; exhaustion escalates instead of
