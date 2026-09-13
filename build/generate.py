@@ -59,7 +59,9 @@ REVIEW_FROZEN = os.path.join(HERE, "REVIEW.frozen.md")
 # a directory is walked and every file copied; a file is copied as-is.
 AUTHORED_FRESH = [
     "choreography/side-effect-cost-preflight.md",
+    "choreography/safe-run-packet.md",
     "build/preflight",
+    "build/report",
 ]
 
 DEFAULT_PARAMS = {
