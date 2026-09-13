@@ -3,11 +3,7 @@
 # Install: `kit install <registry>/<team>` (Claude Code marketplace pattern).
 
 name: team6-kit
-<<<<<<< HEAD
 version: 1.5.0
-=======
-version: 1.4.1
->>>>>>> origin/main
 description: >
   Multi-agent team kit — identity archetypes, orchestration
   choreography, governance rules, and an instantiable generator. v1.1.0
@@ -26,7 +22,6 @@ description: >
   append-only propagation journal, batching of compatible candidates instead of
   one public change per ingestion, a per-candidate preflight with the full
   audit reserved for the batch/release boundary, and repository/site parity with
-<<<<<<< HEAD
   independent read-back. Documentation only; no dependency added or bundled.
   v1.5.0 ships the artifact-contract handoff capability: a machine-checkable
   per-boundary handoff file (expected artifacts, required sections, size
@@ -35,11 +30,6 @@ description: >
   validator, generated into the kit under contracts/. Team6 Kanban remains
   the state authority; the contract is a handoff snapshot, not a second
   orchestration runtime.
-=======
-  independent read-back. v1.4.1 adds generic router trust-boundary and
-  high-risk tool-execution guidance. Documentation only; no dependency added
-  or bundled.
->>>>>>> origin/main
 
 registry: git@github.com:{ORG}/team6-kit.git
 home: https://team6.askaconsult.com/      # intended public Team6 site (v1.2.0 public-domain decision)

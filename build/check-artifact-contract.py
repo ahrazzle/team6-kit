@@ -41,6 +41,9 @@ RUNTIME_ENUM = {"local", "staged", "live"}
 KIND_ENUM = {"file", "directory"}
 APPLIED_ENUM = {"yes", "no", "n-a"}
 
+# Canonical phase order for validation
+PHASE_ORDER = ["build", "test", "staged", "ship", "live"]
+
 ITEM_KEYS = {
     "expected_artifacts": {"path", "kind", "produced_by"},
     "required_sections": {"artifact", "section", "marker"},
@@ -277,7 +280,23 @@ def validate(scalars, lists, dicts):
         if isinstance(it, dict) and it.get("produced_by"):
             if it["produced_by"] not in order:
                 order.append(it["produced_by"])
+
+    # Build set of valid phases (canonical + artifact-produced)
+    valid_phases = set(PHASE_ORDER) | set(order)
+
     last, nxt = scalars.get("last_stable_phase"), scalars.get("resume_phase")
+    phase = scalars.get("phase", "")
+
+    # Validate phase names are known
+    if phase and phase not in valid_phases:
+        v.append(f"PHASE UNKNOWN: phase '{phase}' is not in canonical order "
+                 f"{PHASE_ORDER} nor in produced_by {order}")
+    if last and last not in valid_phases:
+        v.append(f"PHASE UNKNOWN: last_stable_phase '{last}' is not in "
+                 f"canonical order {PHASE_ORDER} nor in produced_by {order}")
+    if nxt and nxt not in valid_phases:
+        v.append(f"PHASE UNKNOWN: resume_phase '{nxt}' is not in canonical "
+                 f"order {PHASE_ORDER} nor in produced_by {order}")
     if order and last and last not in order:
         v.append(f"PHASE UNKNOWN: last_stable_phase '{last}' names no phase "
                  f"in expected_artifacts.produced_by {order}")
@@ -432,6 +451,21 @@ def self_test():
                          subs=[("status: completed", "status: failed")]))
     cases.append(("failed without failure_state fails",
                   any("failure_state" in x for x in v), v))
+
+    v = check_text(_with(VALID_CONTRACT,
+                         subs=[("phase: build", "phase: unknown_review")]))
+    cases.append(("unknown phase fails",
+                  any("PHASE UNKNOWN" in x for x in v), v))
+
+    v = check_text(_with(VALID_CONTRACT,
+                         subs=[("resume_phase: ship", "resume_phase: unknown_stage")]))
+    cases.append(("unknown resume_phase fails",
+                  any("PHASE UNKNOWN" in x for x in v), v))
+
+    v = check_text(_with(VALID_CONTRACT,
+                         subs=[("last_stable_phase: build", "last_stable_phase: unknown_stage")]))
+    cases.append(("unknown last_stable_phase fails",
+                  any("PHASE UNKNOWN" in x for x in v), v))
 
     v = check_text(_with(VALID_CONTRACT, subs=[
         ("section: Definition of Done", "section: Notes"),

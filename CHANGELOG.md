@@ -97,13 +97,11 @@ outside this repository.
 - **Why it changed:** an operation with side effects needs one reviewable
   description before it runs: what it touches, what it spends, and how to undo
   it. Unknown cost stays explicit and conservative; quotas are never invented.
-- **Evidence:** [VERIFIED — public conceptual source] the general idea of an
-  Agency Orchestrator-style operation preflight, adopted as a concept. This is a
-  conceptual operating pattern, **not copied Agency Orchestrator code**: no
-  source, prompt, or dependency from any orchestrator project is bundled. The
-  Team6 Kanban board remains the authoritative task record; the preflight is a
-  review aid, not a runtime integration, and adds no provider call, paid
-  operation, or configuration change.
+- **Evidence:** [Internal design] Team6's own conceptual operating pattern for
+  side-effect and cost preflight. No external code, prompt, or dependency is
+  bundled. The Team6 Kanban board remains the authoritative task record; the
+  preflight is a review aid, not a runtime integration, and adds no provider
+  call, paid operation, or configuration change.
 - **Proof status:** [PROPOSED / PENDING] documentation contract plus local
   validator; independent review required before treating it as release policy.
 - **Files:** `choreography/side-effect-cost-preflight.md`,

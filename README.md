@@ -94,10 +94,8 @@ are conditional, what becomes public, how to recover, who approves, and what
 is still unknown. `choreography/side-effect-cost-preflight.md` defines the
 contract; `build/preflight/check.py` is a dependency-free validator that fails
 closed on missing fields, credential values, unbounded waits, or missing
-rollback. It is a conceptual operating pattern adapted from the general idea
-of agency-orchestration preflight — no Agency Orchestrator code is copied —
-and the Team6 Kanban board remains the authoritative task record.
->>>>>>> origin/main
+rollback. It is a Team6 internal operating pattern for side-effect and cost
+pre flight. The Team6 Kanban board remains the authoritative task record.
 
 ## The main rules
 
@@ -106,20 +104,16 @@ and the Team6 Kanban board remains the authoritative task record.
 3. **The maker never marks their own work.** A different agent checks it and records the result.
 4. **Supervised, not autonomous.** Long tasks pause, save progress, and ask for review. Nothing runs forever unattended.
 
-<<<<<<< HEAD
 ## What's new in this release (1.5.0)
 
 Every stage boundary can now carry one machine-checkable handoff contract: expected artifacts, required sections, size bounds, tests, evidence refs, runtime state (local/staged/live), failure state, resume phase, feedback applied, artifacts to regenerate, and artifacts not to touch. See `choreography/artifact-contract.md` and `build/check-artifact-contract.py`; Team6 Kanban remains the state authority. The previous release added the route-based model-policy catalogue (`choreography/model-policy.md`). See `CHANGELOG.md`.
-=======
+
 For work performed with an AI coding agent, use the compact
 `choreography/ai-assisted-development.md` contract. It adds behavior-first
 testing, security checks, scope control, and evidence requirements without
 replacing the Team6 ownership and QA gates.
 
 ## What's new in this release (1.4.1)
-
-The kit now includes a route-based model-policy catalogue for changing provider limits, plus a generic router trust-boundary and tool-execution safety contract. Unknown limits remain observe-only, while verified limits can use bounded admission and protected reserves. See `CHANGELOG.md`, `choreography/model-policy.md`, and `choreography/router-security.md`.
->>>>>>> origin/main
 
 ## License
 

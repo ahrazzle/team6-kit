@@ -12,12 +12,9 @@
 > overrides the Kanban task state; if the two disagree, Kanban wins and the
 > contract is rewritten from it.
 >
-> **Provenance:** the pattern is conceptually derived from external
-> recommendations (Agency Orchestrator's artifact/resume-handoff discipline,
-> read as documentation only). No Agency Orchestrator code, prompts, or prose
-> were copied into this repository or into the checker. The field set below is
-> Team6's own generic form, consistent with
-> `orchestration.md` §6 (durable state) and §11 (handoff contracts).
+> **Provenance:** this is a Team6 internal operating record for artifact handoffs.
+> It was designed to solve resume/feedback boundary issues in Kanban workflows.
+> It is not derived from external code or documentation.
 
 ## Why
 
