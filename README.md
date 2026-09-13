@@ -110,9 +110,8 @@ are conditional, what becomes public, how to recover, who approves, and what
 is still unknown. `choreography/side-effect-cost-preflight.md` defines the
 contract; `build/preflight/check.py` is a dependency-free validator that fails
 closed on missing fields, credential values, unbounded waits, or missing
-rollback. It is a conceptual operating pattern adapted from the general idea
-of agency-orchestration preflight — no Agency Orchestrator code is copied —
-and the Team6 Kanban board remains the authoritative task record.
+rollback. It is a Team6 internal operating pattern for side-effect and cost
+pre flight. The Team6 Kanban board remains the authoritative task record.
 
 ## The main rules
 
