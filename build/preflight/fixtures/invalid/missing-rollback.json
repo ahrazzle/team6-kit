@@ -1,0 +1,27 @@
+{
+  "operation": {
+    "id": "op-missing-rollback",
+    "summary": "Example whose side-effecting operation has no rollback path"
+  },
+  "files_to_change": ["docs/guide.md", "docs/index.md"],
+  "external_systems": [],
+  "credentials_required": [],
+  "paid_operations": [],
+  "estimated_quantity": {
+    "unit": "file-writes",
+    "value": 2,
+    "basis": "two files declared"
+  },
+  "conditional_actions": [],
+  "public_surfaces": [],
+  "rollback": {
+    "path": "",
+    "bounded": false,
+    "max_wait_seconds": 60
+  },
+  "owner_approval": {
+    "owner": "build-lead",
+    "approval_state": "approved"
+  },
+  "unknowns": []
+}

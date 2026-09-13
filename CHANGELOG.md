@@ -72,6 +72,70 @@ outside this repository.
   fresh-clone gates and independent review required before release.
 - **Files:** `choreography/io-delegation.md`, `registry/io-delegation.yaml.example`,
   and the README overview.
+## Unreleased — Side-effect and cost preflight (2026-09-13)
+
+- **What:** add a general side-effect and cost preflight: `choreography/side-effect-cost-preflight.md`
+  (required fields for operation identity, files changed, external systems, credential
+  names only, paid operations, estimated quantity/cost units, conditional `may_run`
+  actions, public surfaces, bounded rollback, owner/approval state, explicit unknowns)
+  and `build/preflight/check.py`, a standard-library-only validator with valid and
+  invalid fixtures that fails closed on missing required fields, credential values,
+  unbounded waits, or missing rollback for side-effecting operations. The generator
+  ships these authored public files through its authored-fresh mechanism (verbatim
+  copy, no manifest row, no placeholder substitution; the audit count closes against
+  disk).
+- **Why it changed:** an operation with side effects needs one reviewable
+  description before it runs: what it touches, what it spends, and how to undo
+  it. Unknown cost stays explicit and conservative; quotas are never invented.
+- **Evidence:** [Internal design] Team6's own conceptual operating pattern for
+  side-effect and cost preflight. No external code, prompt, or dependency is
+  bundled. The Team6 Kanban board remains the authoritative task record; the
+  preflight is a review aid, not a runtime integration, and adds no provider
+  call, paid operation, or configuration change.
+- **Proof status:** [PROPOSED / PENDING] documentation contract plus local
+  validator; independent review required before treating it as release policy.
+- **Files:** `choreography/side-effect-cost-preflight.md`,
+  `build/preflight/` (README, checker, fixtures), `build/generate.py`,
+  `README.md`, `CHANGELOG.md`.
+
+## Unreleased — AI-assisted development contract (2026-09-13)
+
+- **What:** add a tool-neutral contract for AI-assisted changes: explicit scope
+  and acceptance criteria, behavior-first boundary/error testing,
+  security-sensitive checks, isolated parallel work, and independent evidence
+  read-back.
+- **Why:** the public `jnMetaCode/ai-coding-guide` offers useful methods and
+  templates, but Team6 needs a smaller contract that preserves its existing
+  ownership, no-secret, QA, and verification rules. The source is used for
+  conceptual guidance only; no external template or executable surface is
+  bundled.
+- **Evidence:** [VERIFIED — public conceptual source] `jnMetaCode/ai-coding-guide`,
+  snapshot `c5dde338c68adaac6cffc70ab11f1b1b22e70b0f`; adapted and reviewed in
+  PR #5 (see [LICENSING.md → AI-assisted development contract boundary](LICENSING.md#ai-assisted-development-contract-boundary-unreleased-2026-09-13)).
+  Root source license is Apache-2.0; the source's `book/` content is separately
+  identified as CC BY-NC-SA 4.0 and is not used.
+- **Files:** `choreography/ai-assisted-development.md` and the README overview.
+
+## 1.4.1 — Router trust-boundary and tool-execution safety (2026-09-13)
+
+- **What:** add `choreography/router-security.md`, a vendor-neutral preflight
+  contract for model routers and relays. It covers endpoint and upstream-path
+  inventory, credential minimization, high-risk tool gates, fail-closed behavior,
+  autonomous-mode parity, metadata-only logging, and conditional/dependency-
+  targeted tampering tests.
+- **Why it changed:** a router can be an application-layer intermediary with
+  visibility into plaintext prompts, tool calls, outputs, and credentials. A
+  schema-valid response is not proof that its semantic action is safe. The kit
+  needed a reusable operating boundary without silently changing provider
+  configuration or adding a dependency.
+- **Evidence:** [VERIFIED — public conceptual source] Liu et al., "Your Agent Is
+  Mine: Measuring Malicious Intermediary Attacks on the LLM Supply Chain,"
+  arXiv:2604.08407v1 (2026), https://arxiv.org/abs/2604.08407. Adopted as a
+  principle only; no attack code, payloads, or provider claims are copied.
+- **Proof status:** [PROPOSED / PENDING] documentation contract; repository
+  gates and independent review required before treating it as a release policy.
+- **Files:** `choreography/router-security.md`, `README.md`, `WHY.md`, and
+  `registry/kit.yaml`.
 
 ## Unreleased — Evidence-backed candidate validation (2026-09-13)
 

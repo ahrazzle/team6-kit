@@ -1,0 +1,27 @@
+{
+  "operation": {
+    "id": "op-unknown-not-declared",
+    "summary": "Example with an unknown quantity that is not declared in unknowns"
+  },
+  "files_to_change": ["docs/guide.md"],
+  "external_systems": [],
+  "credentials_required": [],
+  "paid_operations": [],
+  "estimated_quantity": {
+    "unit": "requests",
+    "value": "unknown",
+    "basis": "bounded conservatively"
+  },
+  "conditional_actions": [],
+  "public_surfaces": [],
+  "rollback": {
+    "path": "git checkout -- docs/guide.md",
+    "bounded": true,
+    "max_wait_seconds": 60
+  },
+  "owner_approval": {
+    "owner": "build-lead",
+    "approval_state": "approved"
+  },
+  "unknowns": []
+}

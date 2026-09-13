@@ -74,6 +74,30 @@ Start with `registry/io-delegation.yaml.example` and read
 provider/model/API-host rules as `choreography/model-policy.md`, and input must
 pass the local privacy/redaction policy (`choreography/local-preprocessing.md`)
 first. Thresholds are recommendations, not universal claims.
+## Router trust-boundary protection
+
+Model routers and relays can see plaintext requests and responses, and may sit
+between a model provider and the tools an agent runs. Read
+`choreography/router-security.md` before enabling one. It provides a generic
+preflight checklist for endpoint trust, credential minimization, high-risk tool
+gates, autonomous execution, metadata-only audit logs, and conditional or
+dependency-targeted tampering tests. It is guidance only: it does not install a
+router, change provider settings, or claim that a route has end-to-end response
+integrity.
+
+## Side-effect and cost preflight
+
+Before running an operation that edits files, contacts external systems, uses
+credentials, incurs paid operations, affects public surfaces, or needs
+rollback, write one preflight document: what changes, what it contacts, which
+credential *names* (never values) it needs, what it may cost, which actions
+are conditional, what becomes public, how to recover, who approves, and what
+is still unknown. `choreography/side-effect-cost-preflight.md` defines the
+contract; `build/preflight/check.py` is a dependency-free validator that fails
+closed on missing fields, credential values, unbounded waits, or missing
+rollback. It is a conceptual operating pattern adapted from the general idea
+of agency-orchestration preflight — no Agency Orchestrator code is copied —
+and the Team6 Kanban board remains the authoritative task record.
 
 ## The main rules
 
@@ -82,9 +106,14 @@ first. Thresholds are recommendations, not universal claims.
 3. **The maker never marks their own work.** A different agent checks it and records the result.
 4. **Supervised, not autonomous.** Long tasks pause, save progress, and ask for review. Nothing runs forever unattended.
 
-## What's new in this release (1.4.0)
+For work performed with an AI coding agent, use the compact
+`choreography/ai-assisted-development.md` contract. It adds behavior-first
+testing, security checks, scope control, and evidence requirements without
+replacing the Team6 ownership and QA gates.
 
-The kit now includes a route-based model-policy catalogue for changing provider limits. Unknown limits remain observe-only, while verified limits can use bounded admission and protected reserves. See `CHANGELOG.md` and `choreography/model-policy.md`.
+## What's new in this release (1.4.1)
+
+The kit now includes a route-based model-policy catalogue for changing provider limits, plus a generic router trust-boundary and tool-execution safety contract. Unknown limits remain observe-only, while verified limits can use bounded admission and protected reserves. See `CHANGELOG.md`, `choreography/model-policy.md`, and `choreography/router-security.md`.
 
 ## License
 

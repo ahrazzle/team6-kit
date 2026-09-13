@@ -1,0 +1,32 @@
+{
+  "operation": {
+    "id": "op-paid-without-approval",
+    "summary": "Example with a paid operation that is not approved"
+  },
+  "files_to_change": ["assets/hero.png"],
+  "external_systems": [],
+  "credentials_required": ["IMAGE_SERVICE_TOKEN"],
+  "paid_operations": [
+    {
+      "name": "image render",
+      "cost_units": 5
+    }
+  ],
+  "estimated_quantity": {
+    "unit": "renders",
+    "value": 5,
+    "basis": "five renders declared"
+  },
+  "conditional_actions": [],
+  "public_surfaces": [],
+  "rollback": {
+    "path": "discard the rendered asset",
+    "bounded": true,
+    "max_wait_seconds": 300
+  },
+  "owner_approval": {
+    "owner": "release-owner",
+    "approval_state": "pending"
+  },
+  "unknowns": []
+}

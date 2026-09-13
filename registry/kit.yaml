@@ -3,7 +3,7 @@
 # Install: `kit install <registry>/<team>` (Claude Code marketplace pattern).
 
 name: team6-kit
-version: 1.4.0
+version: 1.4.1
 description: >
   Multi-agent team kit — identity archetypes, orchestration
   choreography, governance rules, and an instantiable generator. v1.1.0
@@ -22,7 +22,9 @@ description: >
   append-only propagation journal, batching of compatible candidates instead of
   one public change per ingestion, a per-candidate preflight with the full
   audit reserved for the batch/release boundary, and repository/site parity with
-  independent read-back. Documentation only; no dependency added or bundled.
+  independent read-back. v1.4.1 adds generic router trust-boundary and
+  high-risk tool-execution guidance. Documentation only; no dependency added
+  or bundled.
 
 registry: git@github.com:{ORG}/team6-kit.git
 home: https://team6.askaconsult.com/      # intended public Team6 site (v1.2.0 public-domain decision)
