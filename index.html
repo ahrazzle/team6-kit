@@ -227,7 +227,7 @@
     <div class="container">
       <p class="kicker">WHAT CHANGED · v1.1.0 OPERATING UPGRADES</p>
       <h2 id="upgrades-title">How the team stays reliable.</h2>
-      <p class="lead measure">These rules each exist because the team hit that exact failure and fixed it. Full details in the repo: <span class="mono">choreography/orchestration.md</span>, <span class="mono">choreography/governance.md</span>, <span class="mono">choreography/ai-assisted-development.md</span>, <span class="mono">choreography/router-security.md</span>, and <span class="mono">choreography/side-effect-cost-preflight.md</span>.</p>
+      <p class="lead measure">These rules each exist because the team hit that exact failure and fixed it. Full details in the repo: <span class="mono">choreography/orchestration.md</span>, <span class="mono">choreography/governance.md</span>, <span class="mono">choreography/ai-assisted-development.md</span>, <span class="mono">choreography/router-security.md</span>, <span class="mono">choreography/side-effect-cost-preflight.md</span>, <span class="mono">choreography/artifact-contract.md</span>, <span class="mono">choreography/io-delegation.md</span>, and <span class="mono">choreography/safe-run-packet.md</span>.</p>
 
       <div class="up-grid">
         <article class="up-card">
@@ -273,6 +273,22 @@
         <article class="up-card">
           <p class="up-title">11 / SIDE EFFECTS AND COSTS ARE PRECHECKED</p>
           <p class="up-body">Before an operation edits files, contacts an external system, uses credentials, or may incur cost, the team records what can happen, what it may touch, which credential names it needs, how much it may use, who approves it, and how to recover. Unknown cost is explicit; conditional actions are marked; missing rollback evidence fails closed. The dependency-free checker validates the contract, but does not execute the operation. Read <span class="mono">choreography/side-effect-cost-preflight.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">12 / EVERY HANDOFF IS A CHECKED FILE</p>
+          <p class="up-body">Each stage boundary carries one small machine-checkable contract: what artifacts must exist, what runtime state the work is in, where the next worker resumes, and what it must not touch. It is a documentation contract, checklist, and dependency-free checker &mdash; shipped into the generated kit so an instantiated team carries them together &mdash; not a runtime. Kanban remains the task state authority; a contract that disagrees with the board is rewritten from it. Read <span class="mono">choreography/artifact-contract.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">13 / CHEAPER WORKERS MAY DO THE BULK READS</p>
+          <p class="up-body">For two narrow work classes &mdash; predictable read-heavy summarization and pattern-conforming scaffolding &mdash; the contract documents optional offload to a cheaper worker with an explicit route, input cap, latency bound, and fallback. Edits, debugging, architecture, security-critical work, ambiguous input, and final acceptance always stay with the frontier agent. It is a contract plus an example config, not a runtime or provider integration; nothing is enabled by default, and published savings figures are a vendor&rsquo;s self-report, not a Team6 result. Read <span class="mono">choreography/io-delegation.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">14 / ONE REPORT PER RUN, SAFE TO SHARE</p>
+          <p class="up-body">When a run finishes, a single packet records what was attempted, decided, actually verified, changed, tested, whether anything reached a live surface, and what is still open. Share rules fail closed: no credential values, no internal local paths, no ad-hoc placeholders. The documentation contract and standard-library-only validator ship through the generated kit. The packet is a derived report &mdash; Kanban stays the state authority &mdash; not a second state store, and it is not a security guarantee. Read <span class="mono">choreography/safe-run-packet.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">15 / REVIEWS LEAD WITH COUNTED EVIDENCE</p>
+          <p class="up-body">Reviews, triage notes, and status comments define the unit being counted, count each item once at its highest impact, separate included work from requests and unresolved findings, map every row to its artifact, commit, test, and status, and label the evidence boundary. Missing evidence limits the claim instead of supporting it. This is writing guidance published in the kit&rsquo;s public skill templates, not tooling. Read <span class="mono">templates/skills/creative/external-writing-discipline/SKILL.md</span>.</p>
         </article>
       </div>
 
@@ -388,6 +404,10 @@
             <li><span class="status-tag ok">✅</span><span class="status-text">AI-assisted development contract merged — written scope and acceptance criteria, behavior-first boundary/error tests, security checks, isolated parallel work, independent evidence read-back (choreography/ai-assisted-development.md)</span></li>
             <li><span class="status-tag ok">✅</span><span class="status-text">Router trust-boundary guidance merged — credential minimization, high-risk tool gates, fail-closed behavior, metadata-only logs, and conditional-change testing (choreography/router-security.md)</span></li>
             <li><span class="status-tag ok">✅</span><span class="status-text">Side-effect and cost preflight merged — explicit operation scope, credential names only, cost/quantity bounds, approvals, public-surface checks, and bounded rollback (choreography/side-effect-cost-preflight.md)</span></li>
+            <li><span class="status-tag ok">✅</span><span class="status-text">Artifact contract and resume/feedback handoff merged — per-boundary machine-checkable contract, checklist, and dependency-free checker shipped into the generated kit under contracts/; Kanban remains the state authority (choreography/artifact-contract.md)</span></li>
+            <li><span class="status-tag ok">✅</span><span class="status-text">Vendor-neutral I/O delegation contract merged — bounded opt-in offload of bulk reads and scaffolding with explicit routes, caps, and fallback; edits, architecture, and final acceptance stay with the frontier agent; no runtime or provider integration (choreography/io-delegation.md, registry/io-delegation.yaml.example)</span></li>
+            <li><span class="status-tag ok">✅</span><span class="status-text">Safe shareable run packet merged — one derived report per run with fail-closed share rules (no credential values, internal paths, or ad-hoc placeholders) and a standard-library-only validator shipped through the generated kit; not a second state store or a security guarantee (choreography/safe-run-packet.md, build/report/)</span></li>
+            <li><span class="status-tag ok">✅</span><span class="status-text">Evidence-led review writing merged — counted evidence units, included vs. requested separation, per-row artifact/commit/test mapping, and explicit evidence boundaries in reviews and status handoffs (templates/skills/creative/external-writing-discipline/SKILL.md, templates/skills/github/github-pr-audit/SKILL.md)</span></li>
           </ul>
         </div>
         <div class="status-group">
