@@ -1,0 +1,68 @@
+# artifact-contract — machine-checkable handoff contract
+# Format spec + rules: choreography/artifact-contract.md
+# Validate: python3 build/check-artifact-contract.py <this-file-as-filled>
+#
+# {TEAM_NAME} / {CLIENT} / {ROLE_NAME} are the kit's generic template
+# placeholders; everything shown as ... is filled by the producer at the
+# stage boundary. Kanban task state remains the system of record — this file
+# is the handoff snapshot written out of it. task_id below is the pointer.
+
+contract_version: 1
+task_id: ...                    # Kanban task this handoff came from
+project: {CLIENT}
+phase: ...                      # phase that produced this handoff, e.g. build
+status: completed               # completed | partial | failed | blocked
+runtime_state: local            # local | staged | live (state of the work product)
+last_stable_phase: ...          # last phase whose output was verified good
+resume_phase: ...               # where the next worker starts (>= last_stable_phase)
+
+expected_artifacts:             # what this handoff delivers or vouches for
+  - path: ...                   # e.g. reports/{CLIENT}-audit.md
+    kind: file                  # file | directory
+    produced_by: ...            # phase that wrote it
+  - path: ...
+    kind: file
+    produced_by: ...
+
+required_sections:              # sections/markers each artifact must contain
+  - artifact: ...               # must name a path under expected_artifacts
+    section: ...                # e.g. "Definition of Done"
+    marker: ...                 # optional exact string to grep
+  - artifact: ...
+    section: ...
+
+size_bounds:                    # keep the handoff small and honest
+  - artifact: ...
+    min_bytes: 200
+    max_bytes: 50K              # K/M suffixes allowed
+  - artifact: ...
+    max_bytes: 500K
+
+tests:                          # commands that must pass for this to count as verified
+  - name: ...
+    command: ...
+  - name: ...
+    command: ...
+
+evidence_refs:                  # read-back receipts, never self-reports
+  - ref: ...                    # command + output handle, URL, checksum, log line
+    proves: ...
+  - ref: ...
+    proves: ...
+
+failure_state:                  # REQUIRED when status is failed or blocked
+  machine_state: ...            # what the state actually is, from disk/read-back
+  human_state: ...              # one-paragraph blocker report for a person
+  remediation: ...              # exact next step
+
+feedback_to_apply:              # reviewer notes consumed by this handoff (may be empty: [])
+  - note: ...
+    applied: yes                # yes | no | n-a
+  - note: ...
+    applied: no
+
+artifacts_to_regenerate:        # what the feedback round forces a rebuild of (may be empty: [])
+  - path: ...
+
+artifacts_not_to_touch:         # frozen set — approved or out of scope (may be empty: [])
+  - path: ...

@@ -7,6 +7,14 @@ Generated from `manifest.tsv` (locked). One row per UNIQUE source path.
 - **DROP rows: 122** — never ship; provenance only (filtered by build/)
 - **Cross-class seams: 4** — carry explicit one-line reasons below
 
+## Authored-fresh surfaces (not extraction rows)
+
+`templates/contracts/` (v1.5.0 artifact-contract template) is authored fresh
+for the public kit, not mined from the fleet — like `choreography/` and
+`registry/`, it has no manifest row by design (see sweep-gate.py SCOPE) and is
+shipped into generated kits by the `GENERIC_SHIP` step in `build/generate.py`.
+It adds no row to any table above.
+
 ## TEMPLATE rows (source → template target)
 
 | source path | class | #profiles | hits | → template target |

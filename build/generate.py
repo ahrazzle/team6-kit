@@ -348,6 +348,49 @@ def main():
             with open(dst, "a", encoding="utf-8") as fh:
                 fh.write(f"\n# Provenance: {cls}→{verdict} — {seam}\n")
 
+    # ---- Generic kit files that ship outside the extraction manifest ----
+    # The artifact-contract capability (choreography/artifact-contract.md,
+    # v1.5.0): a handoff template + its dependency-free checker + valid/
+    # invalid examples, authored fresh as generic open-core content — no
+    # extraction row exists for them by design (the manifest's scope is
+    # mined profile content; see sweep-gate.py SCOPE). Copied into the
+    # generated kit so an instantiated team carries the contract, the
+    # template, and its gate together. The template's placeholders resolve
+    # through the SAME substitution path as TEMPLATE rows.
+    GENERIC_SHIP = [
+        ("templates/contracts/artifact-contract.md.tmpl",
+         "contracts/artifact-contract.md.tmpl", True),
+        ("choreography/artifact-contract.md",
+         "contracts/artifact-contract.md", False),
+        ("build/check-artifact-contract.py",
+         "contracts/check-artifact-contract.py", False),
+        ("examples/artifact-contract.valid.yaml",
+         "contracts/examples/artifact-contract.valid.yaml", False),
+        ("examples/artifact-contract.invalid.yaml",
+         "contracts/examples/artifact-contract.invalid.yaml", False),
+    ]
+    for src_rel, dst_rel, do_sub in GENERIC_SHIP:
+        src = os.path.join(ROOT, src_rel)
+        if not os.path.isfile(src):
+            provenance.append(f"# SKIP generic ship: {src_rel} — missing")
+            continue
+        with open(src, encoding="utf-8") as fh:
+            text = fh.read()
+        if do_sub:
+            missing = sorted(set(re.findall(r"\{([A-Z_0-9]+)\}", text))
+                             - set(params))
+            if missing:
+                unresolved_union.update(missing)
+            for k, v in params.items():
+                text = text.replace("{" + k + "}", v)
+        dst = dest_path(out, dst_rel)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        with open(dst, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        shipped += 1
+        provenance.append(f"# GENERIC SHIP: {src_rel} — authored fresh, "
+                          f"no extraction row by design")
+
     # ---- Declared-schema contract check (team, asymmetric) ----
     # resolved = params keys used in at least one template
     resolved_union = set()
@@ -360,6 +403,13 @@ def main():
             continue
         with open(src, encoding="utf-8") as fh:
             resolved_union.update(re.findall(r"\{([A-Z_0-9]+)\}", fh.read()))
+    for src_rel, _dst, do_sub in GENERIC_SHIP:
+        if not do_sub:
+            continue
+        src = os.path.join(ROOT, src_rel)
+        if os.path.isfile(src):
+            with open(src, encoding="utf-8") as fh:
+                resolved_union.update(re.findall(r"\{([A-Z_0-9]+)\}", fh.read()))
     resolved_union &= set(params)
     schema_fails, schema_warns = validate_schema(
         declared, resolved_union, unresolved_union, strict)

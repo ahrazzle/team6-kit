@@ -3,7 +3,7 @@
 # Install: `kit install <registry>/<team>` (Claude Code marketplace pattern).
 
 name: team6-kit
-version: 1.4.1
+version: 1.5.0
 description: >
   Multi-agent team kit — identity archetypes, orchestration
   choreography, governance rules, and an instantiable generator. v1.1.0
@@ -22,9 +22,14 @@ description: >
   append-only propagation journal, batching of compatible candidates instead of
   one public change per ingestion, a per-candidate preflight with the full
   audit reserved for the batch/release boundary, and repository/site parity with
-  independent read-back. v1.4.1 adds generic router trust-boundary and
-  high-risk tool-execution guidance. Documentation only; no dependency added
-  or bundled.
+  independent read-back. Documentation only; no dependency added or bundled.
+  v1.5.0 ships the artifact-contract handoff capability: a machine-checkable
+  per-boundary handoff file (expected artifacts, required sections, size
+  bounds, tests, evidence refs, runtime state, failure state, last stable and
+  resume phase, feedback, regenerate/freeze sets) with a dependency-free
+  validator, generated into the kit under contracts/. Team6 Kanban remains
+  the state authority; the contract is a handoff snapshot, not a second
+  orchestration runtime.
 
 registry: git@github.com:{ORG}/team6-kit.git
 home: https://team6.askaconsult.com/      # intended public Team6 site (v1.2.0 public-domain decision)
@@ -42,6 +47,13 @@ build:
   gates:
     - build/sweep-gate.py            # precondition: source clean + classified
     - build/review-gate.py           # semantic sign-off (4/4 checkboxes)
+  generic_ship:                      # authored-fresh kit files, no manifest row
+    # documentation mirror; the operative list is GENERIC_SHIP in generate.py
+    - templates/contracts/artifact-contract.md.tmpl   # -> contracts/ in output
+    - choreography/artifact-contract.md              # -> contracts/ in output
+    - build/check-artifact-contract.py               # -> contracts/ in output
+    - examples/artifact-contract.valid.yaml          # -> contracts/examples/
+    - examples/artifact-contract.invalid.yaml        # -> contracts/examples/
   strict: --strict                   # paid packs: unresolved placeholder = FAIL
 
 # Declared-schema contract (team, asymmetric):

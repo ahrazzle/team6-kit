@@ -1,0 +1,33 @@
+# artifact-contract.invalid.yaml — an INTENTIONALLY INVALID contract example.
+# Must FAIL validation: python3 build/check-artifact-contract.py \
+#   examples/artifact-contract.invalid.yaml   -> exit 1
+# Deliberate violations (the two the checker's contract promises to catch):
+#   1. required field 'resume_phase' is MISSING entirely
+#   2. 'runtime_state' carries an illegal enum value ('prod' is not local/staged/live)
+contract_version: 1
+task_id: T-4208
+project: Northwind Advisory
+phase: qa
+status: completed
+runtime_state: prod
+last_stable_phase: qa
+expected_artifacts:
+  - path: reports/qa-findings.md
+    kind: file
+    produced_by: qa
+required_sections:
+  - artifact: reports/qa-findings.md
+    section: Definition of Done
+size_bounds:
+  - artifact: reports/qa-findings.md
+    min_bytes: 200
+    max_bytes: 50K
+tests:
+  - name: link check
+    command: bash scripts/link-check.sh
+evidence_refs:
+  - ref: "link-check.sh -> 0 broken"
+    proves: no dead links
+feedback_to_apply: []
+artifacts_to_regenerate: []
+artifacts_not_to_touch: []

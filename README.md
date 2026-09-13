@@ -58,6 +58,37 @@ Start with `registry/model-rate-limits.yaml.example` and read
 `choreography/model-policy.md` before adding provider values. Keep the policy
 catalogue separate from profile names and account credentials.
 
+## I/O delegation contract
+
+The kit also documents a **vendor-neutral I/O delegation contract**: an opt-in
+routing pattern that may offload predictable, read-heavy summarization or
+pattern-conforming scaffolding to a cheaper worker, while the frontier agent
+keeps edits, debugging, architecture, security/safety-critical work, ambiguous
+requirements, and final acceptance. It is never automatic just because a file
+is large, never transmits sensitive content, and every delegation is recorded
+with route and byte/latency telemetry. It is a contract and an example config
+— not a runtime, hook, or dependency.
+
+Start with `registry/io-delegation.yaml.example` and read
+`choreography/io-delegation.md`. Route identity follows the same
+provider/model/API-host rules as `choreography/model-policy.md`, and input must
+pass the local privacy/redaction policy (`choreography/local-preprocessing.md`)
+first. Thresholds are recommendations, not universal claims.
+
+## Artifact contracts and resume handoffs
+
+Every stage boundary — producer to verifier, failed run to resumed run —
+carries one handoff file: expected artifacts, required sections, size bounds,
+tests, evidence refs, runtime state (local/staged/live), failure state, last
+stable phase, resume phase, feedback applied, what to regenerate, and what not
+to touch. Team6 Kanban remains the state authority; the contract is the
+handoff snapshot written out of it. Read
+`choreography/artifact-contract.md`, start from
+`templates/contracts/artifact-contract.md.tmpl`, and gate with
+`python3 build/check-artifact-contract.py <contract>` (or `--self-test`).
+The pattern is a conceptual adoption; no external orchestration code is
+included or required.
+
 ## Router trust-boundary protection
 
 Model routers and relays can see plaintext requests and responses, and may sit
@@ -79,9 +110,8 @@ are conditional, what becomes public, how to recover, who approves, and what
 is still unknown. `choreography/side-effect-cost-preflight.md` defines the
 contract; `build/preflight/check.py` is a dependency-free validator that fails
 closed on missing fields, credential values, unbounded waits, or missing
-rollback. It is a conceptual operating pattern adapted from the general idea
-of agency-orchestration preflight — no Agency Orchestrator code is copied —
-and the Team6 Kanban board remains the authoritative task record.
+rollback. It is a Team6 internal operating pattern for side-effect and cost
+preflight. The Team6 Kanban board remains the authoritative task record.
 
 ## Safe shareable run packet
 
@@ -110,6 +140,10 @@ For work performed with an AI coding agent, use the compact
 `choreography/ai-assisted-development.md` contract. It adds behavior-first
 testing, security checks, scope control, and evidence requirements without
 replacing the Team6 ownership and QA gates.
+
+## What's new in this release (1.5.0)
+
+Every stage boundary can now carry one machine-checkable handoff contract: expected artifacts, required sections, size bounds, tests, evidence refs, runtime state (local/staged/live), failure state, resume phase, feedback applied, artifacts to regenerate, and artifacts not to touch. See `choreography/artifact-contract.md` and `build/check-artifact-contract.py`; Team6 Kanban remains the state authority. The previous release added the route-based model-policy catalogue (`choreography/model-policy.md`). See `CHANGELOG.md`.
 
 ## What's new in this release (1.4.1)
 

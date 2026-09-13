@@ -1,0 +1,95 @@
+# io-delegation.yaml.example — vendor-neutral I/O delegation contract example
+# Copy this file to your deployment settings and edit verified values only.
+# This is a CONFIG EXAMPLE, not a runtime, hook, or dependency. The Team6
+# open-core build does not enable delegation by default.
+#
+# Rules this example reflects (see choreography/io-delegation.md):
+#   - Default mode is observe; no invented quotas.
+#   - Input must pass local privacy/redaction policy first
+#     (choreography/local-preprocessing.md).
+#   - Frontier agent keeps edits, debugging, architecture, security/safety-
+#     critical work, ambiguous requirements, and final acceptance.
+#   - Worker output is advisory and ephemeral; the frontier agent independently
+#     reads targeted sections before editing or accepting.
+#   - Thresholds are recommendations, never universal claims.
+#   - Provider/model/API-host identity follows choreography/model-policy.md.
+# Keep secrets, credentials, and account identifiers out of this file.
+
+version: 1
+enabled: false            # opt-in: never enabled by default
+
+routes:
+  - name: example-bulk-read-summary
+    purpose: predictably summarize large read-only reference files into a
+             structured outline for the frontier agent to navigate.
+    provider: example-provider
+    model: example-model-reader
+    api_host: https://example-provider.example
+    mode: observe         # observe until limits and quality are verified
+    max_input_bytes: 200000
+    max_latency_seconds: 30
+    output_contract:
+      format: markdown
+      required_fields: [title, section_map, byte_ranges, open_questions]
+    fallback: frontier-targeted-read
+    allowed_tasks:
+      - bulk summarization of read-only reference material
+      - pattern-conforming scaffolding of generic boilerplate
+    forbidden_tasks:
+      - edits and writes
+      - debugging and root-cause analysis
+      - architecture and design decisions
+      - security- or safety-critical review
+      - ambiguous requirements
+      - final acceptance
+    requires_redaction: true
+    requires_approval: false   # first-party worker; still must pass redaction
+    telemetry:
+      record_route: true
+      record_input_bytes: true
+      record_output_bytes: true
+      record_latency_seconds: true
+      record_status: true
+      record_fallback: true
+      record_verification: true
+      record_raw_payload: false   # never log raw sensitive content
+
+  - name: example-third-party-worker
+    purpose: illustrative external worker that requires explicit operator
+             approval before any delegation.
+    provider: external-provider
+    model: external-model-worker
+    api_host: https://external.example
+    mode: observe
+    max_input_bytes: 100000
+    max_latency_seconds: 20
+    output_contract:
+      format: markdown
+      required_fields: [title, section_map, byte_ranges]
+    fallback: frontier-targeted-read
+    allowed_tasks:
+      - bulk summarization of read-only reference material
+    forbidden_tasks:
+      - edits and writes
+      - debugging and root-cause analysis
+      - architecture and design decisions
+      - security- or safety-critical review
+      - ambiguous requirements
+      - final acceptance
+      - handling secrets, credentials, private identifiers, or client data
+    requires_redaction: true
+    requires_approval: true   # external/third-party worker: operator approval
+    telemetry:
+      record_route: true
+      record_input_bytes: true
+      record_output_bytes: true
+      record_latency_seconds: true
+      record_status: true
+      record_fallback: true
+      record_verification: true
+      record_raw_payload: false
+
+# Optional local overrides are keyed by route name. They must not silently
+# weaken an enforced route bound. Keep secrets and account identifiers out of
+# this file.
+overrides: {}

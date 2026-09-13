@@ -1,0 +1,48 @@
+# artifact-contract.valid.yaml — a COMPLETE, VALID contract example.
+# Check: python3 build/check-artifact-contract.py examples/artifact-contract.valid.yaml
+# All names are generic (Northwind Advisory is this repo's existing fictional
+# demo organization - see examples/demo-consulting.yaml).
+contract_version: 1
+task_id: T-4207
+project: Northwind Advisory
+phase: qa
+status: completed
+runtime_state: staged
+last_stable_phase: qa
+resume_phase: ship
+expected_artifacts:
+  - path: site
+    kind: directory
+    produced_by: build
+  - path: reports/qa-findings.md
+    kind: file
+    produced_by: qa
+required_sections:
+  - artifact: reports/qa-findings.md
+    section: Definition of Done
+    marker: "## Definition of Done"
+  - artifact: reports/qa-findings.md
+    section: Loop-backs
+size_bounds:
+  - artifact: reports/qa-findings.md
+    min_bytes: 200
+    max_bytes: 50K
+tests:
+  - name: staging build serves
+    command: curl -sf http://localhost:8000/ -o /dev/null
+  - name: link check
+    command: bash scripts/link-check.sh
+evidence_refs:
+  - ref: "curl -s staging-host/ | sha256sum -> 9f2c... (build log line 118)"
+    proves: served bytes match the local build
+  - ref: "link-check.sh -> 0 broken (2026-09-13 run)"
+    proves: no dead links on the staged copy
+feedback_to_apply:
+  - note: footer version marker was stale
+    applied: yes
+  - note: hero copy tone review
+    applied: n-a
+artifacts_to_regenerate:
+  - path: reports/qa-findings.md
+artifacts_not_to_touch:
+  - path: site/index.html
