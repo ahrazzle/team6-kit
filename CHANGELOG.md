@@ -37,6 +37,42 @@ outside this repository.
 
 ---
 
+## Unreleased — I/O delegation contract (2026-09-13)
+
+- **What:** add a public, vendor-neutral `choreography/io-delegation.md`
+  contract and `registry/io-delegation.yaml.example` example config. It
+  documents a bounded routing pattern for two narrow work classes — predictable
+  read-heavy summarization and pattern-conforming scaffolding — while the
+  frontier agent keeps edits, debugging, architecture, security/safety-critical
+  work, ambiguous requirements, and final acceptance. Route identity reuses the
+  provider/model/API-host rules in `choreography/model-policy.md`; input must
+  pass the local privacy/redaction policy in
+  `choreography/local-preprocessing.md` first; default mode is `observe` with no
+  invented quotas; worker output is advisory and ephemeral; and every delegation
+  records route, input/output byte counts, latency, status, fallback, and
+  verification result without raw sensitive content. Documentation and an
+  example config only — no executable hooks, network clients, model
+  dependencies, or profile-specific settings are added.
+- **Why it changed:** a large-file offload pattern can reduce frontier-context
+  cost, but it carries real risks (sensitive-data leak, context loss, latency,
+  shallow summaries). The counterargument is met by making it an **opt-in,
+  bounded, audited contract** that is never automatic merely because a file is
+  large and never delegates the work that must stay on the frontier agent.
+- **Evidence:** [VERIFIED — public conceptual source] Spotify Engineering
+  article "Portal by Spotify cut my Claude Code token usage by 90%"
+  (engineering.atspotify.com, 2026-09-03) describing a routing principle that
+  keeps frontier reasoning for edits/debugging/architecture/safety-critical
+  work and routes predictable I/O-heavy work to a cheaper worker. Adopted as a
+  principle only — no code, prompts, or source copied; the linked `shunt`
+  plugin is Apache-2.0 at `spotify/portal-ai-plugins@main/plugins/shunt` but is
+  referenced for the routing principle, not imported. The 90% figure is a
+  **self-reported vendor claim**, not Team6 evidence: Team6 adopts only the
+  routing principle and does not claim this result.
+- **Proof status:** [PROPOSED / PENDING] Team6-kit documentation change;
+  fresh-clone gates and independent review required before release.
+- **Files:** `choreography/io-delegation.md`, `registry/io-delegation.yaml.example`,
+  and the README overview.
+
 ## Unreleased — Evidence-backed candidate validation (2026-09-13)
 
 - **What:** extend `code-review-verification` with a generic candidate-validation contract: isolated overlays, explicit structural/build/test/runtime/integration gate states, evidence packets, and honest `ACCEPT` / `CONDITIONAL` / `REJECT` / `UNVERIFIED` verdicts.

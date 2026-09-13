@@ -58,6 +58,23 @@ Start with `registry/model-rate-limits.yaml.example` and read
 `choreography/model-policy.md` before adding provider values. Keep the policy
 catalogue separate from profile names and account credentials.
 
+## I/O delegation contract
+
+The kit also documents a **vendor-neutral I/O delegation contract**: an opt-in
+routing pattern that may offload predictable, read-heavy summarization or
+pattern-conforming scaffolding to a cheaper worker, while the frontier agent
+keeps edits, debugging, architecture, security/safety-critical work, ambiguous
+requirements, and final acceptance. It is never automatic just because a file
+is large, never transmits sensitive content, and every delegation is recorded
+with route and byte/latency telemetry. It is a contract and an example config
+— not a runtime, hook, or dependency.
+
+Start with `registry/io-delegation.yaml.example` and read
+`choreography/io-delegation.md`. Route identity follows the same
+provider/model/API-host rules as `choreography/model-policy.md`, and input must
+pass the local privacy/redaction policy (`choreography/local-preprocessing.md`)
+first. Thresholds are recommendations, not universal claims.
+
 ## The main rules
 
 1. **Everything on disk.** Progress is saved to files, so months later you can still pick up where you left off.
