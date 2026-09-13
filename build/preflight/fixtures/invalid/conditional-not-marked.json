@@ -1,0 +1,31 @@
+{
+  "operation": {
+    "id": "op-conditional-not-marked",
+    "summary": "Example with a conditional action that is not explicitly marked may-run"
+  },
+  "files_to_change": ["docs/guide.md"],
+  "external_systems": [],
+  "credentials_required": [],
+  "paid_operations": [],
+  "estimated_quantity": {
+    "unit": "file-writes",
+    "value": 1,
+    "basis": "one file declared"
+  },
+  "conditional_actions": [
+    {
+      "description": "Retry the write on a transient error"
+    }
+  ],
+  "public_surfaces": [],
+  "rollback": {
+    "path": "git checkout -- docs/guide.md",
+    "bounded": true,
+    "max_wait_seconds": 60
+  },
+  "owner_approval": {
+    "owner": "build-lead",
+    "approval_state": "approved"
+  },
+  "unknowns": []
+}

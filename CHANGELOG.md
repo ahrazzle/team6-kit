@@ -37,6 +37,34 @@ outside this repository.
 
 ---
 
+## Unreleased — Side-effect and cost preflight (2026-09-13)
+
+- **What:** add a general side-effect and cost preflight: `choreography/side-effect-cost-preflight.md`
+  (required fields for operation identity, files changed, external systems, credential
+  names only, paid operations, estimated quantity/cost units, conditional `may_run`
+  actions, public surfaces, bounded rollback, owner/approval state, explicit unknowns)
+  and `build/preflight/check.py`, a standard-library-only validator with valid and
+  invalid fixtures that fails closed on missing required fields, credential values,
+  unbounded waits, or missing rollback for side-effecting operations. The generator
+  ships these authored public files through its authored-fresh mechanism (verbatim
+  copy, no manifest row, no placeholder substitution; the audit count closes against
+  disk).
+- **Why it changed:** an operation with side effects needs one reviewable
+  description before it runs: what it touches, what it spends, and how to undo
+  it. Unknown cost stays explicit and conservative; quotas are never invented.
+- **Evidence:** [VERIFIED — public conceptual source] the general idea of an
+  Agency Orchestrator-style operation preflight, adopted as a concept. This is a
+  conceptual operating pattern, **not copied Agency Orchestrator code**: no
+  source, prompt, or dependency from any orchestrator project is bundled. The
+  Team6 Kanban board remains the authoritative task record; the preflight is a
+  review aid, not a runtime integration, and adds no provider call, paid
+  operation, or configuration change.
+- **Proof status:** [PROPOSED / PENDING] documentation contract plus local
+  validator; independent review required before treating it as release policy.
+- **Files:** `choreography/side-effect-cost-preflight.md`,
+  `build/preflight/` (README, checker, fixtures), `build/generate.py`,
+  `README.md`, `CHANGELOG.md`.
+
 ## Unreleased — AI-assisted development contract (2026-09-13)
 
 - **What:** add a tool-neutral contract for AI-assisted changes: explicit scope

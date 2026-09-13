@@ -1,0 +1,32 @@
+{
+  "operation": {
+    "id": "op-local-doc-edit",
+    "summary": "Edit two documentation files in the repository"
+  },
+  "files_to_change": ["docs/guide.md", "docs/index.md"],
+  "external_systems": [],
+  "credentials_required": [],
+  "paid_operations": [],
+  "estimated_quantity": {
+    "unit": "file-writes",
+    "value": 2,
+    "basis": "two files declared in files_to_change"
+  },
+  "conditional_actions": [
+    {
+      "description": "Skip the edit when a target file is absent",
+      "may_run": true
+    }
+  ],
+  "public_surfaces": [],
+  "rollback": {
+    "path": "git checkout -- docs/guide.md docs/index.md",
+    "bounded": true,
+    "max_wait_seconds": 60
+  },
+  "owner_approval": {
+    "owner": "build-lead",
+    "approval_state": "approved"
+  },
+  "unknowns": []
+}

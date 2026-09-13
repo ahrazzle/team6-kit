@@ -1,0 +1,54 @@
+{
+  "operation": {
+    "id": "op-external-paid-render",
+    "summary": "Push a branch and render one paid image asset"
+  },
+  "files_to_change": ["assets/hero.png"],
+  "external_systems": [
+    {
+      "name": "git remote",
+      "endpoint": "git@example.invalid:org/repo.git",
+      "purpose": "push branch"
+    },
+    {
+      "name": "image service",
+      "endpoint": "https://images.example.invalid/render",
+      "purpose": "render one asset"
+    }
+  ],
+  "credentials_required": ["GIT_SSH_KEY", "IMAGE_SERVICE_TOKEN"],
+  "paid_operations": [
+    {
+      "name": "image render",
+      "cost_units": 5
+    }
+  ],
+  "estimated_quantity": {
+    "unit": "renders",
+    "value": "unknown",
+    "basis": "bounded conservatively by the non-refundable review budget; no provider quota is asserted"
+  },
+  "conditional_actions": [
+    {
+      "description": "Retry the render once on a transient error",
+      "may_run": true
+    },
+    {
+      "description": "Fall back to the cached asset",
+      "may_run": false
+    }
+  ],
+  "public_surfaces": ["repository branch", "published asset path"],
+  "rollback": {
+    "path": "delete the branch, revert the commit, discard the rendered asset",
+    "bounded": true,
+    "max_wait_seconds": 600
+  },
+  "owner_approval": {
+    "owner": "release-owner",
+    "approval_state": "approved"
+  },
+  "unknowns": [
+    "estimated_quantity is unknown and bounded conservatively; no quota is asserted"
+  ]
+}

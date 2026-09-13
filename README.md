@@ -69,6 +69,20 @@ dependency-targeted tampering tests. It is guidance only: it does not install a
 router, change provider settings, or claim that a route has end-to-end response
 integrity.
 
+## Side-effect and cost preflight
+
+Before running an operation that edits files, contacts external systems, uses
+credentials, incurs paid operations, affects public surfaces, or needs
+rollback, write one preflight document: what changes, what it contacts, which
+credential *names* (never values) it needs, what it may cost, which actions
+are conditional, what becomes public, how to recover, who approves, and what
+is still unknown. `choreography/side-effect-cost-preflight.md` defines the
+contract; `build/preflight/check.py` is a dependency-free validator that fails
+closed on missing fields, credential values, unbounded waits, or missing
+rollback. It is a conceptual operating pattern adapted from the general idea
+of agency-orchestration preflight — no Agency Orchestrator code is copied —
+and the Team6 Kanban board remains the authoritative task record.
+
 ## The main rules
 
 1. **Everything on disk.** Progress is saved to files, so months later you can still pick up where you left off.
