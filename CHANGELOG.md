@@ -50,9 +50,18 @@ outside this repository.
   bundled.
 - **Evidence:** [VERIFIED — public conceptual source] `jnMetaCode/ai-coding-guide`,
   snapshot `c5dde338c68adaac6cffc70ab11f1b1b22e70b0f`; adapted and reviewed in
-  the ingestion ledger. Root source license is Apache-2.0; the source's
-  `book/` content is separately identified as CC BY-NC-SA 4.0 and is not used.
+  PR #5 (see [LICENSING.md → AI-assisted development contract boundary](LICENSING.md#ai-assisted-development-contract-boundary-unreleased-2026-09-13)).
+  Root source license is Apache-2.0; the source's `book/` content is separately
+  identified as CC BY-NC-SA 4.0 and is not used.
 - **Files:** `choreography/ai-assisted-development.md` and the README overview.
+
+## Unreleased — Evidence-backed candidate validation (2026-09-13)
+
+- **What:** extend `code-review-verification` with a generic candidate-validation contract: isolated overlays, explicit structural/build/test/runtime/integration gate states, evidence packets, and honest `ACCEPT` / `CONDITIONAL` / `REJECT` / `UNVERIFIED` verdicts.
+- **Why it changed:** ReAgent demonstrates a useful separation between a generated candidate, the environment that validates it, and the evidence that supports acceptance. Team6 already has separate review and deployment checks, but lacked one compact contract for candidate artifacts and configured commands.
+- **Evidence:** [VERIFIED — public conceptual source] `Dryxio/reagent` 0.4.0, MIT licensed, inspected at commit `d12cea338c61898b06a86fe8adb25275fa9d5615`; adapted as principles only. No source code, prompts, or dependencies copied.
+- **Proof status:** [PROPOSED / PENDING] Team6-kit template change; fresh-clone gates and independent review required before release.
+- **Files:** `templates/skills/software-development/code-review-verification/SKILL.md`.
 
 ## 1.4.0 — Dynamic model-policy catalogue (2026-09-13)
 

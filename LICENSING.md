@@ -57,6 +57,21 @@ declares MIT in its README but ships no committed `LICENSE`; `autonovel` ships
 no committed `LICENSE` — both are therefore used for concept only and carry no
 code into this tree. See `CHANGELOG.md` for per-upgrade evidence classes.
 
+### AI-assisted development contract boundary (Unreleased, 2026-09-13)
+
+The AI-assisted development contract (`choreography/ai-assisted-development.md`)
+derives from the public conceptual guidance in
+**`jnMetaCode/ai-coding-guide`**, snapshot
+`c5dde338c68adaac6cffc70ab11f1b1b22e70b0f`. Unlike the v1.1.0 concept sources,
+this source **ships a committed root `LICENSE` — Apache-2.0**; its `book/`
+content is separately identified as **CC BY-NC-SA 4.0**.
+
+This repo uses the source for **adapted principles only**. It does **not** copy
+the source's code, prose, prompts, or templates, and does **not** bundle its
+installer, hook commands, MCP declarations, or book text. The root Apache-2.0
+grant and the CC BY-NC-SA 4.0 book terms apply to the source alone and do
+**not** extend to this repo's Apache-2.0 kit layer. Review recorded in PR #5.
+
 ### Local preprocessing model boundary (v1.2.0)
 
 v1.2.0 documents a **vendor-neutral local preprocessing adapter contract**
