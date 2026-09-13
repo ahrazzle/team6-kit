@@ -1,7 +1,7 @@
 ---
 name: github-pr-audit
 description: "Use when auditing a GitHub PR or issue before merge."
-version: 1.1.0
+version: 1.2.0
 author: Team6 / Halakukhan
 license: MIT
 platforms: [linux, macos, windows]
@@ -65,6 +65,9 @@ a false claim — so you must catch it first. If a claim is false or orthogonal
 (e.g. cites a GUI test that passes and is unrelated to the logic touched), strip
 it via `gh pr edit N --repo O/R --body-file <file>` — you have edit rights on
 your own account's PR. Never leave a verifiable falsehood in a public PR.
+
+### 4a. Audit the evidence register
+For a multi-finding PR or issue, define the counted unit and count each item once at its highest impact. Separate fixes included in the current head from requests, overlaps, and unresolved findings. Map every row to its exact artifact, commit, test, and status. Record the evidence boundary: base or head, commit or composition, environment, and measurement time when relevant. Missing transferred artifacts or unrun tests do not establish a claim; list them as separate unverified follow-ups.
 
 ### 5. Scope & rubric fit
 Read the repo's `AGENTS.md` / `CONTRIBUTING.md`. Check specifically:
