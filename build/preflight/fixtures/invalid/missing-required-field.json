@@ -1,0 +1,22 @@
+{
+  "operation": {
+    "id": "op-missing-rollback-field",
+    "summary": "Example that omits the required rollback field"
+  },
+  "files_to_change": ["docs/guide.md"],
+  "external_systems": [],
+  "credentials_required": [],
+  "paid_operations": [],
+  "estimated_quantity": {
+    "unit": "file-writes",
+    "value": 1,
+    "basis": "one file declared"
+  },
+  "conditional_actions": [],
+  "public_surfaces": [],
+  "owner_approval": {
+    "owner": "build-lead",
+    "approval_state": "approved"
+  },
+  "unknowns": []
+}

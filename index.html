@@ -227,7 +227,7 @@
     <div class="container">
       <p class="kicker">WHAT CHANGED · v1.1.0 OPERATING UPGRADES</p>
       <h2 id="upgrades-title">How the team stays reliable.</h2>
-      <p class="lead measure">These rules each exist because the team hit that exact failure and fixed it. Full details in the repo: <span class="mono">choreography/orchestration.md</span> and <span class="mono">choreography/governance.md</span>.</p>
+      <p class="lead measure">These rules each exist because the team hit that exact failure and fixed it. Full details in the repo: <span class="mono">choreography/orchestration.md</span>, <span class="mono">choreography/governance.md</span>, <span class="mono">choreography/ai-assisted-development.md</span>, <span class="mono">choreography/router-security.md</span>, and <span class="mono">choreography/side-effect-cost-preflight.md</span>.</p>
 
       <div class="up-grid">
         <article class="up-card">
@@ -261,6 +261,18 @@
         <article class="up-card">
           <p class="up-title">08 / UNKNOWN LIMITS STAY OBSERVE-ONLY</p>
           <p class="up-body">The kit never invents a quota. When a provider&rsquo;s limit is unknown, it records response headers and errors but does not pretend to know when the allowance resets. A verified limit can later be enforced with a bounded wait instead of endless retries.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">09 / AI-ASSISTED CHANGES FOLLOW A WRITTEN CONTRACT</p>
+          <p class="up-body">When a change is made with an AI coding agent, the task brief states the scope, acceptance criteria, and commands that prove the change; tests are behavior-first and cover boundary and error cases; parallel work is isolated; security-sensitive paths get a checklist before handoff; and an independent agent reads the evidence back before anything is called done. It is a written contract, not a tool &mdash; nothing installs, runs, or enforces by itself. Read <span class="mono">choreography/ai-assisted-development.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">10 / ROUTERS HAVE A TRUST BOUNDARY</p>
+          <p class="up-body">A model router or relay may see plaintext requests, tool calls, outputs, and credentials. The kit now documents a vendor-neutral preflight: inventory the route, minimize credentials, gate high-risk tools, fail closed when provenance or integrity is missing, keep logs metadata-only, and test conditional changes. This is guidance, not a router, detector, or claim of end-to-end response integrity. Read <span class="mono">choreography/router-security.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">11 / SIDE EFFECTS AND COSTS ARE PRECHECKED</p>
+          <p class="up-body">Before an operation edits files, contacts an external system, uses credentials, or may incur cost, the team records what can happen, what it may touch, which credential names it needs, how much it may use, who approves it, and how to recover. Unknown cost is explicit; conditional actions are marked; missing rollback evidence fails closed. The dependency-free checker validates the contract, but does not execute the operation. Read <span class="mono">choreography/side-effect-cost-preflight.md</span>.</p>
         </article>
       </div>
 
@@ -373,6 +385,9 @@
             <li><span class="status-tag ok">✅</span><span class="status-text">v1.3.0 change-propagation rules documented — one change summary per candidate, impact-level routing, one append-only log, batched updates, quick pre-check per candidate with full audit at release time, repo/site checked against each other (templates/skills/knowledge-base-ingestion/SKILL.md, README, CHANGELOG)</span></li>
             <li><span class="status-tag ok">✅</span><span class="status-text">v1.4.0 model-policy rules documented — limits follow provider/model/API route, request and token reserves are explicit, fallbacks are re-checked, and unknown limits remain observe-only (registry/model-rate-limits.yaml.example, choreography/model-policy.md, README, CHANGELOG)</span></li>
             <li><span class="status-tag ok">✅</span><span class="status-text">Website reflects v1.4.0 — model-policy reliability upgrades and version markers (this page)</span></li>
+            <li><span class="status-tag ok">✅</span><span class="status-text">AI-assisted development contract merged — written scope and acceptance criteria, behavior-first boundary/error tests, security checks, isolated parallel work, independent evidence read-back (choreography/ai-assisted-development.md)</span></li>
+            <li><span class="status-tag ok">✅</span><span class="status-text">Router trust-boundary guidance merged — credential minimization, high-risk tool gates, fail-closed behavior, metadata-only logs, and conditional-change testing (choreography/router-security.md)</span></li>
+            <li><span class="status-tag ok">✅</span><span class="status-text">Side-effect and cost preflight merged — explicit operation scope, credential names only, cost/quantity bounds, approvals, public-surface checks, and bounded rollback (choreography/side-effect-cost-preflight.md)</span></li>
           </ul>
         </div>
         <div class="status-group">

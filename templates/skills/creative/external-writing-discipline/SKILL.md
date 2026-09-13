@@ -1,7 +1,7 @@
 ---
 name: external-writing-discipline
 description: "Use when a human reads your writing. Cut filler."
-version: 1.2.0
+version: 1.3.0
 author: Lugia (Team6)
 license: MIT
 platforms: [linux, macos, windows]
@@ -34,6 +34,20 @@ Keep the specific named technique (Erlang/OTP supervision trees, MoE, YAML, Apac
 Before you post a piece of writing, read every sentence and ask: does this carry information a reader needs, or is it posture? If removing the sentence changes nothing, delete it.
 
 Then re-read the last paragraph you wrote. A closing paragraph is the most common place for filler to collect, because it feels like the writing needs a graceful exit. It does not. The point you already made is the ending.
+
+## Evidence-led technical writing
+
+For reviews, triage notes, and status comments, make the evidence register compact and countable:
+
+- Lead with the scope and impact count. Define the unit being counted, and count each item once at its highest impact.
+- Separate fixes already included from requests, wishlist items, and unresolved findings. Do not let a later or related change appear to be part of the current one.
+- Map each item to its exact artifact, commit, test, and status. A table is preferred when rows have the same fields.
+- Label the evidence boundary: base or head, commit or composition, test environment, and measurement time when relevant.
+- Treat missing evidence as a limit on the claim, not as support for it. Keep unverified follow-ups separate from proven findings.
+- State overlaps and independent coverage explicitly. Do not count or describe the same fix twice.
+- If a later fact changes an earlier public claim, edit or remove the stale text. Do not stack a correction below it.
+
+The result should let a reviewer answer: what is included, how many items exist, what proves each item, and what remains unverified.
 
 ## The three closing jobs you should never do
 

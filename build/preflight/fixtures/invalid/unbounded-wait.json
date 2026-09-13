@@ -1,0 +1,27 @@
+{
+  "operation": {
+    "id": "op-unbounded-wait",
+    "summary": "Example whose rollback declares an unbounded wait"
+  },
+  "files_to_change": ["docs/guide.md"],
+  "external_systems": [],
+  "credentials_required": [],
+  "paid_operations": [],
+  "estimated_quantity": {
+    "unit": "file-writes",
+    "value": 1,
+    "basis": "one file declared"
+  },
+  "conditional_actions": [],
+  "public_surfaces": [],
+  "rollback": {
+    "path": "git checkout -- docs/guide.md",
+    "bounded": true,
+    "max_wait_seconds": "infinite"
+  },
+  "owner_approval": {
+    "owner": "build-lead",
+    "approval_state": "approved"
+  },
+  "unknowns": []
+}

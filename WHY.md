@@ -119,6 +119,22 @@ instantiates, not just the one that built it.
 
 ---
 
+## Why the kit includes router trust-boundary guidance (v1.4.1)
+
+An agent's model endpoint can be more than a transport detail. A router or
+relay may terminate one encrypted connection, inspect the plaintext, and open
+another connection upstream. If the agent can execute tools, a rewritten but
+schema-valid response can change the action the client takes. A chain also
+inherits the weakest intermediary's integrity and confidentiality properties.
+
+The kit therefore documents a vendor-neutral preflight contract in
+`choreography/router-security.md`: inventory the route, minimize credentials,
+gate high-risk tools, fail closed when provenance or integrity is missing, keep
+logs metadata-only, and test conditional as well as always-on changes. This is
+an operating rule, not a router implementation or a claim that every router is
+malicious. It is informed by Liu et al., *Your Agent Is Mine* (arXiv:2604.08407),
+used as a public conceptual source; no attack code or payloads are copied.
+
 ## Why the kit documents a local preprocessing adapter (v1.2.0)
 
 A generated team already sends approved work outward — remote models, shared
