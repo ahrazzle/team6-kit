@@ -505,10 +505,13 @@ def self_test():
             for d in detail[:3]:
                 print(f"         got: {d}")
 
-    # repo examples (when present) - not shipped in generated kits
-    ex = os.path.join(HERE, "..", "examples")
-    if not os.path.isdir(ex):
-        print("  [SKIP] repo examples not present (not shipped in kits)")
+    # Examples live at repo/examples in the source tree and at
+    # contracts/examples in generated kits.
+    example_roots = [os.path.join(HERE, "examples"),
+                     os.path.join(HERE, "..", "examples")]
+    ex = next((root for root in example_roots if os.path.isdir(root)), None)
+    if ex is None:
+        print("  [SKIP] artifact-contract examples are not present")
     else:
         for fname, want_ok in (("artifact-contract.valid.yaml", True),
                                ("artifact-contract.invalid.yaml", False)):
