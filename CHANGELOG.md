@@ -277,6 +277,8 @@ outside this repository.
 
 ## 1.3.0 — Handover ingestion completeness & propagation loop (2026-09-12)
 
+**Convention note:** The audit artifacts named by the original 1.3.0 record are not present in the current tree. The entries below preserve the conceptual history of that release; no current path is asserted for those historical files.
+
 ### 1. A handed-over source is not reference-only until it is audited
 
 - **What:** a source handed over from another team or external party must go
@@ -288,7 +290,6 @@ outside this repository.
   propagate to the full surface set.
 - **Evidence:** [Internal design] Team6's own operating procedure from real
   handovers (see the 1.3.0 audit trail in AUDIT/handover-*.md).
-- **Files:** `AUDIT/handover-capability-audit.md`.
 
 ### 2. The audit inspects surfaces, not the README
 
@@ -298,7 +299,6 @@ outside this repository.
 - **Why:** references in the README do not guarantee the full surface set is
   complete or correct.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/setup-agent-contract.md`.
 
 ### 3. Capability matrix, owner, and disposition
 
@@ -308,7 +308,6 @@ outside this repository.
 - **Why:** without these, candidates accumulate without clear ownership or
   disposition.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/fork-commit-1.md`.
 
 ### 4. Separate the five phases
 
@@ -317,7 +316,6 @@ outside this repository.
   in the handover audit file.
 - **Why:** separating phases makes handovers auditable and reproducible.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/setup-agent-contract.md`.
 
 ### 5. Bounded proof, receipts, and read-back
 
@@ -326,7 +324,6 @@ outside this repository.
   that the candidate is understood and correctly applied.
 - **Why:** without proof and read-back, handovers are opaque and error-prone.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/handover-capability-audit.md`.
 
 ### 6. Preserve unresolved, dead, and blocked
 
@@ -335,7 +332,6 @@ outside this repository.
 - **Why:** without preservation, candidates lose context and accumulate without
   resolution.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/fork-commit-1.md`.
 
 ### 7. Propagation through each surface's own gate
 
@@ -345,7 +341,6 @@ outside this repository.
 - **Why:** without gate-by-gate propagation, content accumulates without
   consistency across surfaces.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/setup-agent-contract.md`.
 
 ### 8. One capability delta per candidate, routed by impact class
 
@@ -355,15 +350,13 @@ outside this repository.
 - **Why:** without routing by impact class, deltas accumulate without
   consistent review.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/handover-capability-audit.md`.
 
 ---
 
 ## 1.2.0 — Desert Ant local preprocessing (2026-09-11)
 
 - **What:** add `choreography/local-preprocessing.md` (Desert Ant reference
-  architecture for local privacy/redaction) and `registry/desert-ant-*.yaml.example`
-  (optional implementation configs). This is guidance and example configs only.
+  architecture for local privacy/redaction). This is guidance only.
 - **Why:** agent inputs can leak sensitive content or cost-inefficient data.
   Local preprocessing (redaction, cost filters, content pruning) protects
   privacy and cost before they reach an external provider.
@@ -375,9 +368,7 @@ outside this repository.
 ## 1.1.0 — Local privacy/redaction policy (2026-09-10)
 
 - **What:** add `choreography/local-preprocessing.md` (local privacy/redaction
-  policy), `registry/redaction-policy.yaml.example`, and
-  `registry/cost-filter-policy.yaml.example`. These are guidance and example
-  configs only — no runtime or dependency is added.
+  policy). This is guidance only — no runtime or dependency is added.
 - **Why:** agent inputs can leak sensitive content or cost-inefficient data.
   Local preprocessing (redaction, cost filters, content pruning) protects
   privacy and cost before they reach an external provider.

@@ -113,6 +113,10 @@ Per-item fields:
 ```
 python3 build/check-artifact-contract.py path/to/handoff.yaml      # validate one contract (repo path)
 python3 build/check-artifact-contract.py --self-test               # run the repo's own pass/fail tests
+
+# From inside a generated kit:
+python3 contracts/check-artifact-contract.py path/to/handoff.yaml  # validate one contract (kit path)
+python3 contracts/check-artifact-contract.py --self-test           # run kit's pass/fail tests
 ```
 
 Exit `0` = valid, `1` = invalid (each violation printed with its field).
