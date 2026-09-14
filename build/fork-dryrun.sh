@@ -27,7 +27,7 @@ ORIGIN_BRANCH="${2:-main}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 KIT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 WORK="$(mktemp -d /tmp/fork-dryrun.XXXXXX)"
-trap 'rm -rf "$WORK"' EXIT
+trap 'cd /; rm -rf "$WORK" || true' EXIT
 
 echo "=== FORK UPDATE-SAFETY DRY RUN ==="
 echo "source: $SOURCE"
