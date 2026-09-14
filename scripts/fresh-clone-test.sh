@@ -76,7 +76,7 @@ if ! grep -q "Northwind Advisory" "$OUT/personas/SOUL.md.tmpl"; then
 fi
 echo "  team instantiated (Northwind Advisory in persona) ✓"
 
-echo "[[5/5] Running contract-validator self-tests (working tree validation)..."
+echo "[5/5] Running contract-validator self-tests (working tree validation)..."
 # The aggregator runs from $REPO (working tree) while steps 1-4 operate on $WORK/clone.
 python3 "$REPO/build/check-contracts.py" > "$WORK/contract-gate.log" 2>&1
 if [ $? -ne 0 ]; then
