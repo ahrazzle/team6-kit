@@ -108,4 +108,3 @@ unresolved.
 - Validator and fixtures: `build/report/` (`check.py`, `fixtures/valid/`,
   `fixtures/invalid/`).
 - Side-effect and cost preflight: `choreography/side-effect-cost-preflight.md`.
-- AI-assisted change contract: `choreography/ai-assisted-development.md`.

@@ -92,5 +92,3 @@ state `unknown`, state the conservative basis, and list it under unknowns.
 
 - Contract checker and fixtures: `build/preflight/` (`check.py`,
   `fixtures/valid/`, `fixtures/invalid/`).
-- Router and tool-execution boundary: `choreography/router-security.md`.
-- AI-assisted change contract: `choreography/ai-assisted-development.md`.

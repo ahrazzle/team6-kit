@@ -257,29 +257,6 @@ outside this repository.
   validator; independent review required before treating it as release policy.
 - **Files:** `choreography/router-security.md` and the README overview.
 
-## Unreleased — Evidence-backed candidate validation (2026-09-13)
-
-- **What:** add a general evidence-backed candidate validation contract:
-  `choreography/candidate-validation.md` and `build/candidate-validation.py`,
-  a standard-library-only validator with valid and invalid fixtures that fails
-  closed on missing required fields, unverified evidence, credential values,
-  internal paths, or off-convention placeholders.
-- **Why it changed:** candidate validation needs one reviewable artifact that
-  a second person can read and share — what was tested, what was verified,
-  what is still open, and what the evidence is — without leaking an internal
-  path, a profile identity, or a credential value.
-- **Evidence:** [VERIFIED — public conceptual source] the general idea of an
-  Agency Orchestrator-style candidate validation report, adopted as a concept.
-  This is a conceptual operating pattern, **not copied Agency Orchestrator code**:
-  no source, prompt, or dependency from any orchestrator project is bundled. The
-  Team6 Kanban board remains the authoritative task record; the validation is a
-  derived shareable report, not a second state store, and adds no runtime
-  integration, provider call, or configuration change.
-- **Proof status:** [PROPOSED / PENDING] documentation contract plus local
-  validator; independent review required before treating it as release policy.
-- **Files:** `choreography/candidate-validation.md`, `build/` (README, validator,
-  fixtures), `README.md`, `CHANGELOG.md`.
-
 ## 1.4.0 — Dynamic model-policy catalogue (2026-09-13)
 
 ### Route-based rate-limit protection
@@ -311,8 +288,7 @@ outside this repository.
   propagate to the full surface set.
 - **Evidence:** [Internal design] Team6's own operating procedure from real
   handovers (see the 1.3.0 audit trail in AUDIT/handover-*.md).
-- **Files:** `AUDIT/handover-incomplete-trail.md`, `AUDIT/handover-validated.md`,
-  `AUDIT/propagation-loop/`.
+- **Files:** `AUDIT/handover-capability-audit.md`.
 
 ### 2. The audit inspects surfaces, not the README
 
@@ -322,7 +298,7 @@ outside this repository.
 - **Why:** references in the README do not guarantee the full surface set is
   complete or correct.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/surface-inventory.md`.
+- **Files:** `AUDIT/setup-agent-contract.md`.
 
 ### 3. Capability matrix, owner, and disposition
 
@@ -332,7 +308,7 @@ outside this repository.
 - **Why:** without these, candidates accumulate without clear ownership or
   disposition.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/capability-matrix.md`.
+- **Files:** `AUDIT/fork-commit-1.md`.
 
 ### 4. Separate the five phases
 
@@ -341,7 +317,7 @@ outside this repository.
   in the handover audit file.
 - **Why:** separating phases makes handovers auditable and reproducible.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/handover-phases.md`.
+- **Files:** `AUDIT/setup-agent-contract.md`.
 
 ### 5. Bounded proof, receipts, and read-back
 
@@ -350,7 +326,7 @@ outside this repository.
   that the candidate is understood and correctly applied.
 - **Why:** without proof and read-back, handovers are opaque and error-prone.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/handover-receipts.md`.
+- **Files:** `AUDIT/handover-capability-audit.md`.
 
 ### 6. Preserve unresolved, dead, and blocked
 
@@ -359,7 +335,7 @@ outside this repository.
 - **Why:** without preservation, candidates lose context and accumulate without
   resolution.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/unresolved-and-dead.md`.
+- **Files:** `AUDIT/fork-commit-1.md`.
 
 ### 7. Propagation through each surface's own gate
 
@@ -369,7 +345,7 @@ outside this repository.
 - **Why:** without gate-by-gate propagation, content accumulates without
   consistency across surfaces.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/propagation-gates.md`.
+- **Files:** `AUDIT/setup-agent-contract.md`.
 
 ### 8. One capability delta per candidate, routed by impact class
 
@@ -379,7 +355,7 @@ outside this repository.
 - **Why:** without routing by impact class, deltas accumulate without
   consistent review.
 - **Evidence:** [Internal design] Team6's own operating procedure.
-- **Files:** `AUDIT/capability-delta.md`.
+- **Files:** `AUDIT/handover-capability-audit.md`.
 
 ---
 
@@ -394,7 +370,7 @@ outside this repository.
 - **Evidence:** [VERIFIED — public conceptual source] Desert Ant reference
   architecture (desert-ant/desert-ant repo, Apache-2.0). Used for concept only;
   no code, prompt, or dependency is bundled.
-- **Files:** `choreography/local-preprocessing.md`, `registry/desert-ant-*.yaml.example`.
+- **Files:** `choreography/local-preprocessing.md`.
 
 ## 1.1.0 — Local privacy/redaction policy (2026-09-10)
 
@@ -406,8 +382,7 @@ outside this repository.
   Local preprocessing (redaction, cost filters, content pruning) protects
   privacy and cost before they reach an external provider.
 - **Evidence:** [Internal design] Team6's own conceptual operating pattern.
-- **Files:** `choreography/local-preprocessing.md`, `registry/redaction-policy.yaml.example`,
-  `registry/cost-filter-policy.yaml.example`.
+- **Files:** `choreography/local-preprocessing.md`.
 
 ---
 

@@ -111,7 +111,7 @@ Per-item fields:
 ## Using it
 
 ```
-python3 build/check-artifact-contract.py path/to/handoff.yaml      # validate one contract
+python3 build/check-artifact-contract.py path/to/handoff.yaml      # validate one contract (repo path)
 python3 build/check-artifact-contract.py --self-test               # run the repo's own pass/fail tests
 ```
 
