@@ -62,6 +62,27 @@ outside this repository.
 
 - **Files:** `build/verify-all.py`, `.github/workflows/verify.yml`,
   `build/surface-scan.py`, `tests/test_gates.py`, `README.md`, `index.html`.
+## Unreleased — Contract-validator gate integration (2026-09-14)
+
+- **What:** wires the kit's contract validators into the fresh-clone gate.
+  A new aggregator script (`build/check-contracts.py`) runs four validators
+  in sequence: artifact-contract validator (`--self-test`, `--example-check`),
+  preflight validator (`--selftest`), and report validator (`--selftest`).
+  The fresh-clone script (`scripts/fresh-clone-test.sh`) now includes this
+  as step 5, validating that the working tree's contract validators are
+  operational. All validators are stdlib-only, require no network or
+  credentials, and fail closed on errors.
+- **Why:** Ensures the contract validation gates are always exercised as part
+  of the reproducible fresh-clone test, catching regressions in validator
+  logic before deployment. The gate validates the working tree; clone
+  reproducibility remains steps 1–4.
+- **Evidence:** [VERIFIED — internal operating record] The validators are
+  already tested and proven in the fleet. Integration into the fresh-clone
+  gate makes this a standard, automated checkpoint.
+- **Proof status:** [VERIFIED — internal operating record] Self-tests pass
+  locally; the fresh-clone gate completes with step 5 enabled.
+- **Files:** `build/check-contracts.py`, `scripts/fresh-clone-test.sh`,
+  `README.md`, `index.html`.
 
 ---
 

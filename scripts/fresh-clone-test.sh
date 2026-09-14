@@ -24,13 +24,13 @@ echo "repo:   $REPO"
 echo "work:   $WORK"
 echo
 
-echo "[1/4] Cloning HEAD..."
+echo "[1/5] Cloning HEAD..."
 git clone --quiet "$REPO" "$WORK/clone" || { echo "FAIL: clone"; exit 1; }
 cd "$WORK/clone"
 echo "  HEAD: $(git rev-parse --short HEAD)"
 echo "  tracked files: $(git ls-files | wc -l | tr -d ' ')"
 
-echo "[2/4] Confirm the live-fleet artifacts are ABSENT (fresh-clone honesty)..."
+echo "[2/5] Confirm the live-fleet artifacts are ABSENT (fresh-clone honesty)..."
 missing=0
 for f in build/manifest.tsv build/REVIEW.md build/identifiers.yaml; do
   if [ -f "$f" ]; then
@@ -48,7 +48,7 @@ for f in build/manifest.frozen.tsv build/REVIEW.frozen.md templates/MANIFEST.md;
 done
 [ $missing -eq 0 ] && echo "  all frozen artifacts present ✓"
 
-echo "[3/4] Running the documented reproduce command..."
+echo "[3/5] Running the documented reproduce command..."
 OUT="$WORK/out"
 python3 build/generate.py --params examples/demo-consulting.yaml --out "$OUT" \
   > "$WORK/gen.log" 2>&1
@@ -59,7 +59,7 @@ if [ $? -ne 0 ]; then
 fi
 echo "  generate.py exit 0 ✓"
 
-echo "[4/4] Asserting honest audit (shipped count closes against disk)..."
+echo "[4/5] Asserting honest audit (shipped count closes against disk)..."
 claim=$(grep -oE "rows shipped: [0-9]+" "$OUT/AUDIT.md" | grep -oE "[0-9]+")
 actual=$(find "$OUT" -type f | wc -l | tr -d ' ')
 echo "  audit claims:  $claim shipped"
@@ -76,8 +76,20 @@ if ! grep -q "Northwind Advisory" "$OUT/personas/SOUL.md.tmpl"; then
 fi
 echo "  team instantiated (Northwind Advisory in persona) ✓"
 
+echo "[5/5] Running contract-validator self-tests (working tree validation)..."
+# This validates that the contract validators are operational in the clone.
+# Clone reproducibility remains steps 1-4; this step confirms the gate itself works.
+python3 build/check-contracts.py > "$WORK/contract-gate.log" 2>&1
+if [ $? -ne 0 ]; then
+  echo "  FAIL: contract-validator gate failed"
+  tail -20 "$WORK/contract-gate.log"
+  exit 1
+fi
+echo "  contract-validator gate passed ✓"
+
 echo
 echo "=== FRESH-CLONE TEST: PASS ==="
 echo "A stranger can clone HEAD and reproduce the demo, self-contained."
+echo "Contract validators are exercised as part of the fresh-clone gate."
 [ $KEEP -eq 1 ] && echo "kept workdir: $WORK"
 exit 0
