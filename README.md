@@ -88,6 +88,15 @@ handoff snapshot written out of it. Read
 The pattern is a conceptual adoption; no external orchestration code is
 included or required.
 
+A finished worker stays reachable. When a one-shot run ends, it leaves its
+session saved, so a follow-up can be sent to that same session. The worker
+answers that single turn, then stops again.
+
+This lets you add one correction or ask one question after a task is done
+without starting a new session or losing the thread. Send a follow-up only
+after the worker has fully stopped, and only for a turn that reads state.
+Never attach a second live writer to a session that is still running.
+
 ## Release gate verification
 
 The kit includes a deterministic release gate runner at `build/verify-all.py`.

@@ -48,6 +48,22 @@ outside this repository.
   decision recorded below, which names `team6.askaconsult.com` as the official
   public Team6 site. No code, layout, or route behavior changed.
 
+- **What:** document a resume-channel redirect. A finished one-shot worker
+  leaves its session saved on disk, so a follow-up command can run one bounded
+  turn into that same session and exit. A /steer-prefixed follow-up is accepted
+  as instruction text. Follow-ups are scoped read-only unless the turn owns
+  files. Attaching to a session whose worker is still alive is prohibited.
+
+- **Why it changed:** without a defined channel, a correction after a finished
+  run meant starting a new session, which duplicated context, or attaching to a
+  session that might still be running, which risked two live writers on one
+  receipt boundary. One documented command closes the gap.
+
+- **Evidence:** [VERIFIED, internal operating record] mechanism and scope were
+  verified on a completed session on 2026-09-14 (internal QA record,
+  E-PROTEUS-008). The steering block is patched into the subagent-spawning
+  skill as the procedure's home.
+
 ---
 
 ## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
