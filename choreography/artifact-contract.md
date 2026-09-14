@@ -134,3 +134,7 @@ through the same substitution path as every other kit template.
   into `artifacts_not_to_touch` before the feedback round starts.
 - **Keep it small.** The contract is a handoff, not a spec — bound the
   artifacts by size, bind every claim to a check.
+- **Verify state, not procedure.** A passing command or test is insufficient if it
+  proves only that something ran. Evidence must identify the achieved target
+  state and a verifier must reject procedure-only evidence. (Conceptual
+  inspiration: Ingressing Minds... DOI 10.3390/philosophies11050161)

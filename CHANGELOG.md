@@ -58,6 +58,14 @@ outside this repository.
 - **Evidence:** [VERIFIED — public conceptual source] the general idea of an
   Agency Orchestrator-style run report, adopted as a concept. This is a
   conceptual operating pattern, **not copied Agency Orchestrator code**: no
+
+- **What:** clarify artifact contract operating rules to require evidence of
+  achieved target state, not merely procedure execution.
+- **Why it changed:** to prevent false claims of completion where a command ran
+  but the requested state was not achieved or verified.
+- **Evidence:** [VERIFIED — public conceptual source] conceptual inspiration from
+  paper on evidence standards (DOI 10.3390/philosophies11050161); not adopted
+  metaphysics or ontology claims.
   source, prompt, or dependency from any orchestrator project is bundled. The
   Team6 Kanban board remains the authoritative task record; the packet is a
   derived shareable report, not a second state store, and adds no runtime
