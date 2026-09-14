@@ -37,7 +37,7 @@ outside this repository.
 
 ---
 
-## Unreleased — Release gate verification (2026-09-14)
+## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
 
 - **What:** add a deterministic release gate runner at `build/verify-all.py`
   that runs all public gates in documented order: sweep-gate, review-gate,
@@ -62,7 +62,7 @@ outside this repository.
 
 - **Files:** `build/verify-all.py`, `.github/workflows/verify.yml`,
   `build/surface-scan.py`, `tests/test_gates.py`, `README.md`, `index.html`.
-## Unreleased — Contract-validator gate integration (2026-09-14)
+### Contract-validator gate integration (2026-09-14)
 
 - **What:** wires the kit's contract validators into the fresh-clone gate.
   A new aggregator script (`build/check-contracts.py`) runs four validators
@@ -86,7 +86,7 @@ outside this repository.
 
 ---
 
-## Unreleased — Execution-evidence contract (2026-09-13)
+### Execution-evidence contract (2026-09-13)
 
 - **What:** adds `choreography/run-evidence.md`, defining a vendor-neutral
   contract for recording execution evidence: what an agent actually executed,
@@ -111,12 +111,12 @@ outside this repository.
 
 ---
 
-## Unreleased — OpenShorts route (2026-09-14)
+### OpenShorts route (2026-09-14)
 
 - **What:** docs-only OpenShorts route + non-executable example config; no new dependencies; no bundled code; external tool license and dependency terms apply.
 - **Files:** `choreography/openshorts-route.md`, `registry/openshorts-route.yaml.example`, README, CHANGELOG, index.html.
 
-## Unreleased — Safe shareable run packet (2026-09-13)
+### Safe shareable run packet (2026-09-13)
 
 - **What:** add a general safe shareable run packet: `choreography/safe-run-packet.md`
   (required fields for objective, decisions, verified evidence, unresolved items,
@@ -146,7 +146,7 @@ outside this repository.
 - **Files:** `choreography/safe-run-packet.md`, `build/report/` (README, checker,
   fixtures), `README.md`, `CHANGELOG.md`.
 
-## Unreleased — Goal-state evidence guidance (2026-09-13)
+### Goal-state evidence guidance (2026-09-13)
 
 - **What:** add one operating rule to `choreography/artifact-contract.md`:
   evidence must prove the achieved target state, not merely that a command or
@@ -164,7 +164,7 @@ outside this repository.
   and independent review required before release.
 - **Files:** `choreography/artifact-contract.md`, `CHANGELOG.md`.
 
-## Unreleased — I/O delegation contract (2026-09-13)
+### I/O delegation contract (2026-09-13)
 
 - **What:** add a public, vendor-neutral `choreography/io-delegation.md`
   contract and `registry/io-delegation.yaml.example` example config. It
@@ -200,7 +200,7 @@ outside this repository.
 - **Files:** `choreography/io-delegation.md`, `registry/io-delegation.yaml.example`,
   and the README overview.
 
-## Unreleased — Side-effect and cost preflight (2026-09-13)
+### Side-effect and cost preflight (2026-09-13)
 
 - **What:** add a general side-effect and cost preflight: `choreography/side-effect-cost-preflight.md`
   (required fields for operation identity, files changed, external systems, credential
@@ -226,7 +226,7 @@ outside this repository.
   `build/preflight/` (README, checker, fixtures), `build/generate.py`,
   `README.md`, `CHANGELOG.md`.
 
-## Unreleased — AI-assisted development contract (2026-09-13)
+### AI-assisted development contract (2026-09-13)
 
 - **What:** add a tool-neutral contract for AI-assisted changes: explicit scope
   and acceptance criteria, behavior-first boundary/error testing,
