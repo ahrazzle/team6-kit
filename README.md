@@ -2,10 +2,11 @@
 
 Turn one AI agent engine (Hermes, from Nous Research) into a small team of AI agents that work together under clear rules — with a supervisor, a quality checker, and a builder that assembles your own team from ready-made parts.
 
-Official site: https://www.askaconsult.com/team6
-Technical guide: https://team6.askaconsult.com/
+Canonical site: https://team6.askaconsult.com/
+ASKA corporate page: https://www.askaconsult.com/team6
 
-The official site is the canonical public documentation for Team6-kit. The
+The canonical site is the public documentation for Team6-kit. The ASKA
+corporate page is the service listing for the team that uses it. The
 interactive experience is served by the Team6 Frontier Vercel project through
 ASKA's `/team6` route.
 

@@ -37,6 +37,19 @@ outside this repository.
 
 ---
 
+## Unreleased
+
+- **What:** correct the canonical-site labels in the README. The canonical
+  public documentation site for Team6-kit is `team6.askaconsult.com`; the
+  ASKA corporate page at `www.askaconsult.com/team6` is the service listing.
+  The README previously called the corporate page the "official site" and
+  the canonical site the "technical guide".
+- **Why it changed:** the README labels contradicted the v1.2.0 canonical-site
+  decision recorded below, which names `team6.askaconsult.com` as the official
+  public Team6 site. No code, layout, or route behavior changed.
+
+---
+
 ## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
 
 - **What:** add a deterministic release gate runner at `build/verify-all.py`
