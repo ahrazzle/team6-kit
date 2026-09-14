@@ -22,7 +22,7 @@ the boundary is what prevents both overengineering and under-delivery.
 | Role (instance) | Lane | Explicitly NOT |
 |---|---|---|
 | Director (Lugia) | Orchestration, decisions, summaries | Hands-on coding |
-| Researcher (Sheikh al-Jabr) | Evidence, prior art, market scan | Architecture decisions |
+| Researcher (RESEARCHER-001) | Evidence, prior art, market scan | Architecture decisions |
 | Architect (Azaraki) | Analysis, design, thinking | Writing code |
 | UX (Shayba) | Human experience, interface design | Backend logic |
 | Coder (KodeKoot) | Software development (sole) | Strategy prose |

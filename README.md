@@ -89,6 +89,15 @@ handoff snapshot written out of it. Read
 The pattern is a conceptual adoption; no external orchestration code is
 included or required.
 
+## Release gate verification
+
+The kit includes a deterministic release gate runner at `build/verify-all.py`.
+It runs all public gates in documented order and fails if any check fails.
+GitHub Actions runs this automatically on push and pull requests to ensure
+the repository stays in a verified state.
+
+Read `choreography/release-gates.md` for the full gate list and order.
+
 ## Router trust-boundary protection
 
 Model routers and relays can see plaintext requests and responses, and may sit

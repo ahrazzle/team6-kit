@@ -40,12 +40,49 @@ import genericize as G
 # ---------------------------------------------------------------------------
 # Terms — the gate's actual identifier inventory (derived + config)
 # ---------------------------------------------------------------------------
+
+# Built-in generic safety terms that are ALWAYS enforced, regardless of
+# identifiers.yaml presence or content. These catch authored-public safety
+# rules: patterns that must never appear in public code even when the
+# identifiers.yaml is empty (open kit / fresh clone).
+_BUILTIN_SAFETY_TERMS = frozenset((
+    # Generic patterns that always indicate leaked instance context
+    # (when found without genericization placeholders).
+    #
+    # NOTE: These are pattern-based, not literal strings. The scanner looks
+    # for these in S4 (script paths), S5 (config defaults), and S7 (reachability).
+    #
+    # Paths that expose local machine/user context
+    '/Users/',
+    '/home/',
+    '~/.hermes/',
+    '~/Documents/',
+    '~/Library/',
+    '/etc/passwd',
+    '/var/log/',
+    # Generic API keys / secrets patterns
+    'api_key=',
+    'api_secret=',
+    'bearer_token',
+    'access_token=',
+    # Generic credential patterns that should always be env var references
+    'password=',
+    'secret=',
+    'client_secret=',
+    'client_id=',
+))
+
+
 def strong_terms():
     """Strong terms only: handles, codenames, user handles, full phrases.
     Excludes single-word splits of phrases (Free, Foundation, Training) that
-    are common English words."""
+    are common English words.
+
+    Returns: union of built-in safety terms + instance-specific terms from
+    identifiers.yaml. When identifiers.yaml is empty/missing, still returns
+    _BUILTIN_SAFETY_TERMS for basic safety checks."""
     inst = G._INST
-    strong = set()
+    strong = set(_BUILTIN_SAFETY_TERMS)
     for cat in ('team_handles', 'user_handles', 'codename_terms'):
         for t in inst.get(cat, []):
             strong.add(t.strip().strip('"\''))

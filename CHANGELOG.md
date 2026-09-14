@@ -37,6 +37,34 @@ outside this repository.
 
 ---
 
+## Unreleased — Release gate verification (2026-09-14)
+
+- **What:** add a deterministic release gate runner at `build/verify-all.py`
+  that runs all public gates in documented order: sweep-gate, review-gate,
+  surface-scan, check-artifact-contract self-test, preflight/check self-test,
+  report/check self-test, and fresh-clone generation test. Also add GitHub
+  Actions workflow at `.github/workflows/verify.yml` that runs the gates on
+  push and pull requests with Python 3.11 and 3.12, using only checkout and
+  setup-python actions (safe for forks, no secrets). Fix a blind spot in
+  surface-scan: when `build/identifiers.yaml` is absent or empty, the scanner
+  still enforces built-in generic safety terms (paths, credential patterns)
+  that must never appear in public code. Add tests for verify-all and the
+  empty-identifiers case. Update README.md and index.html to document the
+  release gates and CI status.
+
+- **Why it changed:** need a single point of entry for verification that runs
+  all gates automatically, with CI integration that catches problems before
+  merge. The empty-identifiers fix ensures the scanner remains effective in
+  fresh clones and open-kit scenarios.
+
+- **Evidence:** [VERIFIED — internal operating record] gates, checkers, and
+  self-tests exist and pass; workflow tested on local execution.
+
+- **Files:** `build/verify-all.py`, `.github/workflows/verify.yml`,
+  `build/surface-scan.py`, `tests/test_gates.py`, `README.md`, `index.html`.
+
+---
+
 ## Unreleased — Execution-evidence contract (2026-09-13)
 
 - **What:** adds `choreography/run-evidence.md`, defining a vendor-neutral

@@ -34,7 +34,7 @@ sequence doubles as the phase pipeline.
 | # | Role (instance) | Lane | Explicitly NOT |
 |---|---|---|---|
 | 0 | **Director** (Lugia) | Frame: ingest, delegate, decide | Hands-on coding |
-| 1 | **Researcher** (Sheikh al-Jabr) | Evidence, prior art, constraint mapping | Architecture decisions |
+| 1 | **Researcher** (RESEARCHER-001) | Evidence, prior art, constraint mapping | Architecture decisions |
 | 2 | **Architect** (Azaraki) | Analysis, structure, planning (thinking only) | Writing code |
 | 3 | **UX** (Shayba) | Human experience, interface design | Backend logic |
 | 4 | **Coder** (KodeKoot) | Software development (sole developer) | Strategy prose |
