@@ -42,7 +42,7 @@ Before delivery:
 - Confirm no unresolved or unlicensed assets are included
 - Record source of script, voice, music, and clips in the job notes
 
-Reference provenance-brief.md for why this matters.
+Upstream contains unresolved sample assets and incomplete audio provenance, so every user must review current asset provenance before delivery.
 
 ## 7. Fallback behavior when OpenShorts is unavailable
 
