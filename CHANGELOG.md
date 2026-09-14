@@ -37,6 +37,31 @@ outside this repository.
 
 ---
 
+## 1.5.1 — Execution-evidence contract (2026-09-14)
+
+- **What:** adds `choreography/run-evidence.md`, defining a vendor-neutral
+  contract for recording execution evidence: what an agent actually executed,
+  not only that a procedure ran. Evidence record fields include run id, phase,
+  parent/child relations, step kind, tool/model identifiers, timestamps, status,
+  artifact references, unresolved items, and evidence boundary. Distinguishes
+  procedure evidence from achieved-state evidence (exit code alone insufficient).
+  Token accounting counts only innermost spans; cost honesty uses dated price
+  table (unknown models remain unknown); run comparison uses stable step keys
+  (kind + tool/name); retention is bounded with dropped-count visibility; no
+  secrets/raw prompts by default; local/loopback guidance. Includes acceptance
+  checklist and vendor-neutral example record.
+- **Why:** Team6 has read-back receipts and logs but no local, framework-agnostic
+  artifact of what the agent actually executed (span tree, tool calls, tokens,
+  latency, per-model cost) nor a way to diff two runs step-by-step. This is the
+  one genuine capability gap identified in the local-agent-toolkit audit.
+- **Evidence:** [VERIFIED — internal operating record] local-agent-toolkit audit
+  (2026-09-13) identifies observability as the one real gap. This release
+  implements the rules-only adaptation (no external code copied).
+
+- **Files:** `choreography/run-evidence.md`, `README.md`, `index.html`, `CHANGELOG.md`.
+
+---
+
 ## Unreleased — Safe shareable run packet (2026-09-13)
 
 - **What:** add a general safe shareable run packet: `choreography/safe-run-packet.md`

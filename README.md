@@ -129,6 +129,16 @@ report — no Agency Orchestrator code is copied — and the Team6 Kanban board
 remains authoritative: the packet is a derived shareable report, not a second
 state store.
 
+## Execution evidence
+
+The kit defines a vendor-neutral execution-evidence contract that records what
+an agent actually executed, not only that a procedure ran. It specifies evidence
+record fields, distinguishes procedure evidence from achieved-state evidence,
+and establishes rules for token accounting (innermost spans only), cost honesty
+(unknown models remain unknown), run comparison with stable step keys, and
+bounded retention with no secrets or raw prompts by default.
+Read `choreography/run-evidence.md`.
+
 ## The main rules
 
 1. **Everything on disk.** Progress is saved to files, so months later you can still pick up where you left off.
