@@ -136,5 +136,5 @@ through the same substitution path as every other kit template.
   artifacts by size, bind every claim to a check.
 - **Verify state, not procedure.** A passing command or test is insufficient if it
   proves only that something ran. Evidence must identify the achieved target
-  state and a verifier must reject procedure-only evidence. (Conceptual
-  inspiration: Ingressing Minds... DOI 10.3390/philosophies11050161)
+  state, observed from the artifact/system and expressed through existing
+  evidence_refs/expected_artifacts, not inferred from exit code alone.

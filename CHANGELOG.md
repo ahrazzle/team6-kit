@@ -58,14 +58,6 @@ outside this repository.
 - **Evidence:** [VERIFIED — public conceptual source] the general idea of an
   Agency Orchestrator-style run report, adopted as a concept. This is a
   conceptual operating pattern, **not copied Agency Orchestrator code**: no
-
-- **What:** clarify artifact contract operating rules to require evidence of
-  achieved target state, not merely procedure execution.
-- **Why it changed:** to prevent false claims of completion where a command ran
-  but the requested state was not achieved or verified.
-- **Evidence:** [VERIFIED — public conceptual source] conceptual inspiration from
-  paper on evidence standards (DOI 10.3390/philosophies11050161); not adopted
-  metaphysics or ontology claims.
   source, prompt, or dependency from any orchestrator project is bundled. The
   Team6 Kanban board remains the authoritative task record; the packet is a
   derived shareable report, not a second state store, and adds no runtime
@@ -74,6 +66,24 @@ outside this repository.
   validator; independent review required before treating it as release policy.
 - **Files:** `choreography/safe-run-packet.md`, `build/report/` (README, checker,
   fixtures), `README.md`, `CHANGELOG.md`.
+
+## Unreleased — Goal-state evidence guidance (2026-09-13)
+
+- **What:** add one operating rule to `choreography/artifact-contract.md`:
+  evidence must prove the achieved target state, not merely that a command or
+  procedure ran. A verifier rejects procedure-only evidence.
+- **Why it changed:** a passing command does not prove the requested state was
+  reached. Adjudicating a handoff on procedure execution alone lets an
+  unachieved target state through.
+- **Evidence:** [VERIFIED — public conceptual source] the state-versus-procedure
+  framing is inspired by Levin, M., "Ingressing Minds: Causal, Non-Physical
+  Patterns In-Form Natural, Synthetic, and Hybrid Embodiments," Philosophies
+  11(5), 161 (2026), https://doi.org/10.3390/philosophies11050161. Adopted as a
+  framing for evidence sufficiency only. The paper's metaphysical and ontology
+  claims are not adopted, cited, or relied on.
+- **Proof status:** [PROPOSED / PENDING] documentation rule; repository gates
+  and independent review required before release.
+- **Files:** `choreography/artifact-contract.md`, `CHANGELOG.md`.
 
 ## Unreleased — I/O delegation contract (2026-09-13)
 
