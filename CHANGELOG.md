@@ -37,7 +37,7 @@ outside this repository.
 
 ---
 
-## 1.5.1 — Execution-evidence contract (2026-09-14)
+## Unreleased — Execution-evidence contract (2026-09-13)
 
 - **What:** adds `choreography/run-evidence.md`, defining a vendor-neutral
   contract for recording execution evidence: what an agent actually executed,

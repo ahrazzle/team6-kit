@@ -88,7 +88,7 @@ For any implementation of this contract:
   "start_timestamp": "2026-09-13T10:15:00Z",
   "end_timestamp": "2026-09-13T10:17:30Z",
   "status": "completed",
-  "artifact_refs": ["team6-kit-wrk/build/generate.py"],
+  "artifact_refs": ["build/generate.py"],
   "unresolved_items": [],
   "evidence_boundary": "single-step"
 }
