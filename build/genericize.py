@@ -55,8 +55,11 @@ MANIFEST = os.path.join(HERE, "manifest.tsv")
 #     supplied per-instance at build time, never committed with values)
 # ---------------------------------------------------------------------------
 def derive_identity_inventory(source=DEFAULT_SOURCE):
+    """Return (handles, names) from source directory. Empty if missing/not a dir."""
     handles = set()
     names = set()
+    if not os.path.isdir(source):
+        return [], []
     for prof in sorted(os.listdir(source)):
         if prof.startswith("."):
             continue

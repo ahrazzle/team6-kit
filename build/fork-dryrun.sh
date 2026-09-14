@@ -51,7 +51,7 @@ mkdir -p kits/personas
 # --- Scenario A: kits/ committed to the fork branch
 echo "[2/4] Scenario A: kits/ COMMITTED to fork branch..."
 echo "$SENTINEL_CONTENT" > kits/personas/sentinel-a.md
-git add kits/
+git add -f kits/
 git -c user.name=fork -c user.email=fork@test commit --quiet -m "add kits layer (committed)"
 echo "  committed. Simulating update: git reset --hard upstream/$ORIGIN_BRANCH"
 git fetch --quiet upstream

@@ -96,7 +96,9 @@ def main():
     # 7. fresh-clone test (fork-dryrun.sh)
     fork_dryrun = os.path.join(HERE, "fork-dryrun.sh")
     if os.path.isfile(fork_dryrun):
-        gates.append(("fresh-clone fork-dryrun", ["bash", fork_dryrun]))
+        # Use current repo as source and 'main' as branch; no private paths.
+        gates.append(("fresh-clone fork-dryrun",
+                     ["bash", fork_dryrun, ROOT, "main"]))
     else:
         # Alternative: verify generate.py works in fork mode
         gates.append(("fresh-clone generate test",

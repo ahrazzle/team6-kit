@@ -8,12 +8,41 @@ Uses only stdlib and matches repository conventions. Runs from a fresh clone.
 import os
 import subprocess
 import sys
+import tempfile
 import unittest
 
 # Add build directory to path for imports
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 BUILD = os.path.join(ROOT, "build")
+
+
+class TestGenericizePortability(unittest.TestCase):
+    """Tests for genericize.py CI portability (missing source handling)."""
+
+    def test_derive_identity_inventory_missing_source(self):
+        """derive_identity_inventory should return empty lists when source is absent."""
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("genericize",
+            os.path.join(BUILD, "genericize.py"))
+        assert spec is not None
+        genericize = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(genericize)
+
+        # Test with non-existent path
+        handles, names = genericize.derive_identity_inventory("/nonexistent/path/here")
+        self.assertEqual(handles, [])
+        self.assertEqual(names, [])
+
+        # Test with path that exists but is not a directory
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            tmpfile = f.name
+        try:
+            handles, names = genericize.derive_identity_inventory(tmpfile)
+            self.assertEqual(handles, [])
+            self.assertEqual(names, [])
+        finally:
+            os.unlink(tmpfile)
 
 
 class TestVerifyAll(unittest.TestCase):
