@@ -1,0 +1,28 @@
+# Example only. Team6-kit never executes this file.
+# External tool: check current upstream license and dependency terms before use.
+
+route: openshorts-route
+upstream_ref: https://github.com/jnMetaCode/openshorts
+upstream_pinned: 60317c252af9f4576a1cb3cabf7ee8f86760c268
+request:
+  kind: finished-short-production   # only kind this route serves
+  source_material: "<reference to user-supplied script or brief>"
+  target_length_seconds: "<e.g. 30>"
+  aspect: "<e.g. 9:16>"
+  language_or_voice_note: "<user choice, no credentials>"
+prerequisites:
+  openshorts_available: false        # example placeholder
+  user_confirmed_external_tool: false
+  source_rights_confirmed: false
+sequence_notes:
+  - install
+  - doctor
+  - estimate
+  - run
+  - export
+gates:
+  quality_check: "<placeholder>"
+  provenance_check: "<placeholder>"
+posting:
+  auto_post: false                   # Team6-kit never auto-posts
+fallback: "<use existing media skills when OpenShorts is unavailable>"

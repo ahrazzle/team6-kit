@@ -62,6 +62,11 @@ outside this repository.
 
 ---
 
+## Unreleased — OpenShorts route (2026-09-14)
+
+- **What:** docs-only OpenShorts route + non-executable example config; no new dependencies; no bundled code; external tool license and dependency terms apply.
+- **Files:** `choreography/openshorts-route.md`, `registry/openshorts-route.yaml.example`, README, CHANGELOG.
+
 ## Unreleased — Safe shareable run packet (2026-09-13)
 
 - **What:** add a general safe shareable run packet: `choreography/safe-run-packet.md`

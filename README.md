@@ -113,6 +113,19 @@ closed on missing fields, credential values, unbounded waits, or missing
 rollback. It is a Team6 internal operating pattern for side-effect and cost
 preflight. The Team6 Kanban board remains the authoritative task record.
 
+## OpenShorts route (external, docs only)
+
+Finished short-video production requests — where you explicitly ask for a rendered
+short — route to OpenShorts, an external local-first tool Team6 has studied as a
+reference. This is a documentation route only: Team6-kit does not bundle or run
+OpenShorts, does not render video by itself, and does not post, publish, or schedule
+anything on your behalf. Transcript, summary, and media-research requests stay on the
+existing media skills. You install OpenShorts separately and check its current license
+and dependency terms before use; the route ends at a local export you review.
+
+Start with `registry/openshorts-route.yaml.example` and read
+`choreography/openshorts-route.md`.
+
 ## Safe shareable run packet
 
 When a run finishes, the people who need to know about it are usually not at the
