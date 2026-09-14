@@ -289,7 +289,7 @@ outside this repository.
   unclassified references, duplicate content, or orphan surfaces that never
   propagate to the full surface set.
 - **Evidence:** [Internal design] Team6's own operating procedure from real
-  handovers (see the 1.3.0 audit trail in AUDIT/handover-*.md).
+  handovers (the original 1.3.0 audit trail is not carried in this tree; see the convention note above).
 
 ### 2. The audit inspects surfaces, not the README
 
