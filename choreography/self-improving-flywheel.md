@@ -127,6 +127,19 @@ proposal. It does not enter the shared layer.
   ahead of the target repository's default branch head at the time of branch
   creation.
 
+`[VERIFIED — internal operating record, 2026-09-15]`
+
+### 5. Mirror forks
+
+- **Incident:** When a repository has mirror forks, a change to one mirror does not automatically propagate to the others.
+- **Root cause:** No rule required that a change reach every mirror with consistent author identity and file set.
+- **Smallest rule:** When one repository has mirror forks, one change must reach every mirror; extract the diff once, apply it to each mirror, rebuild each commit with its own file set and its own author identity, and confirm the rebuilt trees are identical across mirrors.
+- **Canonical home:** The shared choreography contract, where multi-repo synchronization rules are inherited by every role.
+- **Verification:** A different member checks that each mirror has the same tree and the commit author identity matches the mirror's convention.
+- **Re-test:** The next change applied to mirrors confirms identical trees across all mirrors.
+
+`[VERIFIED — internal operating record, 2026-09-15]`
+
 ## Operating record
 
 The flywheel is complete only when the rule is canonical, independently

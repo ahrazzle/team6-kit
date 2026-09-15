@@ -112,6 +112,10 @@ def main():
         gates.append(("fresh-clone generate test",
                       [sys.executable, os.path.join(HERE, "generate.py"), "--help"]))
 
+    # 9. unique-headings check
+    gates.append(("check-unique-headings",
+                  [sys.executable, os.path.join(HERE, "check-unique-headings.py")]))
+
     # 9. review-repair checker — self-test + fixture corpus. Exercises the
     #    guarded review/repair contract (choreography/review-repair-workflow.md)
     #    across the review, adversarial, browser, and artifact lanes.
