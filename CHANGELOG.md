@@ -52,6 +52,15 @@ Provenance record: [AUDIT/makepad-learnings.md](AUDIT/makepad-learnings.md)
 
 ## Unreleased
 
+### What
+add `choreography/session-recall.md`, a vendor-neutral read-only observer contract for session history and persistent-memory recall views. It defines missing-store-to-empty behavior, failure opacity, memory parse agreement, deterministic non-normative subject signals, and a prohibition on history or memory writes. Register the authored-fresh document in `build/generate.py` so generated kits carry it verbatim.
+
+### Why it changed
+give implementations one stable boundary for recall without turning observation into a second memory writer or exposing internal failure details. The change is documentation and generated-surface registration only; it adds no runtime, template, dependency, or site behavior.
+
+### Evidence
+[VERIFIED — public conceptual source] the read-only observer shape and deterministic recall principles are derived from the linked public conceptual source, adopted as principles only. No source code, prompts, anti-slop lists, or source prose is copied. https://github.com/NousResearch/hermes-memory-wiki
+
 - **What:** correct the canonical-site labels in the README. The canonical
   public documentation site for Team6-kit is `team6.askaconsult.com`; the
   ASKA corporate page at `www.askaconsult.com/team6` is the service listing.

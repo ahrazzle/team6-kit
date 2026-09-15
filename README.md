@@ -98,6 +98,14 @@ without starting a new session or losing the thread. Send a follow-up only
 after the worker has fully stopped, and only for a turn that reads state.
 Never attach a second live writer to a session that is still running.
 
+## Session-recall observer
+
+The session-recall observer reads existing session history and persistent memory to produce recall views.
+It is read-only: it does not create a missing store and never writes history or memory.
+A missing store appears as an empty view; a real failure is logged internally and returned as a generic error without a traceback.
+Memory recall uses the same parse agreement as the memory tool, so the view does not reinterpret saved entries.
+Subject signals are deterministic guidance from titles, paths, tool names, slash commands, quoted phrases, and identifiers; read `choreography/session-recall.md` for the full contract.
+
 ## Release gate verification
 
 The kit includes a deterministic release gate runner at `build/verify-all.py`.

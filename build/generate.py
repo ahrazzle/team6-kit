@@ -378,6 +378,8 @@ def main():
          "contracts/examples/artifact-contract.valid.yaml", False),
         ("examples/artifact-contract.invalid.yaml",
          "contracts/examples/artifact-contract.invalid.yaml", False),
+        ("choreography/session-recall.md",
+         "choreography/session-recall.md", False),
     ]
     for src_rel, dst_rel, do_sub in GENERIC_SHIP:
         src = os.path.join(ROOT, src_rel)
