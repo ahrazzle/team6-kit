@@ -36,6 +36,19 @@ https://askaconsult.com/digital/. The deployment and DNS boundary is managed
 outside this repository.
 
 ---
+## Unreleased
+
+**What:** Docs-only reference notes in eight existing guidance and provenance surfaces: `README.md`, `WHY.md`, `AUDIT/makepad-learnings.md`, `choreography/run-evidence.md`, `templates/skills/creative/html-report-authoring/SKILL.md`, `templates/skills/software-development/project-foundation-scaffold/SKILL.md`, `templates/skills/mlops/evaluation/evaluating-llms-harness/SKILL.md`, `templates/skills/deployment/github-pages-deployment/SKILL.md`. Seven adopted candidates: A1, A2, A3, A4, B2, B3, C5. Three proof-pending candidates: B1, C1, C3.
+
+**Why:** Selected Makepad repositories provide conceptual or historical reference points. The change does not add code, dependencies, runtime support, deployment, or a registry default.
+
+**Evidence:** [VERIFIED - public conceptual source] Each adopted Makepad repository links to its source and committed license. MIT and Apache-2.0 sources are conceptual-reference-only. All-rights-reserved sources are inspiration-only with no excerpt.
+
+**Proof status:** Documentation reference only. No Makepad build, Team6 compatibility, benchmark, or live-site parity is claimed.
+
+**Files:** `README.md`, `WHY.md`, `AUDIT/makepad-learnings.md`, `choreography/run-evidence.md`, `templates/skills/creative/html-report-authoring/SKILL.md`, `templates/skills/software-development/project-foundation-scaffold/SKILL.md`, `templates/skills/mlops/evaluation/evaluating-llms-harness/SKILL.md`, `templates/skills/deployment/github-pages-deployment/SKILL.md`.
+
+Provenance record: [AUDIT/makepad-learnings.md](AUDIT/makepad-learnings.md)
 
 ## Unreleased
 

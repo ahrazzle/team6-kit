@@ -167,6 +167,26 @@ the v1.1.0 doctrine encoded: a guarded local call is a first-pass filter, not a
 decision, and any Redact result with address/numeric/uncertain findings is held
 for review before anything is transmitted.
 
+## Why the kit records Makepad as a conceptual reference
+
+The PR records reusable design principles, not Makepad implementation. Each Makepad-derived statement carries the tag `[VERIFIED - public conceptual source]` and places its repository and committed-license links in the same section.
+
+The kit references seven adopted candidates across existing surfaces. HTML report authoring records the separation of declarative design intent from rendering. Project-foundation tooling records the serialization design question. Model evaluation references record model-wire and quantization patterns. GitHub Pages verification records static WASM artifact checking. Execution evidence records transcript provenance patterns.
+
+These references are conceptual only. They do not mean that these surfaces gained Makepad functionality, dependencies, or runtime support.
+
+Source links (conceptual-reference-only, each with its committed license):
+
+- [VERIFIED - public conceptual source] [`makepad/makepad`](https://github.com/makepad/makepad), license: [`LICENSE`](https://github.com/makepad/makepad/blob/main/LICENSE), MIT.
+- [VERIFIED - public conceptual source] [`makepad/microserde`](https://github.com/makepad/microserde), license: [`LICENSE`](https://github.com/makepad/microserde/blob/master/LICENSE), MIT.
+- [VERIFIED - public conceptual source] [`makepad/llama_antirez_deepseek`](https://github.com/makepad/llama_antirez_deepseek), license: [`LICENSE`](https://github.com/makepad/llama_antirez_deepseek/blob/main/LICENSE), MIT.
+- [VERIFIED - public conceptual source] [`makepad/llama_nvfp4`](https://github.com/makepad/llama_nvfp4), license: [`LICENSE`](https://github.com/makepad/llama_nvfp4/blob/master/LICENSE), MIT.
+- [VERIFIED - public conceptual source] [`makepad/makepad_history`](https://github.com/makepad/makepad_history), license: [`LICENSE`](https://github.com/makepad/makepad_history/blob/master/LICENSE), MIT.
+- [VERIFIED - public conceptual source] [`makepad/makepad.github.io`](https://github.com/makepad/makepad.github.io), license: [`LICENSE`](https://github.com/makepad/makepad.github.io/blob/master/LICENSE), Apache-2.0.
+- [VERIFIED - public conceptual source] [`makepad/ai_snake`](https://github.com/makepad/ai_snake), license: [`LICENSE`](https://github.com/makepad/ai_snake/blob/main/LICENSE), MIT.
+
+No code, prompt, transcript, asset, or source prose from any Makepad repository is copied. Full provenance: [AUDIT/makepad-learnings.md](AUDIT/makepad-learnings.md).
+
 ---
 
 ## What the kit does NOT provide (honesty section)

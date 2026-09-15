@@ -178,6 +178,25 @@ and establishes rules for token accounting (innermost spans only), cost honesty
 bounded retention with no secrets or raw prompts by default.
 Read `choreography/run-evidence.md`.
 
+## Makepad references
+
+The kit records selected Makepad work as conceptual references only.
+
+[VERIFIED - public conceptual source]
+- **Core UI runtime** (makepad/makepad, MIT): Declarative design separate from renderer.
+- **Serialization tooling** (makepad/microserde, MIT): Build/runtime design question.
+- **Model-wire reference** (makepad/llama_antirez_deepseek, MIT): Integration pattern only.
+- **Quantization reference** (makepad/llama_nvfp4, MIT): Hardware-specific pattern only.
+- **Historical live-coding** (makepad/makepad_history, MIT): Historical context only.
+- **Static WASM publishing** (makepad/makepad.github.io, Apache-2.0): Artifact checking reference.
+- **Transcript provenance** (makepad/ai_snake, MIT): Metadata shape reference.
+
+No Makepad code, dependency, runtime, model, asset, transcript, or deployment is included or required.
+
+B1 (cross-platform Rust UI), C1 (native GPU backends), and C3 (declarative UI DSL) remain proof-pending follow-up spikes. They do not affect the current build.
+
+Full source table: [AUDIT/makepad-learnings.md](AUDIT/makepad-learnings.md)
+
 ## The main rules
 
 1. **Everything on disk.** Progress is saved to files, so months later you can still pick up where you left off.
