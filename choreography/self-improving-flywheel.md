@@ -110,6 +110,23 @@ proposal. It does not enter the shared layer.
 
 `[VERIFIED — internal operating record, 2026-09-15]`
 
+### 4. Stale-tree hazard
+
+- **Incident:** A stale branch was used as a PR base. An agent created a PR
+  branch from a local branch that was 14 commits behind origin/main. The diff
+  would have deleted content that had already shipped on main.
+- **Root cause:** No rule required verifying branch freshness before creating a
+  PR branch.
+- **Smallest rule:** Before creating a contribution branch, fetch the target
+  repository's default branch and create the branch from the fetched head, not
+  from a local branch that may be stale.
+- **Canonical home:** The shared contribution contract (choreography/open-source-contribution.md).
+- **Verification:** A different member checks that the PR base commit matches
+  the fetched head of the target default branch.
+- **Re-test:** The next contribution PR must show a base commit that is at or
+  ahead of the target repository's default branch head at the time of branch
+  creation.
+
 ## Operating record
 
 The flywheel is complete only when the rule is canonical, independently

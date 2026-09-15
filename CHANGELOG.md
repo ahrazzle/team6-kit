@@ -38,6 +38,22 @@ outside this repository.
 ---
 ## Unreleased
 
+**What:** Add three choreography rules plus README, CHANGELOG, and site entries that carry them:
+
+1. **Fresh-branch requirement** (choreography/open-source-contribution.md) — every contribution branch must be created from a fresh fetch of the target repository's default branch.
+2. **Commit serialization boundary** (choreography/orchestration.md) — stage and commit must be serialized for a declared file set.
+3. **Stale-tree hazard worked example** (choreography/self-improving-flywheel.md) — encodes the same incident as rule 1.
+
+**Why:** During an orchestration test, a stale branch 14 commits behind origin/main was used as a PR base, which would have deleted content already shipped on main.
+
+**Evidence:** [VERIFIED — internal operating record]
+
+**Files:** choreography/open-source-contribution.md, choreography/orchestration.md, choreography/self-improving-flywheel.md, README.md, CHANGELOG.md, index.html.
+
+---
+
+## Unreleased
+
 **What:** Docs-only reference notes in eight existing guidance and provenance surfaces: `README.md`, `WHY.md`, `AUDIT/makepad-learnings.md`, `choreography/run-evidence.md`, `templates/skills/creative/html-report-authoring/SKILL.md`, `templates/skills/software-development/project-foundation-scaffold/SKILL.md`, `templates/skills/mlops/evaluation/evaluating-llms-harness/SKILL.md`, `templates/skills/deployment/github-pages-deployment/SKILL.md`. Seven adopted candidates: A1, A2, A3, A4, B2, B3, C5. Three proof-pending candidates: B1, C1, C3.
 
 **Why:** Selected Makepad repositories provide conceptual or historical reference points. The change does not add code, dependencies, runtime support, deployment, or a registry default.

@@ -343,6 +343,19 @@ and served-truth doctrine (2026-09-09). See `../CHANGELOG.md`.*
 
 Reference patterns for turn-dense orchestration, cost-bounded routing, and context economics. Provider-neutral; does not require any specific installer or hooks.
 
+## 18. Commit serialization boundary
+
+Stage and commit must be serialized for a declared file set. When multiple
+agents share a worktree, only one agent may stage and commit a declared file set
+at a time. The lock boundary is the declared file set, not the entire repository.
+After staging, verify the commit identity (author, email) and file scope (only
+declared files) before releasing the lock. This rule stems from concurrent
+writers in one shared worktree contaminating commit attribution because the
+stage-and-commit step was not serialized. Serialize stage and commit for a
+declared file set under a single lock. Verify identity and file scope after
+commit. This is enforced in the shared orchestration contract, where repository
+write boundaries are enforced for every role.
+
 ### Turn Density and Cache Horizon
 
 - **Dense turn policy:** When consecutive turns occur within the same session, group related actions into a single turn whenever the outcome is deterministic.
@@ -364,3 +377,16 @@ Reference patterns for turn-dense orchestration, cost-bounded routing, and conte
 - **No provider locks:** All economic rules apply regardless of underlying model
 - **Fallback semantics:** When provider-specific features unavailable, use generic equivalents (e.g., turn counters instead of native cache APIs)
 
+
+## 18. Commit serialization boundary
+
+Stage and commit must be serialized for a declared file set. When multiple
+agents share a worktree, only one agent may stage and commit a declared file set
+at a time. The lock boundary is the declared file set, not the entire repository.
+After staging, verify the commit identity (author, email) and file scope (only
+declared files) before releasing the lock. This rule stems from concurrent
+writers in one shared worktree contaminating commit attribution because the
+stage-and-commit step was not serialized. Serialize stage and commit for a
+declared file set under a single lock. Verify identity and file scope after
+commit. This is enforced in the shared orchestration contract, where repository
+write boundaries are enforced for every role.

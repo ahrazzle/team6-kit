@@ -46,6 +46,34 @@ smallest plausible fix.
 
 `[REQUIRED — repository evidence]`
 
+## Branch freshness requirement
+
+Every contribution branch must be created from a fresh fetch of the target
+repository's default branch. An agent created a PR branch from a local branch
+that was 14 commits behind `origin/main`. The diff would have deleted content
+that had already shipped on main. A stale base produces a PR that reverts or
+duplicates existing work. Before creating a contribution branch, fetch the
+target repository's default branch and create the branch from the fetched head,
+not from a local branch that may be stale. This is enforced in the `The four
+steps` > `1. Identify` step, which already requires checking "the current
+upstream state."
+
+`[REQUIRED — repository evidence]`
+
+## Branch freshness requirement
+
+Every contribution branch must be created from a fresh fetch of the target
+repository's default branch. An agent created a PR branch from a local branch
+that was 14 commits behind origin/main. The diff would have deleted content
+that had already shipped on main. A stale base produces a PR that reverts or
+duplicates existing work. Before creating a contribution branch, fetch the
+target repository's default branch and create the branch from the fetched head,
+not from a local branch that may be stale. This is enforced in the `The four
+steps` > `1. Identify` step, which already requires checking "the current
+upstream state."
+
+`[REQUIRED — repository evidence]`
+
 ### 2. Draft
 
 Choose a pull request or an issue by using the project's own contribution model:

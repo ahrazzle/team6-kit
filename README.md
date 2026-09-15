@@ -317,6 +317,26 @@ For work performed with an AI coding agent, use the compact
 testing, security checks, scope control, and evidence requirements without
 replacing the Team6 ownership and QA gates.
 
+## What's new in this release (1.8.0)
+
+### What
+
+Add three choreography rules plus the README, CHANGELOG, and site entries that carry them:
+
+1. **Fresh-branch requirement** (choreography/open-source-contribution.md) — every contribution branch must be created from a fresh fetch of the target repository's default branch.
+2. **Commit serialization boundary** (choreography/orchestration.md) — stage and commit must be serialized for a declared file set.
+3. **Stale-tree hazard worked example** (choreography/self-improving-flywheel.md) — encodes the same incident as rule 1.
+
+These rules prevent PRs that revert or duplicate existing work due to stale branches. The README, CHANGELOG, and index.html surfaces carry the change.
+
+### Why
+
+During an orchestration test, a stale branch 14 commits behind origin/main was used as a PR base, which would have deleted content already shipped on main. A stale base produces a PR that reverts or duplicates existing work.
+
+### Evidence
+
+[VERIFIED — internal operating record] Grounded in the team's shared doctrine and dated session history.
+
 ## What's new in this release (1.7.0)
 
 This release adds two documentation-first contracts with dependency-free local
