@@ -15,6 +15,7 @@ ASKA's `/team6` route.
 One AI agent can lose track, skip steps, or claim work is done when it isn't. Team6-kit sets up several agents with separate jobs — planner, builder, checker — and rules so that:
 
 - Work is checked by a different agent than the one that did it.
+- Writing is proofread and fact-audited by a different agent than the one who wrote it.
 - Progress is saved on disk, so a crashed agent can resume where it left off.
 - Long tasks pause for review instead of running silently forever.
 - Knowledge is stored in small files that load only when needed.

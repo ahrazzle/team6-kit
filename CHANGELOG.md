@@ -64,6 +64,36 @@ outside this repository.
   E-PROTEUS-008). The steering block is patched into the subagent-spawning
   skill as the procedure's home.
 
+- **What:** strengthen the generic kit contracts for independent proofread and
+  fact audit, byte-exact quote capture, enforcement-first evidence, verbatim
+  receipt integrity, and bounded third-party pilots. In
+  `build/freeze-manifest.py`, keep one `INSTANCE_TOKENS` tuple as the single
+  source of truth for the leak checks that exist in that script, and add
+  pre-write guards that refuse to overwrite the frozen artifact when the input
+  is missing or resolves to zero rows.
+
+- **Why it changed:** review machinery, source citations, receipt fields,
+  adoption checks, and the frozen manifest each covered part of the failure
+  class, but the missing boundaries allowed self-audited prose, retyped quotes,
+  prose-only behavioural claims, inferred receipt values, under-scoped pilots,
+  and an empty freeze input overwriting the frozen artifact.
+
+- **Evidence:** [VERIFIED — internal operating record] verified experience and
+  read-only inspection of the live repository. The implementation must preserve
+  generic placeholders and must pass the repository's independent public-surface
+  checks.
+
+- **Proof status:** [PROPOSED / PENDING] documentation and gate specification;
+  independent proofread, fact audit, and release-gate verification required
+  before treating it as release policy.
+
+- **Files:** `templates/skills/creative/external-writing-discipline/SKILL.md`,
+  `templates/skills/software-development/source-verification/SKILL.md`,
+  `templates/skills/research/source-evaluation/SKILL.md`,
+  `templates/contracts/artifact-contract.md.tmpl`,
+  `templates/skills/software-development/external-tool-vetting/SKILL.md`,
+  `build/freeze-manifest.py`, `build/generate.py`, and `CHANGELOG.md`.
+
 ---
 
 ## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
