@@ -1,0 +1,30 @@
+# reward-functions.invalid.yaml — an INTENTIONALLY INVALID catalogue example.
+# Must FAIL: python3 build/check-reward-registry.py \
+#   examples/reward-functions.invalid.yaml   -> exit 1
+# Deliberate violations (independent):
+#   1. entry 'Bad-Reward' has an invalid identifier (not lower snake case)
+#   2. entry 'Bad-Reward' declares a reversed score range (min_score > max_score)
+#   3. the second entry carries an executable hook field ('command')
+version: 1
+rewards:
+  - id: Bad-Reward
+    description: an intentionally invalid entry
+    input: scored_rollout_sample
+    output: scalar
+    min_score: 5
+    max_score: 1
+    deterministic: true
+    modes: train
+    implementation_ref: project-local
+    source: operator-documentation
+  - id: exact_match
+    description: a second entry that adds an executable hook field
+    input: scored_rollout_sample
+    output: scalar
+    min_score: 0
+    max_score: 1
+    deterministic: true
+    modes: eval
+    implementation_ref: project-local
+    command: run_reward
+    source: operator-documentation

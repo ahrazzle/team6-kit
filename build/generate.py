@@ -383,6 +383,24 @@ def main():
          "contracts/examples/artifact-contract.invalid.yaml", False),
         ("choreography/session-recall.md",
          "choreography/session-recall.md", False),
+        # Grouped scored-rollout contract (v1.7.0): a JSONL interchange shape
+        # for runs of scored samples grouped for comparison, its dependency-free
+        # checker, and valid/invalid fixtures. Authored fresh generic content —
+        # no extraction row by design. The .tmpl resolves through the SAME
+        # substitution path as the artifact-contract template. The reward
+        # catalogue (registry/reward-functions.yaml.example) is deliberately
+        # NOT shipped here: no Python module or executable reward registration
+        # code enters GENERIC_SHIP.
+        ("templates/contracts/scored-rollout-group.jsonl.tmpl",
+         "contracts/scored-rollout-group.jsonl.tmpl", True),
+        ("choreography/scored-rollouts.md",
+         "contracts/scored-rollouts.md", False),
+        ("build/check-scored-rollout.py",
+         "contracts/check-scored-rollout.py", False),
+        ("examples/scored-rollout-group.valid.jsonl",
+         "contracts/examples/scored-rollout-group.valid.jsonl", False),
+        ("examples/scored-rollout-group.invalid.jsonl",
+         "contracts/examples/scored-rollout-group.invalid.jsonl", False),
     ]
     for src_rel, dst_rel, do_sub in GENERIC_SHIP:
         src = os.path.join(ROOT, src_rel)

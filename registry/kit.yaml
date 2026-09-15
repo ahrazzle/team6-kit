@@ -3,7 +3,7 @@
 # Install: `kit install <registry>/<team>` (Claude Code marketplace pattern).
 
 name: team6-kit
-version: 1.6.0
+version: 1.7.0
 description: >
   Multi-agent team kit — identity archetypes, orchestration
   choreography, governance rules, and an instantiable generator. v1.1.0
@@ -30,6 +30,15 @@ description: >
   validator, generated into the kit under contracts/. Team6 Kanban remains
   the state authority; the contract is a handoff snapshot, not a second
   orchestration runtime.
+  v1.7.0 adds two documentation-first contracts with dependency-free local
+  validators: a grouped scored-rollout JSONL interchange format (run header,
+  group declarations, scored samples; evaluation handling, off-policy caps,
+  and allocation minima recorded and validated as metadata) and a declarative
+  reward catalogue (metadata only; stable reward identities and declared
+  behaviour, validated before use, never imported or executed). Neither adds a
+  trainer, rollout service, inference server, reward executor, or dependency.
+  The grouped scored-rollout contract and its checker ship into generated kits
+  under contracts/; the reward catalogue stays a source-repo registry example.
 
 registry: git@github.com:{ORG}/team6-kit.git
 home: https://team6.askaconsult.com/      # intended public Team6 site (v1.2.0 public-domain decision)
@@ -54,6 +63,20 @@ build:
     - build/check-artifact-contract.py               # -> contracts/ in output
     - examples/artifact-contract.valid.yaml          # -> contracts/examples/
     - examples/artifact-contract.invalid.yaml        # -> contracts/examples/
+    # v1.7.0 grouped scored-rollout contract (documentation mirror; the
+    # operative list is GENERIC_SHIP in generate.py)
+    - templates/contracts/scored-rollout-group.jsonl.tmpl  # -> contracts/
+    - choreography/scored-rollouts.md                # -> contracts/
+    - build/check-scored-rollout.py                  # -> contracts/
+    - examples/scored-rollout-group.valid.jsonl      # -> contracts/examples/
+    - examples/scored-rollout-group.invalid.jsonl    # -> contracts/examples/
+    # v1.7.0 declarative reward catalogue: SOURCE-REPO ONLY. The catalogue
+    # (registry/reward-functions.yaml.example) and its validator
+    # (build/check-reward-registry.py) with fixtures are deliberately NOT
+    # shipped into generated kits — no Python module or executable reward
+    # registration code enters GENERIC_SHIP. The only allowed mapping, if the
+    # kit were to copy the example, is registry/reward-functions.yaml.example
+    # -> registry/reward-functions.yaml.example (verbatim, no substitution).
   strict: --strict                   # paid packs: unresolved placeholder = FAIL
 
 # Declared-schema contract (team, asymmetric):
