@@ -15,7 +15,6 @@ Exit: 0 = clean; 1 = leaks found
 import os
 import re
 import sys
-import yaml
 
 SCRIPT_NAME = 'check-internal-names.py'
 BASELINE_PATH = 'build/internal-names-baseline.yaml'
@@ -28,13 +27,23 @@ def load_blocklist(repo):
         return []
     try:
         with open(yaml_path, 'r', encoding='utf-8') as f:
-            data = yaml.safe_load(f) or {}
+            data = f.read()
+        # Parse internal_agent_names list manually
         values = []
-        for key, val in data.items():
-            if isinstance(val, list):
-                values.extend(str(v) for v in val)
-            elif val:
-                values.append(str(val))
+        in_list = False
+        for line in data.splitlines():
+            stripped = line.strip()
+            if stripped.startswith('#') or not stripped:
+                continue
+            if stripped.startswith('internal_agent_names:'):
+                in_list = True
+                continue
+            if in_list:
+                if stripped.startswith('- '):
+                    values.append(stripped[2:].strip())
+                elif not stripped.startswith('#'):
+                    in_list = False
+                    continue
         return values
     except Exception:
         return []
@@ -46,8 +55,17 @@ def load_baseline(repo):
         return {}
     try:
         with open(baseline_path, 'r', encoding='utf-8') as f:
-            data = yaml.safe_load(f) or {}
-        return {k: int(v) for k, v in data.items()}
+            data = f.read()
+        # Parse key: value pairs manually
+        result = {}
+        for line in data.splitlines():
+            stripped = line.strip()
+            if stripped.startswith('#') or not stripped:
+                continue
+            if ': ' in stripped:
+                path, count = stripped.rsplit(': ', 1)
+                result[path] = int(count)
+        return result
     except Exception:
         return {}
 
