@@ -63,9 +63,7 @@ The most common failure mode: a source is cited for a claim it doesn't actually 
 
 Flag extrapolations explicitly: *"The source finds X; the 15-year rebuild time is my extrapolation based on the mechanism the source describes."*
 
-### Evidence hierarchy for behavioural claims
-
-For a claim about what a system does, use this order of authority:
+**Evidence hierarchy for behavioural claims.** For a claim about what a system does, use this order of authority:
 
 1. The enforcing implementation, cited at `file:line`.
 2. A pinned test that exercises the behaviour.

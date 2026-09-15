@@ -42,9 +42,7 @@ Produce a structured, machine-verified summary:
 - Check: telemetry defaults and disable paths; auto-approvers or silent side effects (e.g. an AX thread that clicks "Allow" on a permission dialog); unaudited transitive deps (the actual power may live in a PyPI/npm dep, not the repo); pin-ability.
 - Verdict + conditions, same bar as the macos-harness audit.
 
-## Bounded pilot before adoption
-
-Before installing or propagating a third-party tool, record explicit operator approval for the pilot boundary:
+**Bounded pilot before adoption.** Before installing or propagating a third-party tool, record explicit operator approval for the pilot boundary:
 
 - Name the allowed files, processes, network destinations, credentials by name only, time limit, data class, and stop condition.
 - Keep the pilot isolated. Use the candidate's own override knobs to redirect runtime state, cache, temporary files, and configuration away from instance locations. Verify the resolved paths after startup.

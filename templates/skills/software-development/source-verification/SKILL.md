@@ -88,9 +88,7 @@ For each flagged discrepancy:
 3. **Quote verbatim** — the resolution is in the exact wording, not the paraphrase
 4. **Note the qualifier** — what makes this passage ambiguous, and which reading it supports
 
-### Verbatim quote capture
-
-Never retype quoted source text. Extract the exact source slice and insert that slice into the draft.
+**Verbatim quote capture.** Never retype quoted source text. Extract the exact source slice and insert that slice into the draft.
 
 1. Read the source as bytes.
 2. Select the source range programmatically.
