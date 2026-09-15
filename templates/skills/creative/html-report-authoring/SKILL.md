@@ -27,6 +27,16 @@ Build large, self-contained HTML report deliverables (the user's preferred forma
 3. **Verify each write landed** (file size, marker string) before the next.
 4. **Injection must fail loudly.** When injecting generated content via placeholder replace, `assert anchor in text` first. A silent no-op (`str.replace` with a nonexistent marker) exits 0 and leaves the document incomplete.
 
+## Conceptual reference: Makepad UI runtime
+
+[VERIFIED - public conceptual source] Source: [`makepad/makepad`](https://github.com/makepad/makepad), license: [`LICENSE`](https://github.com/makepad/makepad/blob/main/LICENSE), MIT.
+
+This skill adopts one principle from the Makepad UI runtime: a declarative design description can be kept separate from the report assembly and renderer. The report authoring contract remains self-contained HTML and its current validation rules remain authoritative.
+
+The Makepad live-editable DSL, WASM/WebGL targets, and GPU-oriented rendering are reference vocabulary only. This skill does not add a Rust runtime, a renderer, a WASM target, or a dependency. No Makepad API or source excerpt is copied, and no Team6 support claim follows from the reference.
+
+Provenance record: [AUDIT/makepad-learnings.md](../../../../AUDIT/makepad-learnings.md)
+
 ## Build Protocol
 1. Shell first, in parts: head+CSS, masthead, exec summary, TOC — each its own write.
 2. Append body sections one per write, anchored on the previous section's unique closing line.

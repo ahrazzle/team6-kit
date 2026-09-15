@@ -117,6 +117,16 @@ Verify each piece of new infrastructure works before declaring Phase {CLIENT} do
 
 Paste the actual outputs to the user — never claim "it works" without evidence.
 
+## Conceptual tooling reference: microserde
+
+[VERIFIED - public conceptual source] Source: [`makepad/microserde`](https://github.com/makepad/microserde), license: [`LICENSE`](https://github.com/makepad/microserde/blob/master/LICENSE), MIT.
+
+This skill adopts one principle from microserde: serialization overhead is a build and runtime design question that should be measured against the current stack before a replacement is considered.
+
+No serializer replacement, package install, benchmark number, or generated code enters Team6-kit in this PR. A future benchmark is required to compare equivalent payloads, compile/build impact, runtime behavior, and compatibility before any implementation claim is made.
+
+Provenance record: [AUDIT/makepad-learnings.md](../../../../AUDIT/makepad-learnings.md)
+
 ## Shared Package Content
 
 ### @{CLIENT}/shared
