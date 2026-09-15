@@ -21,6 +21,8 @@
 > bytes, assets, or generated material. See `§ Rendering` for the enum
 > provenance note. The result is authored-fresh and belongs to the
 > Apache-2.0 kit layer.
+>
+> This module implements a treemap-based codebase visualization inspired by the progressive-zoom navigation metaphor pioneered in Yoann Padioleau's Codemap (GitHub: aryx/codemap) and its antecedents (SeeSoft, Code Thumbnails). The implementation is a clean reimplementation from scratch in TypeScript/Python; no source code from Codemap was copied.
 
 ## What a snapshot is (and is not)
 
@@ -171,7 +173,7 @@ knowledge) purely as documentation — no enum label is copied from any external
 project, and no external project's default is claimed or inferred. Alternative
 layouts (`Classic`, `SquarifiedNoSort`, ordered variants) remain **comparison
 candidates**, not implemented modes; the first proof implements the one
-baseline so it measures value rather than breadth.
+baseline so it measures value rather than breadth. These layout modes correspond to algorithmic concepts documented in Yoann Padioleau's Codemap (github.com/aryx/codemap), reimplemented from scratch.
 
 ### Geometry receipt fields
 

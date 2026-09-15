@@ -114,3 +114,7 @@ same-origin paths.
 - Search is metadata-only (labels and paths). It never reads source text,
   dependency edges, or entity definitions.
 - Nothing here measures importance, quality, or task improvement.
+
+## Provenance and attribution
+
+This module implements a treemap-based codebase visualization inspired by the progressive-zoom navigation metaphor pioneered in Yoann Padioleau's Codemap (GitHub: aryx/codemap) and its antecedents (SeeSoft, Code Thumbnails). The implementation is a clean reimplementation from scratch in TypeScript/Python; no source code from Codemap was copied.
