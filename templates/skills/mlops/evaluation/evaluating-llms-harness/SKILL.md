@@ -152,6 +152,20 @@ Results saved to `results/llama2-7b-eval.json`:
 }
 ```
 
+## Conceptual model-format references
+
+[VERIFIED - public conceptual source] Source: [`makepad/llama_antirez_deepseek`](https://github.com/makepad/llama_antirez_deepseek), license: [`LICENSE`](https://github.com/makepad/llama_antirez_deepseek/blob/main/LICENSE), MIT.
+
+This skill adopts two model-wire references from Makepad repositories. Both are conceptual only.
+
+**DeepSeek integration** (makepad/llama_antirez_deepseek, MIT): This is a model-wire and integration reference. It does not mean that Team6 supports DeepSeek or any specific model.
+
+**NVFP4 quantization** (makepad/llama_nvfp4, MIT): This is a hardware-specific quantization reference. It does not mean that Team6 supports NVIDIA NVFP4 or that any speed or memory result transfers to Team6.
+
+For both references, a target-backend compatibility check and a reproducible proof are required before implementation. The compatibility check is a future rule, not a current proof.
+
+Provenance record: [AUDIT/makepad-learnings.md](../../../../../AUDIT/makepad-learnings.md)
+
 ### Workflow 2: Track training progress
 
 Evaluate checkpoints during training.

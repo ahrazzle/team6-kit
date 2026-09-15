@@ -63,6 +63,15 @@ The most common failure mode: a source is cited for a claim it doesn't actually 
 
 Flag extrapolations explicitly: *"The source finds X; the 15-year rebuild time is my extrapolation based on the mechanism the source describes."*
 
+**Evidence hierarchy for behavioural claims.** For a claim about what a system does, use this order of authority:
+
+1. The enforcing implementation, cited at `file:line`.
+2. A pinned test that exercises the behaviour.
+3. A machine-generated snapshot, when the snapshot is the declared source of truth.
+4. Repository prose, which describes intent but does not enforce behaviour.
+
+If implementation or test evidence conflicts with repository prose, report the prose as stale and cite the enforcing evidence. A documentation citation alone does not establish a behavioural claim. If no enforcing code, pinned test, or declared machine snapshot is available, mark the claim unverified and state what evidence is missing.
+
 ### ④ Deliver a Verdict
 
 Structure the verdict as:

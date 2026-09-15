@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "pack": "core",
+  "title": "Team6-kit open core skill library",
+  "description": "Declared pack for the kit's own shipped skill templates. A pack is a parameter file, not a fork: it names the skill root, the license boundary, and the domain funnels the router may serve.",
+  "license": "Apache-2.0",
+  "license_scope": "kit core (pack default; per-entry license from skill frontmatter wins)",
+  "source": "team6-kit/templates/skills",
+  "skill_root": "templates/skills",
+  "entry_glob": "**/SKILL.md",
+  "funnels": {
+    "engineering": {
+      "title": "Engineering",
+      "purpose": "Build, ship, debug, review, and operate software.",
+      "categories": [
+        "software-development",
+        "deployment",
+        "deployment-verification-discipline",
+        "devops",
+        "web-development",
+        "web-app-debugging",
+        "web-release-gates",
+        "framework-plugin-development",
+        "github",
+        "hermes",
+        "mlops",
+        "macos-harness",
+        "long-run-deployment-discipline",
+        "coordination",
+        "concurrent-agent-file-coordination",
+        "model-config-skill"
+      ]
+    },
+    "creative": {
+      "title": "Creative",
+      "purpose": "Author, design, and deliver client-facing artifacts.",
+      "categories": [
+        "creative",
+        "copywriting",
+        "marketing-site-production",
+        "static-site-production",
+        "multi-page-html-design",
+        "writing",
+        "educational-html-book",
+        "game-feedback-animations",
+        "client-deliverables",
+        "sales-enablement",
+        "learning-design"
+      ]
+    },
+    "research": {
+      "title": "Research",
+      "purpose": "Gather, verify, and consolidate evidence.",
+      "categories": [
+        "research",
+        "knowledge-base-ingestion"
+      ]
+    },
+    "operations": {
+      "title": "Operations",
+      "purpose": "Run the agent team: coordination, knowledge, review, and knowledge-base upkeep.",
+      "categories": [
+        "autonomous-ai-agents",
+        "collaborative-knowledge-systems",
+        "consciousness-architecture-design",
+        "multi-agent-consciousness-architecture",
+        "productivity",
+        "adversarial-review",
+        "custom-domain-publishing"
+      ]
+    }
+  }
+}

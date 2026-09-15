@@ -35,6 +35,15 @@ Before you post a piece of writing, read every sentence and ask: does this carry
 
 Then re-read the last paragraph you wrote. A closing paragraph is the most common place for filler to collect, because it feels like the writing needs a graceful exit. It does not. The point you already made is the ending.
 
+### Independent proofread and fact audit
+
+Before any prose is delivered, posted, or published, a different member must do two checks:
+
+1. Proofread the language for clarity, accuracy of wording, and visible errors.
+2. Audit the factual claims against the evidence file or source record.
+
+The author is never the proofreader or fact auditor for the same piece. This rule applies to documentation, reports, release notes, review text, issue text, and published copy. The second member records the evidence boundary and sends language findings back to the author. Fact findings go back to the owner of the evidence. The auditor does not silently patch the author's document and clear it.
+
 ## Evidence-led technical writing
 
 For reviews, triage notes, and status comments, make the evidence register compact and countable:
