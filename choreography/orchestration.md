@@ -57,7 +57,7 @@ twice and QA/Scoper as a distinct early stage): dynamic-over-specialization
 broke down — the first agent to receive instruction executed indiscriminately,
 reducing specialists to reviewers, eroding the coder's dev role, and letting
 the architect drift into code. Un-gated advancement also let defects compound.
-The verified operating records (Eldunari doctrine, 2026-08-31 onward)
+The verified operating records (team choreography, 2026-08-31 onward)
 restore strict lanes and gate every stage. See `governance.md` §2.
 
 ## 3. Phase-gated pipeline (Definition of Done per stage)
