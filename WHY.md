@@ -206,6 +206,14 @@ Hermes uses: open-source engine, paid service on top.
 
 ## Status — v1.2.0 (local preprocessing adapter) on top of v1.1.0
 
+### Unreleased — verification-discipline rules
+
+- Independent proofread and fact audit. A different member proofreads the language and audits the factual claims of any authored prose before it is delivered or posted. — `templates/skills/creative/external-writing-discipline/SKILL.md`
+- Verbatim quote capture. Quoted source text is extracted programmatically and compared byte for byte. It is never retyped because retyping silently normalises punctuation. — `templates/skills/software-development/source-verification/SKILL.md`
+- Evidence hierarchy for behavioural claims. For a claim about what a system does, the enforcing implementation or a pinned test outranks repository prose. Prose describes intent and it does not enforce. — `templates/skills/research/source-evaluation/SKILL.md`
+- Receipt integrity. A durable record may only carry a value read verbatim from the producing command. Otherwise it records "not captured". — `templates/contracts/artifact-contract.md.tmpl`
+- Bounded pilots. A third-party tool is piloted in an authorised sandbox with pre-registered measurements and a removal gate before adoption. — `templates/skills/software-development/external-tool-vetting/SKILL.md`
+
 ### v1.2.0 — local preprocessing adapter contract (2026-09-10)
 
 - ✅ Vendor-neutral local preprocessing adapter contract — `choreography/local-preprocessing.md`
