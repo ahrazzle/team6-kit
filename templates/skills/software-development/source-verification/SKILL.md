@@ -88,6 +88,18 @@ For each flagged discrepancy:
 3. **Quote verbatim** — the resolution is in the exact wording, not the paraphrase
 4. **Note the qualifier** — what makes this passage ambiguous, and which reading it supports
 
+### Verbatim quote capture
+
+Never retype quoted source text. Extract the exact source slice and insert that slice into the draft.
+
+1. Read the source as bytes.
+2. Select the source range programmatically.
+3. Assert that the selected bytes are a literal substring of the source bytes.
+4. Insert the selected bytes into the output without normalizing punctuation or whitespace.
+5. Compare the emitted quote to the selected source bytes with a byte-level diff.
+
+A quote with the same length as the source but one divergent byte is a failed check. Treat it as a possible punctuation substitution. An eyeball read and a character-count comparison do not pass this gate.
+
 ### Step 4: Correct and Document
 
 - Update the synthesis/product with the verified fact

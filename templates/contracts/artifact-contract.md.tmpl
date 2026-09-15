@@ -51,6 +51,14 @@ evidence_refs:                  # read-back receipts, never self-reports
   - ref: ...
     proves: ...
 
+# Receipt integrity:
+# - Write a durable value only from the producing command's verbatim output
+#   captured in the same turn as the command.
+# - If that output does not contain the exact value, write `not captured`.
+# - Never infer, shorten, round, elide, or reconstruct a receipt value.
+# - A checksum or hash is valid only when the complete value was read from the
+#   producing command or its direct output file.
+
 failure_state:                  # REQUIRED when status is failed or blocked
   machine_state: ...            # what the state actually is, from disk/read-back
   human_state: ...              # one-paragraph blocker report for a person

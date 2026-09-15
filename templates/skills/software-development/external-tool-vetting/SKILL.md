@@ -42,6 +42,18 @@ Produce a structured, machine-verified summary:
 - Check: telemetry defaults and disable paths; auto-approvers or silent side effects (e.g. an AX thread that clicks "Allow" on a permission dialog); unaudited transitive deps (the actual power may live in a PyPI/npm dep, not the repo); pin-ability.
 - Verdict + conditions, same bar as the macos-harness audit.
 
+## Bounded pilot before adoption
+
+Before installing or propagating a third-party tool, record explicit operator approval for the pilot boundary:
+
+- Name the allowed files, processes, network destinations, credentials by name only, time limit, data class, and stop condition.
+- Keep the pilot isolated. Use the candidate's own override knobs to redirect runtime state, cache, temporary files, and configuration away from instance locations. Verify the resolved paths after startup.
+- Do not mutate a profile, configuration file, or git tree during the pilot. Read back each location before and after the run.
+- Record the corpus and query set before the run. Do not choose measurements after seeing the result.
+- Report every gate as `PASS`, `FAIL`, or `UNKNOWN`. Keep the raw log behind each result. A failed gate stays failed.
+- Trace every number, comparison, and latency claim to the command output or log that produced it.
+- Include a lifecycle gate: first-time disable, removal, restoration, and the documented recovery path. If removal cannot be completed or verified, adoption is blocked.
+
 ## Phase {CLIENT} — Install: one profile first (command-level convention)
 
 - New infrastructure lands in ONE profile, proves itself under real load, THEN propagates with {RELATIONSHIP}'s independent verification. Never live-deploy across all eight agents on first contact — the keenable incident is the case study.

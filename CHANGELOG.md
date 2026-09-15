@@ -64,6 +64,14 @@ outside this repository.
   E-PROTEUS-008). The steering block is patched into the subagent-spawning
   skill as the procedure's home.
 
+## Unreleased — Writing, receipt, pilot, and public-surface verification rules
+
+- **What:** strengthen the generic kit contracts for independent proofread and fact audit, byte-exact quote capture, enforcement-first evidence, verbatim receipt integrity, bounded third-party pilots, and leak scanning across the full public surface.
+- **Why it changed:** review machinery, source citations, receipt fields, adoption checks, and the frozen manifest each covered part of the failure class, but the missing boundaries allowed self-audited prose, retyped quotes, prose-only behavioural claims, inferred receipt values, under-scoped pilots, and leaks outside the frozen manifest.
+- **Evidence:** [VERIFIED — internal operating record] verified experience and read-only inspection of the live repository. The implementation must preserve generic placeholders and must pass the repository's independent public-surface checks.
+- **Proof status:** [PROPOSED / PENDING] documentation and gate specification; independent proofread, fact audit, and release-gate verification required before treating it as release policy.
+- **Files:** `templates/skills/creative/external-writing-discipline/SKILL.md`, `templates/skills/software-development/source-verification/SKILL.md`, `templates/skills/research/source-evaluation/SKILL.md`, `templates/contracts/artifact-contract.md.tmpl`, `templates/skills/software-development/external-tool-vetting/SKILL.md`, and `build/freeze-manifest.py`.
+
 ---
 
 ## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
