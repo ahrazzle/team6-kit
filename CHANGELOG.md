@@ -51,10 +51,8 @@ outside this repository.
 
 - **What:** extends `choreography/codebase-map-interaction.md` to define overview, focus, back/fit, and metadata-only search behavior. The contract requires explicit unavailable states for source-text or dependency requests absent from the snapshot.
 - **Why it changed:** To ensure the viewer remains read-only and local-only. Searching matches normalized relative identities and display labels only; no grep, source fetch, or external call is permitted.
-- **Evidence:** [VERIFIED — public conceptual source] the progressive disclosure pattern is inspired by Codemap's zoomable metaphor. [VERIFIED — internal operating record] Team6's operating pattern for metadata-only search and unavailable-state requirements.
+- **Evidence:** [VERIFIED — public conceptual source] the progressive disclosure pattern is inspired by Codemap's zoomable metaphor. [VERIFIED — internal operating record] Team6's operating pattern for metadata-only search and unavailable-state requirements. [VERIFIED — internal operating record] all three slices (S1–S3) are locally verified by the repository's own gates: `python3 build/verify-all.py` (7/7 gates pass), `python3 build/surface-scan.py` (PASS, 0 leaks across all 8 surfaces), and `python3 build/check-codebase-map.py --self-test` (16/16 pass).
 - **Files:** `choreography/codebase-map-interaction.md`.
-
-- **Evidence:** [VERIFIED — internal operating record] the three slices (S1–S3) were reviewed and passed verification gates per E-CODEMAP-001.
 
 - **What:** correct the canonical-site labels in the README. The canonical
   public documentation site for Team6-kit is `team6.askaconsult.com`; the

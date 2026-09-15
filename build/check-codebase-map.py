@@ -66,6 +66,8 @@ def path_violation(path, where, allow_root_empty=True):
             return None                  # root's empty path is valid
         elif not allow_root_empty:
             return f"{where}: path must be a non-empty relative path"
+    elif where == "tree":
+        return f"{where}: root path must be empty string (got '{path}')"
     if path.startswith("/"):
         return f"{where}: absolute path is invalid ('{path}')"
     if path.startswith("\\") or "\\" in path:
