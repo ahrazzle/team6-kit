@@ -418,6 +418,34 @@
           </ul>
         </div>
       </div>
+
+      <div style="margin-top:2rem">
+        <p class="kicker">INCORPORATION STATUS &middot; SOURCE-REVIEW BATCH &middot; 2026-09-15</p>
+        <p class="lead measure">A second status, separate from the release list above: how one outside source-review batch moved through the kit&rsquo;s own ingestion rule. Counted, not claimed &mdash; 30 candidate capabilities checked, 17 adopted across seven batch decisions, 12 deferred, 1 rejected. None of it is merged yet, and this surface says so.</p>
+        <div class="status-cols" style="margin-top:1.5rem">
+          <div class="status-group">
+            <p class="group-kicker shipped">ADOPTED &middot; 17 CAPABILITIES &middot; 7 BATCH DECISIONS &middot; 0 MERGED</p>
+            <ul class="status-list">
+              <li><span class="status-tag open">IN REVIEW</span><span class="status-text">B01 &middot; Cache-horizon economics and turn-dense routing guidance</span></li>
+              <li><span class="status-tag open">IN REVIEW</span><span class="status-text">B02 &middot; Local session-index adapter reference: index, prepared cards, bounded read-only commands</span></li>
+              <li><span class="status-tag open">IN REVIEW</span><span class="status-text">B05 &middot; Skill-catalog router: compact result, SQLite FTS5 fast path, deterministic JSON fallback</span></li>
+              <li><span class="status-tag open">IN REVIEW</span><span class="status-text">B06 &middot; Guarded review and repair workflows folded into existing skill homes</span></li>
+              <li><span class="status-tag open">IN REVIEW</span><span class="status-text">B07 &middot; Optional text-to-speech CLI adapter skill, provider-neutral and credential-free</span></li>
+              <li><span class="status-tag open">PENDING</span><span class="status-text">B03 &middot; Opt-in board-state plugin on the separate Hermes engine repo</span></li>
+              <li><span class="status-tag open">PENDING</span><span class="status-text">B04 &middot; Opt-in long-context plugin on the separate Hermes engine repo</span></li>
+            </ul>
+          </div>
+          <div class="status-group">
+            <p class="group-kicker open">NOT ADOPTED &middot; 12 DEFERRED &middot; 1 REJECTED</p>
+            <ul class="status-list">
+              <li><span class="status-tag open">DEFERRED &middot; 12</span><span class="status-text">Held until a concrete gap and a named owner exist; nothing is imported in the meantime</span></li>
+              <li><span class="status-tag open">REJECTED &middot; 1</span><span class="status-text">No decision-grade capability captured from the source</span></li>
+              <li><span class="status-tag">MERGED &middot; 0</span><span class="status-text">No batch in this set has merged to the kit&rsquo;s main branch</span></li>
+            </ul>
+          </div>
+        </div>
+        <p class="honest-cap" style="margin-top:1.25rem">Five team6-kit batches sit in four open pull requests, each reviewed by someone other than its author &mdash; open, not merged; two further batches wait on the Hermes engine repo. The rule this batch follows &mdash; check a source before trusting it, one row per finding with an owner, and a record read back by someone other than its author &mdash; is itself shipped: <span class="mono">templates/skills/knowledge-base-ingestion/SKILL.md</span>, with a worked example in <span class="mono">AUDIT/</span>. Per-batch decisions live in the repository, not on this page: <a href="https://github.com/ahrazzle/team6-kit">github.com/ahrazzle/team6-kit</a>.</p>
+      </div>
     </div>
   </section>
 
