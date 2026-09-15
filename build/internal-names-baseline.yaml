@@ -7,10 +7,9 @@
 ./artifacts/mozi-build-receipt.md: 6
 ./templates/skills/github/github-pr-audit/SKILL.md: 1
 ./templates/skills/creative/external-writing-discipline/SKILL.md: 1
-./templates/skills/autonomous-ai-agents/zero-context-preservation/SKILL.md: 4
-./build/freeze-manifest.py: 5
+./templates/skills/autonomous-ai-agents/zero-context-preservation/SKILL.md: 5
+./build/freeze-manifest.py: 6
 ./build/surface-scan.py: 4
 ./build/review-gate.py: 2
 ./build/freeze-review.py: 2
 ./build/identifiers.yaml: 6
-./choreography/orchestration.md: 2
