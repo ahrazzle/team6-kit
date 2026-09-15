@@ -44,6 +44,24 @@ on top of — never instead of — the deterministic checks.
   is not sufficient — it missed structural blockers before.
 - **Adversarial pass.** QA actively tries to break the deliverable, and gate
   verdicts ground in **read-back tool output**, never a producer self-report.
+- **Confidence ladder: every safety claim names its rung.** Every safety claim
+  declares one of five confidence rungs. A verdict that calls a change safe
+  must say how far the evidence reaches, not only that some evidence exists:
+
+  | Rung | Level | What it means |
+  |---|---|---|
+  | 1 | Claimed | The producer asserts it. No evidence behind it. |
+  | 2 | Inferred | A log line or a config read supports it. Nothing was run to reproduce it. |
+  | 3 | Tested | A unit or integration test passed. It was not run against the served artifact. |
+  | 4 | Staged | Reproduced against the staging deployment. |
+  | 5 | Live | Reproduced against the served or production artifact. |
+
+  Below rung 4 is unproven. A safety claim that cannot reach rung 4 is marked
+  `unproven` in the verdict, and the rung it did reach is stated. Do not write an
+  unproven claim up as settled. A release decision needs rung 4 or 5. Promoting
+  work from staged to live is allowed only when every safety-critical claim sits
+  at rung 4 or higher. Rung 5 is the bar for any claim about what a user actually
+  sees served.
 - **The producer/verifier split.** The agent that produces an artifact never
   passes it (`orchestration.md` §7).
 - **Simplicity criterion.** A marginal gain that adds ugly complexity is not

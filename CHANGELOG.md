@@ -37,6 +37,53 @@ outside this repository.
 
 ---
 
+## 1.7.0 — Verification confidence, brief completeness, and a verification-skill generator (2026-09-15)
+
+- **What:** three doctrine additions to the verification gate and the handoff
+  contract, plus one new template. (1) A five-rung confidence ladder added to
+  `choreography/governance.md` §3: every safety claim in a gate verdict declares
+  its rung, claims below rung 4 are marked `unproven`, and a release decision
+  requires rung 4 or 5. (2) A refuse-to-spawn rule added to
+  `choreography/orchestration.md` §11: a brief with any required field empty or
+  `TBD` must not be dispatched. (3) A new template pair,
+  `templates/skills/software-development/verification-skill-generator/`
+  (generator `SKILL.md` plus `references/feature-map.md`), that interviews a
+  project and emits a project-local verification skill with a co-located feature
+  map.
+
+- **Why it changed:** the verification gate and the brief contract are the two
+  seams where the kit already has the strongest enforcement. These three items
+  harden exactly those seams. They make a safety claim state its evidence class,
+  make an incomplete brief a hard stop, and turn "the app can be proven to work"
+  into a generated, per-project artifact rather than an ad-hoc claim.
+
+- **Evidence:** [VERIFIED — public conceptual source] All three items adapt a
+  published skill set, adopted as a principle, never copied. See the attribution
+  block below.
+
+- **Files:** `choreography/governance.md`, `choreography/orchestration.md`,
+  `templates/skills/software-development/verification-skill-generator/SKILL.md`,
+  `templates/skills/software-development/verification-skill-generator/references/feature-map.md`,
+  `CHANGELOG.md`. No `README.md` change; the README decision is recorded below
+  this entry.
+
+**Attribution block (this release).**
+
+- **Source:** the pstack skills set: `blast-radius/SKILL.md` (confidence ladder),
+  `poteto-mode/playbooks/orchestrate.md` (brief-field block), and
+  `create-verification-skill/SKILL.md` (generator plus feature-map shape).
+- **Source URL:** https://github.com/cursor/plugins/tree/c1c0a32802223f4be824112dd83d33ad29a8b26c/pstack
+- **Pinned revision:** c1c0a32802223f4be824112dd83d33ad29a8b26c
+- **License:** MIT, Copyright (c) 2026 Lauren Tan.
+- **Adoption type:** conceptual. The mechanism and the table shape are adopted. The
+  rung definitions, the refuse-to-spawn rule, and the generator prose are rewritten
+  in this kit's own voice. No source sentence, prompt, or code is copied. Per
+  `governance.md` §7, conceptual adoption of a mechanism carries no license-file
+  obligation. The source, pinned revision, and MIT holder are named here at the
+  point of adoption.
+
+---
+
 ## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
 
 - **What:** add a deterministic release gate runner at `build/verify-all.py`
