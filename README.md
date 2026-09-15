@@ -224,6 +224,32 @@ No Makepad code, dependency, runtime, model, asset, transcript, or deployment is
 B1 (cross-platform Rust UI), C1 (native GPU backends), and C3 (declarative UI DSL) remain proof-pending follow-up spikes. They do not affect the current build.
 
 Full source table: [AUDIT/makepad-learnings.md](AUDIT/makepad-learnings.md)
+
+## Codebase-map snapshot contract
+
+This documents a portable snapshot format for spatial codebase evidence. A versioned JSON contract preserves hierarchy, size, ordering, and provenance while failing closed on malformed or leaky inputs.
+
+Includes:
+- `choreography/codebase-map.md` — contract
+- `build/check-codebase-map.py` — stdlib-only validator
+- `demo/codebase-map/index.html` — static treemap proof
+
+To run the validator:
+
+```
+python3 build/check-codebase-map.py examples/codebase-map.valid.json
+```
+
+To run the local viewer proof:
+
+```
+python3 -m http.server
+```
+
+Then open `demo/codebase-map/index.html` in your browser. The viewer is zero-dependency and runs from a synthetic fixture. It is local-only. Area represents a declared measure (size); it does not mean importance.
+
+Attribution: This slice uses Codemap as a conceptual source only. The implementation is a clean reimplementation from scratch in zero-dependency static HTML/JavaScript (viewer) and Python-stdlib (validator); no source code, comments, fixtures, or UI text from Codemap were copied.
+
 ## Scored rollout contract
 
 The kit provides a local JSONL contract and validator for **grouped scored

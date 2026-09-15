@@ -62,3 +62,28 @@ have to design yourself.
 It's also deliberately *modest*. It proves the contract end-to-end; it does
 not yet prove that a team instantiated this way *ships a real product* — that
 is the next proof-point, and it arrives with the first vertical pack.
+
+## Codebase-map snapshot fixtures
+
+Two authored-fresh JSON fixtures exercise the codebase-map snapshot contract
+(`choreography/codebase-map.md`). Both are **synthetic** — neither is a live
+repository capture:
+
+- `codebase-map.valid.json` — a small nested tree that the contract accepts.
+- `codebase-map.invalid.json` — a negative fixture with deliberate violations:
+  a missing `sort` ordering policy, an unknown `rendering.algorithm`, an
+  invalid entity `kind`, an absolute path, a duplicate identity, a negative
+  size, a non-integer size, and an unknown color token.
+
+Validate them with the stdlib checker (no network, no writes):
+
+```bash
+python3 build/check-codebase-map.py examples/codebase-map.valid.json     # exit 0
+python3 build/check-codebase-map.py examples/codebase-map.invalid.json   # exit 1
+python3 build/check-codebase-map.py --self-test                          # exit 0
+```
+
+The valid run prints the accepted `version`, `measure`, `sort`, `algorithm`,
+and the node/leaf counts. The invalid run lists every violation with its field
+path and exits `1` — the negative fixture must never be made valid by weakening
+the checker.

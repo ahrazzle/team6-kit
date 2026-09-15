@@ -60,6 +60,22 @@ give implementations one stable boundary for recall without turning observation 
 
 ### Evidence
 [VERIFIED — public conceptual source] the read-only observer shape and deterministic recall principles are derived from the linked public conceptual source, adopted as principles only. No source code, prompts, anti-slop lists, or source prose is copied. https://github.com/NousResearch/hermes-memory-wiki
+
+- **What:** adds `choreography/codebase-map.md` (versioned snapshot contract defining Node/Leaf grammar, deterministic ordering, measure units, exclusion rules, and provenance fields), `build/check-codebase-map.py` (stdlib-only structural validator with 16-case self-test), `examples/codebase-map.valid.json`, and `examples/codebase-map.invalid.json`.
+- **Why it changed:** Team6 needed a portable, machine-checkable snapshot format for spatial codebase evidence. The contract requires explicit algorithm and sorting declarations; absolute paths and credential-like values are rejected.
+- **Evidence:** [VERIFIED — public conceptual source] the treemap concept is inspired by Yoann Padioleau's Codemap (GitHub: aryx/codemap; license: LGPL-2.1-only WITH OCaml-LGPL-linking-exception). The contract schema is authored fresh; no source code, comments, or fixtures from Codemap were copied. [VERIFIED — internal operating record] validator self-test: 16/16 pass; surface-scan: PASS.
+- **Files:** `choreography/codebase-map.md`, `build/check-codebase-map.py`, `examples/codebase-map.valid.json`, `examples/codebase-map.invalid.json`.
+
+- **What:** adds a self-contained HTML viewer at `demo/codebase-map/index.html` that consumes the synthetic fixture locally and renders a squarified treemap. The viewer exposes the selected algorithm identifier, records a read-back receipt (fixture hash, algorithm, rectangle count), and issues zero external requests.
+- **Why it changed:** A proof artifact validates the snapshot contract in a browser without runtime dependencies, live watchers, or external assets. The viewer stays read-only and local-only.
+- **Evidence:** [VERIFIED — public conceptual source] progressive-zoom navigation metaphor inspired by Codemap's README. Implementation is a clean reimplementation in HTML/JavaScript; no Codemap source was ported. [VERIFIED — internal operating record] browser read-back receipt recorded; console: no uncaught errors; network inspection: zero external requests; determinism verified (same fixture renders identical geometry twice).
+- **Files:** `demo/codebase-map/index.html`, `demo/codebase-map/README.md`.
+
+- **What:** extends `choreography/codebase-map-interaction.md` to define overview, focus, back/fit, and metadata-only search behavior. The contract requires explicit unavailable states for source-text or dependency requests absent from the snapshot.
+- **Why it changed:** To ensure the viewer remains read-only and local-only. Searching matches normalized relative identities and display labels only; no grep, source fetch, or external call is permitted.
+- **Evidence:** [VERIFIED — public conceptual source] the progressive disclosure pattern is inspired by Codemap's zoomable metaphor. [VERIFIED — internal operating record] Team6's operating pattern for metadata-only search and unavailable-state requirements. [VERIFIED — internal operating record] all three slices (S1–S3) are locally verified by the repository's own gates: `python3 build/verify-all.py` (7/7 gates pass), `python3 build/surface-scan.py` (PASS, 0 leaks across all 8 surfaces), and `python3 build/check-codebase-map.py --self-test` (16/16 pass).
+- **Files:** `choreography/codebase-map-interaction.md`.
+
 - **What:** add the anti-loop discipline contract. It defines four rules to prevent
   thinking loops: load once then use, read once then act, plan once then execute,
   and trust tool output as the receipt. Published artifacts and live pages still
