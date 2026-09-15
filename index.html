@@ -36,6 +36,7 @@
       <a href="#preprocessing">Preprocessing</a>
       <a href="#evidence">Execution evidence</a>
       <a href="#ingestion">Ingestion</a>
+      <a href="#codemap">Codebase map</a>
       <a href="#status">Status</a>
       <a href="#install">Get started</a>
       <a href="#setup">Setup</a>
@@ -387,6 +388,44 @@
       </div>
 
       <p class="instance-foot">Open questions stay open: a blocked, dead, or unclear fact is kept with its state named rather than guessed to fill in a table. Trust, permissions, telemetry, and license duties are the job of the separate audit for outside tools — this release covers the usefulness and adoption half. The record in <span class="mono">AUDIT/</span> is a <strong>worked example of the format</strong>, not a finding about any named repository. See <span class="mono">CHANGELOG.md</span> for the per-item &ldquo;why&rdquo; and evidence class.</p>
+    </div>
+  </section>
+
+  <!-- 5.59 CODEBASE MAP -->
+  <section class="section" id="codemap" aria-labelledby="codemap-title">
+    <div class="container">
+      <p class="kicker">WHAT&rsquo;S NEW · CODEBASE MAP</p>
+      <h2 id="codemap-title">A map is a snapshot, not a live view.</h2>
+      <p class="lead measure">The codebase-map capability describes a file tree as rectangles in one small JSON document. Area is a declared measure, color is a display token, identity is a normalized relative path, and child order is a stated policy &mdash; each one written down and checked, so two producers reading the same tree mint the same map. The snapshot is the evidence; a browser is only one way to draw it. Nothing here crawls a repository, and no source text is read or stored.</p>
+
+      <div class="up-grid">
+        <article class="up-card">
+          <p class="up-title">01 / THE CONTRACT</p>
+          <p class="up-body"><span class="mono">choreography/codebase-map.md</span> defines one small snapshot document: which roots were included, which patterns were skipped, the measure, the sort policy, and the layout token. Every one of those is a required, checked field. An unknown field, or an undeclared ordering policy, fails the map instead of passing quietly.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">02 / A DEPENDENCY-FREE CHECKER</p>
+          <p class="up-body"><span class="mono">build/check-codebase-map.py</span> is Python 3 standard library only &mdash; no network, no writes. It reads one snapshot path and prints the field path of every violation. Exit <span class="mono">0</span> means valid, exit <span class="mono">1</span> means not. Its own pass and fail cases run with <span class="mono">--self-test</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">03 / TWO AUTHORED FIXTURES</p>
+          <p class="up-body"><span class="mono">examples/codebase-map.valid.json</span> and <span class="mono">codebase-map.invalid.json</span> are synthetic samples, not repository captures. The invalid one fails on purpose &mdash; a missing sort policy, an unknown layout token, an absolute path, a duplicate identity, a negative size &mdash; and it is never made valid by weakening the checker.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">04 / A STATIC VIEWER PROOF</p>
+          <p class="up-body"><span class="mono">demo/codebase-map/index.html</span> draws one fixture as a treemap with no library, no font, no image, and no network request. It is a <strong>proof on a synthetic fixture</strong> &mdash; not a live product, not deployed, and not a repository crawler.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">05 / ONE LAYOUT, NAMED</p>
+          <p class="up-body">The only accepted layout token is <span class="mono">t6-squarified-v1</span> &mdash; a squarified treemap applied to the snapshot&rsquo;s declared child order. The viewer rejects an unrecognized token rather than falling back to a default. It is a Team6 experiment baseline, <strong>not</strong> a claim about any other tool&rsquo;s default.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">06 / FOCUS AND SEARCH, METADATA ONLY</p>
+          <p class="up-body">Selecting a directory re-roots the viewport to it; search matches display labels and normalized paths, nothing else. Source text, syntax highlighting, dependency edges, and live source search are out of scope and shown as unavailable rather than guessed. Focus and query are held in the URL, so a reload rebuilds the same view from the snapshot alone.</p>
+        </article>
+      </div>
+
+      <p class="instance-foot">Area is a declared measure &mdash; bytes or lines &mdash; and is never importance, risk, or quality; color is a display token, not a grade. Interaction is governed by <span class="mono">choreography/codebase-map-interaction.md</span>, which keeps the view to three inputs: the snapshot, a focus path, and an optional metadata query. This module implements a treemap-based codebase visualization inspired by the progressive-zoom navigation metaphor pioneered in Yoann Padioleau's Codemap (GitHub: aryx/codemap) and its antecedents (SeeSoft, Code Thumbnails). The implementation is a clean reimplementation from scratch in zero-dependency static HTML/JavaScript and Python; no source code from Codemap was copied.</p>
     </div>
   </section>
 
