@@ -177,6 +177,31 @@ and establishes rules for token accounting (innermost spans only), cost honesty
 bounded retention with no secrets or raw prompts by default.
 Read `choreography/run-evidence.md`.
 
+## Codebase-map snapshot contract
+
+This documents a portable snapshot format for spatial codebase evidence. A versioned JSON contract preserves hierarchy, size, ordering, and provenance while failing closed on malformed or leaky inputs.
+
+Includes:
+- `choreography/codebase-map.md` — contract
+- `build/check-codebase-map.py` — stdlib-only validator
+- `demo/codebase-map/index.html` — static treemap proof
+
+To run the validator:
+
+```
+python3 build/check-codebase-map.py examples/codebase-map.valid.json
+```
+
+To run the local viewer proof:
+
+```
+python3 -m http.server
+```
+
+Then open `demo/codebase-map/index.html` in your browser. The viewer is zero-dependency and runs from a synthetic fixture. It is local-only. Area represents a declared measure (size); it does not mean importance.
+
+Attribution: This slice uses Codemap as a conceptual source only. The implementation is a clean reimplementation from scratch in zero-dependency static HTML/JavaScript (viewer) and Python-stdlib (validator); no source code, comments, fixtures, or UI text from Codemap were copied.
+
 ## The main rules
 
 1. **Everything on disk.** Progress is saved to files, so months later you can still pick up where you left off.
