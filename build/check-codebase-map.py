@@ -56,13 +56,16 @@ RENDERING_KEYS = {"algorithm"}
 # path identity
 # ---------------------------------------------------------------------------
 
-def path_violation(path, where):
+def path_violation(path, where, allow_root_empty=True):
     """Return an error string if `path` is not a normalized relative identity
     (or the root's empty string), else None."""
     if not isinstance(path, str):
         return f"{where}: path must be a string (got {type(path).__name__})"
     if path == "":
-        return None                      # only valid for the root; checked there
+        if allow_root_empty and where == "tree":
+            return None                  # root's empty path is valid
+        elif not allow_root_empty:
+            return f"{where}: path must be a non-empty relative path"
     if path.startswith("/"):
         return f"{where}: absolute path is invalid ('{path}')"
     if path.startswith("\\") or "\\" in path:
@@ -131,7 +134,7 @@ def validate(doc):
     if so not in (None, "") and so not in SORT_ENUM:
         v.append(f"ENUM: sort '{so}' not in {list(SORT_ENUM)}")
 
-    # included_roots / excluded_patterns shape
+    # included_roots / excluded_patterns shape (F2: enforce source-bounded)
     inc = doc.get("included_roots")
     if isinstance(inc, list):
         if not inc:
@@ -146,17 +149,31 @@ def validate(doc):
     exc = doc.get("excluded_patterns")
     if exc is not None and exc != "" and not isinstance(exc, list):
         v.append("TYPE: 'excluded_patterns' must be a list")
+    # F2: check each excluded pattern is relative/short
+    if isinstance(exc, list):
+        for i, p in enumerate(exc):
+            if p and (p.startswith("/") or "\\" in p or p.startswith("~")):
+                v.append(f"excluded_patterns[{i}]: must be relative/short (got '{p}')")
 
-    # provenance object
+    # provenance object (F2: enforce source-boundedness)
     prov = doc.get("provenance")
     if isinstance(prov, dict):
         for req in ("kind", "ref"):
             if not prov.get(req):
                 v.append(f"MISSING REQUIRED FIELD: provenance.{req} is required")
+        # F2: ref must be relative/short, not absolute instance path
+        ref = prov.get("ref", "")
+        if ref and (ref.startswith("/") or "\\" in ref or ref.startswith("~")):
+            v.append(f"PROVENANCE.ref: must be relative/short (got '{ref}')")
         for key in sorted(set(prov) - PROVENANCE_KEYS):
             v.append(f"UNKNOWN FIELD: provenance.{key}")
     elif prov not in (None, ""):
         v.append("TYPE: 'provenance' must be an object")
+
+    # generated_at: must be short string, not absolute path (F2)
+    gen = doc.get("generated_at")
+    if gen and isinstance(gen, str) and (gen.startswith("/") or "\\" in gen or gen.startswith("~")):
+        v.append(f"GENERATED_AT: must be relative/short (got '{gen}')")
 
     # rendering object + algorithm enum
     rend = doc.get("rendering")
@@ -224,10 +241,13 @@ def _walk(entity, where, depth, v, seen):
         v.append(f"{where}: kind must be 'Node' or 'Leaf' (got {kind!r})")
         return
 
-    # label
+    # label must be short text (F2: source-bounded)
     label = entity.get("label")
     if "label" in entity and (not isinstance(label, str) or label == ""):
         v.append(f"{where}: label must be a non-empty string")
+    elif "label" in entity:
+        if label.startswith("/") or "\\" in label or label.startswith("~"):
+            v.append(f"{where}: label must be relative/short (got '{label}')")
 
     # path identity + duplicates
     if "path" in entity:

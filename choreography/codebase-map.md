@@ -83,8 +83,8 @@ typo in a required field is a failure, not a shrug.
 | `excluded_patterns` | yes (may be empty) | list of glob strings that were skipped (submodules, generated files, vendored trees). An explicit empty list states "nothing was excluded" — it is not left implied |
 | `measure` | yes | `bytes` \| `lines` — the unit every leaf `size` is expressed in |
 | `sort` | yes | `lexical` \| `size-desc` \| `size-asc` — the declared deterministic child-ordering policy. An undeclared policy fails |
-| `generated_at` | yes | string capture marker (the moment the tree was read) |
-| `provenance` | yes | object: `kind` (required), `ref` (required), `note` (optional) — the evidence reference for the snapshot |
+| `generated_at` | yes | string capture marker; must be short and relative, not an absolute instance path |
+| `provenance` | yes | object: `kind` (required), `ref` (required), `note` (optional) — the evidence reference for the snapshot; `ref` must be short and relative, not an absolute instance path |
 | `rendering` | yes | object: `algorithm` (required) — see `§ Rendering` |
 | `tree` | yes | the root entity (must be a `Node`) |
 
@@ -123,6 +123,8 @@ Each entity is an object with a `kind` of `Node` or `Leaf`.
 8. `included_roots` entries are normalized relative paths.
 9. Unknown fields fail at every level (top-level, entity, `provenance`,
    `rendering`).
+10. Source-bounded fields (`label`, `provenance.ref`, `excluded_patterns[]`,
+    `generated_at`) must be short and relative, not absolute instance paths.
 
 Exit `0` = valid, `1` = invalid (each violation printed with its field path).
 

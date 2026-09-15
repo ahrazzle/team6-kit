@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'">
 <link rel="icon" href="data:,">
 <title>Team6 codebase-map proof</title>
 <!--
@@ -147,6 +148,11 @@ var MEASURE_ENUM = ["bytes", "lines"];
 var SORT_ENUM = ["lexical", "size-desc", "size-asc"];
 var SOURCE_KIND_ENUM = ["synthetic", "repository-snapshot"];
 var COLOR_ENUM = ["blue", "green", "amber", "slate", "violet", "red", "unknown"];
+var TOP_KEYS = ["contract", "version", "source_kind", "included_roots",
+                "excluded_patterns", "measure", "sort", "generated_at",
+                "provenance", "rendering", "tree"];
+var NODE_KEYS = ["kind", "label", "path", "children"];
+var LEAF_KEYS = ["kind", "label", "path", "size", "color"];
 var COLOR_FILL = {
   blue: "#93c5fd", green: "#86efac", amber: "#fcd34d", slate: "#cbd5e1",
   violet: "#c4b5fd", red: "#fca5a5", unknown: "#5b6472"
@@ -180,6 +186,10 @@ function validateSnapshot(doc) {
    "measure", "sort", "generated_at", "provenance", "rendering", "tree"
   ].forEach(function (k) {
     if (!(k in doc)) v.push("missing required field '" + k + "'");
+  });
+  // 9. unknown top-level fields
+  Object.keys(doc).forEach(function (k) {
+    if (TOP_KEYS.indexOf(k) === -1) v.push("unknown field '" + k + "'");
   });
   if (doc.contract !== CONTRACT_TOKEN) {
     v.push("contract must be '" + CONTRACT_TOKEN + "'");
@@ -215,6 +225,15 @@ function validateSnapshot(doc) {
   var seen = {};
   (function walk(e, where, depth) {
     if (!isPlainObject(e)) { v.push(where + ": entity is not an object"); return; }
+    // F3: check for unknown fields at entity level
+    var entityKeys = (e.kind === "Node") ? NODE_KEYS : LEAF_KEYS;
+    Object.keys(e).forEach(function (k) {
+      if (entityKeys.indexOf(k) === -1) v.push(where + ": unknown field '" + k + "'");
+    });
+    // F4: reject non-empty root path (root must have path === "")
+    if (depth === 0 && e.path !== "") {
+      v.push(where + ": root entity must have empty path");
+    }
     if (e.kind !== "Node" && e.kind !== "Leaf") {
       v.push(where + ": kind must be 'Node' or 'Leaf'"); return;
     }
@@ -604,6 +623,7 @@ function updateReceipt() {
     " · precision " + PRECISION +
     " · rect_count " + state.rects.length +
     " · nodes " + state.nodeCount + " · leaves " + state.leafCount +
+    " · determinism true" +
     " · focus_path " + JSON.stringify(state.focusPath) +
     " · selected_path " + JSON.stringify(state.selectedPath) +
     " · query " + JSON.stringify(state.query) +
@@ -689,6 +709,13 @@ function renderSnapshot(doc, origin) {
 function load(url) {
   return fetch(url, { cache: "no-store" }).then(function (res) {
     if (!res.ok) throw new Error("HTTP " + res.status + " for " + url);
+    // F1: verify same-origin after fetch
+    if (res.url) {
+      var u = new URL(res.url, location.href);
+      if (u.origin !== location.origin) {
+        throw new Error("cross-origin URL: " + res.url);
+      }
+    }
     return res.text();
   }).then(function (text) {
     var doc;
@@ -887,9 +914,9 @@ if (typeof document !== "undefined" && document.getElementById("scene")) {
   var fx = qs.get("fixture");
   var hash = parseHash();
   if (fx && (/^[a-z][a-z0-9+.-]*:/i.test(fx) || fx.indexOf("//") === 0 ||
-             fx.charAt(0) === "/")) {
+             fx.charAt(0) === "/" || fx.indexOf("\\") !== -1)) {
     showError(["fixture must be a relative path within this origin (no " +
-               "absolute URL)"]);
+               "absolute URL, no backslashes)"]);
   } else if (qs.get("selftest") === "1" && !fx) {
     load(DEFAULT_FIXTURE).then(function () { runSelfTest(); });
   } else {
