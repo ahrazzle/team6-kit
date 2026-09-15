@@ -46,6 +46,14 @@ You get a folder with your team's agents, ready to run.
 | `WHY.md` | Why the system is designed this way |
 | `CHANGELOG.md` | What changed in each release |
 
+## Anti-loop discipline
+
+The kit includes a contract to prevent thinking loops. It defines four rules:
+load once then use, read once then act, plan once then execute, and trust tool
+output as the receipt. Published artifacts and live pages still require read-back.
+
+Read `choreography/anti-loop-discipline.md` for the full contract.
+
 ## Model rate-limit protection
 
 The kit includes a route-based model-policy catalogue. It follows a model by

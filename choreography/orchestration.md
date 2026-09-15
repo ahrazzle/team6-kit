@@ -313,6 +313,15 @@ See `choreography/funnel/` for the full SOPs.
 - **Honest blockers beat fabricated results.** If a tool, install, or network
   call fails, say so directly and try an alternative — never invent output.
 
+## 16. Anti-loop and self-improvement
+
+The contracts `choreography/anti-loop-discipline.md`,
+`choreography/self-improving-flywheel.md`, and
+`choreography/open-source-contribution.md` encode incident learning and the
+open-source contribution path. A repeated operation that returns no new
+information is a defect; stop and encode the rule that prevents it. The fix is
+the encoded rule, not another retry.
+
 ---
 
 *Choreography v1.1.0 — the system that makes the personas a team. Revision:

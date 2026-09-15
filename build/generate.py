@@ -58,6 +58,9 @@ REVIEW_FROZEN = os.path.join(HERE, "REVIEW.frozen.md")
 # never placeholder-substituted. Declaring a path here is a provenance act:
 # a directory is walked and every file copied; a file is copied as-is.
 AUTHORED_FRESH = [
+    "choreography/anti-loop-discipline.md",
+    "choreography/open-source-contribution.md",
+    "choreography/self-improving-flywheel.md",
     "choreography/side-effect-cost-preflight.md",
     "choreography/safe-run-packet.md",
     "build/preflight",
