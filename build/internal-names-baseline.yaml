@@ -1,0 +1,4 @@
+# build/internal-names-baseline.yaml — records legitimate internal-name occurrences.
+# This baseline is intentionally EMPTY: internal names should not appear in the
+# public kit at all. The gate will fail on any match.
+# If a legitimate occurrence is discovered, document it here with FILE_PATH: COUNT

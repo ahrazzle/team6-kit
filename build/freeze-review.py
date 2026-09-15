@@ -6,7 +6,7 @@ Only rows in the FROZEN manifest (shipped TEMPLATE surface) get entries.
 relpaths are SANITIZED in the frozen manifest, so the frozen review keys on
 sanitized relpaths too (sanitize_path maps raw->sanitized deterministically).
 
-Provenance marker per Azaraki/Shayba: this is the OPEN-CORE DEMO sign-off —
+Provenance marker per team: this is the OPEN-CORE DEMO sign-off —
 the paid/instance path requires a fresh buyer-side REVIEW, never this one.
 """
 import os
