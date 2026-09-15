@@ -327,3 +327,29 @@ the encoded rule, not another retry.
 *Choreography v1.1.0 — the system that makes the personas a team. Revision:
 corrected single-pass role sequence + supervision, durable-state, provenance,
 and served-truth doctrine (2026-09-09). See `../CHANGELOG.md`.*
+
+## 17. Provider-Neutral Orchestration Economics (B01 Reference)
+
+Reference patterns for turn-dense orchestration, cost-bounded routing, and context economics. Provider-neutral; does not require any specific installer or hooks.
+
+### Turn Density and Cache Horizon
+
+- **Dense turn policy:** When consecutive turns occur within the same session, group related actions into a single turn whenever the outcome is deterministic.
+- **Cache horizon boundaries:** For providers with turn-cache semantics, emit bounded summaries after N turns (default N=5) and reset context to prevent cache pollution.
+- **Waiting windows:**
+  - Short waits (< 30s) remain in context
+  - Medium waits (30s–5min) trigger a bounded digest
+  - Long waits (> 5min) require explicit session checkpoint
+
+### Bounded Digest Rules
+
+- **Digest trigger:** After N=5 dense turns without external feedback
+- **Digest content:** Only status deltas, blocker flags, and next-action commitments
+- **Digest format:** Machine-readable compact summary (JSON-compatible when supported)
+
+### Routing and Configuration Principles
+
+- **Additive config only:** Reference patterns extend existing choreography without renaming surfaces
+- **No provider locks:** All economic rules apply regardless of underlying model
+- **Fallback semantics:** When provider-specific features unavailable, use generic equivalents (e.g., turn counters instead of native cache APIs)
+
