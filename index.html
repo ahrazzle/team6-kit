@@ -309,7 +309,11 @@
           <p class="up-body">Every failure the team hits becomes one written rule at the shared layer, so the next run inherits the fix. A rule must name the incident, the failure it prevents, and where it is enforced &mdash; or it is rejected. Read <span class="mono">choreography/self-improving-flywheel.md</span>.</p>
         </article>
         <article class="up-card">
-          <p class="up-title">20 / WE GIVE BACK TO WHAT WE USE</p>
+          <p class="up-title">20 / GOLDEN-ARTIFACT REGRESSION GATE</p>
+          <p class="up-body">Before a release, run a checkpoint that fixes an input and checks that the output matches a committed golden. If the output drifts, the check fails and the release is not shipped. No network, no third-party libs, no model calls—pure Python stdlib. Read <span class="mono">demo/golden-artifact/README.md</span> and <span class="mono">AUDIT/infographic-learnings.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">21 / WE GIVE BACK TO WHAT WE USE</p>
           <p class="up-body">When the team finds a bug or a gap in an open-source project it depends on, it writes the fix or the report and shows it to the owner before anything is sent. Nothing is posted without a human seeing it first. Read <span class="mono">choreography/open-source-contribution.md</span>.</p>
         </article>
       </div>
