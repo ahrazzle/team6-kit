@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "catalog_id": "team6-kit/mini",
+  "generated_from": "skills",
+  "pack": "mini",
+  "pack_digest": "sha256:16ec0e5513736e8180e0e57695512064e928877db2c9a54e4018016d358269b0",
+  "funnel_order": [
+    "engineering",
+    "creative",
+    "research"
+  ],
+  "entries": [
+    {
+      "id": "creative/diagram-maker",
+      "name": "diagram-maker",
+      "description": "Draw an architecture diagram as JSON.",
+      "funnel": "creative",
+      "tags": [
+        "diagram",
+        "architecture",
+        "visualization"
+      ],
+      "aliases": [],
+      "capabilities": [
+        "diagram",
+        "architecture",
+        "visualization"
+      ],
+      "pack": "mini",
+      "source": "team6-kit/registry/catalog/fixtures/mini",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "provenance": "prov-mini-74b1c60a8b7f",
+      "read_path": "skills/creative/diagram-maker/SKILL.md"
+    },
+    {
+      "id": "engineering/code-review",
+      "name": "code-review",
+      "description": "Review a pull request and verify the merge path.",
+      "funnel": "engineering",
+      "tags": [
+        "review",
+        "pull-request",
+        "verification"
+      ],
+      "aliases": [],
+      "capabilities": [
+        "review",
+        "pull-request",
+        "verification"
+      ],
+      "pack": "mini",
+      "source": "team6-kit/registry/catalog/fixtures/mini",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "provenance": "prov-mini-2ef9a3361d43",
+      "read_path": "skills/engineering/code-review/SKILL.md"
+    },
+    {
+      "id": "research/source-scan",
+      "name": "source-scan",
+      "description": "Gather and verify primary sources for a claim.",
+      "funnel": "research",
+      "tags": [
+        "research",
+        "sources",
+        "verification"
+      ],
+      "aliases": [],
+      "capabilities": [
+        "research",
+        "sources",
+        "verification"
+      ],
+      "pack": "mini",
+      "source": "team6-kit/registry/catalog/fixtures/mini",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "provenance": "prov-mini-f71a7c4e5042",
+      "read_path": "skills/research/source-scan/SKILL.md"
+    }
+  ]
+}
