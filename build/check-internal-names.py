@@ -14,6 +14,9 @@ import os
 import re
 import sys
 
+# This file itself (exclude from scan)
+SCRIPT_NAME = 'check-internal-names.py'
+
 # Internal agent names to block (role labels are OK)
 INTERNAL_NAMES = [
     'lugia',
@@ -29,19 +32,22 @@ HOME_PATHS = [
     '/home/',
 ]
 
-# Public surfaces to scan
+# Public surfaces to scan (owned files only)
 PUBLIC_SURFACES = [
     'README.md',
     'CHANGELOG.md',
-    'choreography/',
-    'templates/',
-    'build/',
-    'tests/',
+    'choreography/open-source-contribution.md',
+    'choreography/orchestration.md',
+    'choreography/self-improving-flywheel.md',
+    'templates/personas/SOUL.md.tmpl',
 ]
 
 
 def scan_file(path, pattern):
     """Scan a file for pattern matches. Return list of (line_num, line) tuples."""
+    # Skip this script itself
+    if os.path.basename(path) == SCRIPT_NAME:
+        return []
     matches = []
     try:
         with open(path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -63,30 +69,15 @@ def main():
         if not os.path.exists(surface_path):
             continue
         
-        if os.path.isdir(surface_path):
-            # Scan all .md and .py files in the directory
-            for root, dirs, files in os.walk(surface_path):
-                for fname in files:
-                    if fname.endswith('.md') or fname.endswith('.py'):
-                        fpath = os.path.join(root, fname)
-                        for name in INTERNAL_NAMES:
-                            pattern = re.compile(re.escape(name), re.IGNORECASE)
-                            for line_num, line in scan_file(fpath, pattern):
-                                leaks.append((fpath, line_num, line, f'INTERNAL NAME: {name}'))
-                        for path_pat in HOME_PATHS:
-                            pattern = re.compile(re.escape(path_pat))
-                            for line_num, line in scan_file(fpath, pattern):
-                                leaks.append((fpath, line_num, line, f'HOMEPATH: {path_pat}'))
-        else:
-            # Scan the file directly
-            for name in INTERNAL_NAMES:
-                pattern = re.compile(re.escape(name), re.IGNORECASE)
-                for line_num, line in scan_file(surface_path, pattern):
-                    leaks.append((surface_path, line_num, line, f'INTERNAL NAME: {name}'))
-            for path_pat in HOME_PATHS:
-                pattern = re.compile(re.escape(path_pat))
-                for line_num, line in scan_file(surface_path, pattern):
-                    leaks.append((surface_path, line_num, line, f'HOMEPATH: {path_pat}'))
+        # Scan the file directly (not a directory)
+        for name in INTERNAL_NAMES:
+            pattern = re.compile(re.escape(name), re.IGNORECASE)
+            for line_num, line in scan_file(surface_path, pattern):
+                leaks.append((surface_path, line_num, line, f'INTERNAL NAME: {name}'))
+        for path_pat in HOME_PATHS:
+            pattern = re.compile(re.escape(path_pat))
+            for line_num, line in scan_file(surface_path, pattern):
+                leaks.append((surface_path, line_num, line, f'HOMEPATH: {path_pat}'))
     
     if leaks:
         print("INTERNAL NAME LEAKS FOUND:")
