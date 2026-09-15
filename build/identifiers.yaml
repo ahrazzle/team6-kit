@@ -1,11 +1,24 @@
 # build/identifiers.yaml — shipped blocklist of internal agent names.
-# Internal agent names (protean codenames) are NOT public-facing terms.
-# They should never appear in public documentation or templates.
+# Internal agent names are NOT public-facing terms. They should never appear in
+# public documentation, templates, or generated artifacts.
+#
+# The blocklist carries SHA-256 digests only, never plaintext names:
+#
+#     digest = sha256(name lowercased, UTF-8).hexdigest()
+#
+# The release gate hashes the candidate tokens it finds in each file and compares
+# the digests below to them, so a plaintext internal name is caught and a file
+# that merely carries a digest string is not. Derive a digest for a candidate
+# without ever writing the name down:
+#
+#     python3 build/check-internal-names.py --hash "<candidate>"
+#
+# Consumer: build/check-internal-names.py, run as a step of build/verify-all.py.
 
-internal_agent_names:
-  - Lugia
-  - Azaraki
-  - KodeKoot
-  - Shayba
-  - Halakukhan
-  - Eldunari
+internal_agent_name_hashes:
+  - d60893a4805c67252dd46e05c09c6dc8fde20fa3b3d331b361f3da8f50476926
+  - 4d71d0c1d463ba57b3fbd9b3bf626714f31d18b7f67e0c872490e5cfcab2dd16
+  - faf43fef242b3717029fb2a9e5e64f4c6b28e0c479f32bbb7b3b8c8ea344611b
+  - d64eddbf4e6e5b718b9b7f6644cb7c6e8a81843b960ec08d1b7983967eb5cc2e
+  - ff46f479a6e2f5a7fb5d95d4b35e5dd47bfccb195da91881a452b6a2ff62b153
+  - d2938e2b00dd180dfb2a243e92a7fdedf0de5a039052efc1aae8b2ed933efff4

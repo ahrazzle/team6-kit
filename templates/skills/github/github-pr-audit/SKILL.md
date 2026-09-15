@@ -2,7 +2,7 @@
 name: github-pr-audit
 description: "Use when auditing a GitHub PR or issue before merge."
 version: 1.2.0
-author: Team6 / Halakukhan
+author: Team6
 license: MIT
 platforms: [linux, macos, windows]
 metadata:
