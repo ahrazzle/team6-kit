@@ -1,0 +1,57 @@
+{
+  "contract": "team6-codebase-map",
+  "version": 1,
+  "source_kind": "synthetic",
+  "included_roots": ["app"],
+  "excluded_patterns": [],
+  "measure": "bytes",
+  "generated_at": "2026-09-15T00:00:00Z",
+  "provenance": {
+    "kind": "synthetic-fixture",
+    "ref": "examples/codebase-map.invalid.json"
+  },
+  "rendering": {
+    "algorithm": "unknown-mode"
+  },
+  "tree": {
+    "kind": "Node",
+    "label": "app",
+    "path": "",
+    "children": [
+      {
+        "kind": "Directory",
+        "label": "core",
+        "path": "app/core",
+        "children": []
+      },
+      {
+        "kind": "Leaf",
+        "label": "main.py",
+        "path": "/opt/synthetic/src/main.py",
+        "size": 400,
+        "color": "blue"
+      },
+      {
+        "kind": "Leaf",
+        "label": "dup.py",
+        "path": "app/dup.py",
+        "size": 10,
+        "color": "blue"
+      },
+      {
+        "kind": "Leaf",
+        "label": "dup-again.py",
+        "path": "app/dup.py",
+        "size": -5,
+        "color": "mustard"
+      },
+      {
+        "kind": "Leaf",
+        "label": "frac.py",
+        "path": "app/frac.py",
+        "size": 3.5,
+        "color": "green"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1561 @@
+{
+  "schema_version": 1,
+  "lock_id": "team6-kit/core",
+  "pack": "core",
+  "source": "team6-kit/templates/skills",
+  "catalog_id": "team6-kit/core",
+  "catalog_digest": "sha256:fe81ed102652647a93c9b729baa5092d2c6bb7ed1a2eeb4fa811f5e1615f2a9b",
+  "generated_from": "templates/skills",
+  "entries": [
+    {
+      "provenance": "prov-core-c965eade145b",
+      "id": "adversarial-review/adversarial-review",
+      "name": "adversarial-review",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/adversarial-review/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-5d8b85b48f95",
+      "id": "autonomous-ai-agents/agent-consciousness-architecture",
+      "name": "agent-consciousness-architecture",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/agent-consciousness-architecture/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-a7c0a3418808",
+      "id": "autonomous-ai-agents/agent-pager",
+      "name": "agent-pager",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/agent-pager/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-474fdb0bda3e",
+      "id": "autonomous-ai-agents/agent-persistence-layers",
+      "name": "agent-persistence-layers",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/agent-persistence-layers/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-7f36479bee57",
+      "id": "autonomous-ai-agents/distributed-coordination",
+      "name": "distributed-coordination",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/autonomous-ai-agents/distributed-coordination/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-cf5f5701f710",
+      "id": "autonomous-ai-agents/hermes-agent-contributing",
+      "name": "hermes-agent-contributing",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/hermes-agent-contributing/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-4be1ba4b9446",
+      "id": "autonomous-ai-agents/hermes-bot-mode-troubleshooting",
+      "name": "hermes-bot-mode-troubleshooting",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/hermes-bot-mode-troubleshooting/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-d53bfeae1774",
+      "id": "autonomous-ai-agents/hermes-desktop-app-internals",
+      "name": "hermes-desktop-app-internals",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/hermes-desktop-app-internals/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-42995f3c3a00",
+      "id": "autonomous-ai-agents/hermes-profile-fleet-operations",
+      "name": "hermes-profile-fleet-operations",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/hermes-profile-fleet-operations/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-c7f0d96793fc",
+      "id": "autonomous-ai-agents/hermes-profile-management",
+      "name": "hermes-profile-management",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/hermes-profile-management/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-59c9702e27a3",
+      "id": "autonomous-ai-agents/hermes-session-model-migration",
+      "name": "hermes-session-model-migration",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/hermes-session-model-migration/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-93084a6f9d93",
+      "id": "autonomous-ai-agents/hermes-session-model-overrides",
+      "name": "hermes-session-model-overrides",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/hermes-session-model-overrides/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-bcf8eedcd6f0",
+      "id": "autonomous-ai-agents/knowledge-router",
+      "name": "knowledge-router",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/knowledge-router/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-06fbadc67e60",
+      "id": "autonomous-ai-agents/multi-agent-consciousness",
+      "name": "multi-agent-consciousness",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/multi-agent-consciousness/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-c53a34dd8994",
+      "id": "autonomous-ai-agents/multi-agent-coordination",
+      "name": "multi-agent-coordination",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/multi-agent-coordination/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-73952bdd2954",
+      "id": "autonomous-ai-agents/multi-agent-knowledge-coordination",
+      "name": "multi-agent-knowledge-coordination",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/multi-agent-knowledge-coordination/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-085870d5583a",
+      "id": "autonomous-ai-agents/multi-agent-knowledge-systems",
+      "name": "multi-agent-knowledge-systems",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/autonomous-ai-agents/multi-agent-knowledge-systems/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-e439f15ccca6",
+      "id": "autonomous-ai-agents/multi-agent-model-tiering",
+      "name": "multi-agent-model-tiering",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/multi-agent-model-tiering/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-cc7ad9539d9c",
+      "id": "autonomous-ai-agents/multi-agent-orchestration",
+      "name": "multi-agent-orchestration",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/autonomous-ai-agents/multi-agent-orchestration/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-216adbf5d8a2",
+      "id": "autonomous-ai-agents/multi-agent-team-orchestration",
+      "name": "multi-agent-team-orchestration",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/autonomous-ai-agents/multi-agent-team-orchestration/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-e5b2c3c3fb09",
+      "id": "autonomous-ai-agents/project-handoff-takeover",
+      "name": "project-handoff-takeover",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/project-handoff-takeover/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-ad7e349f1591",
+      "id": "autonomous-ai-agents/project-initializer",
+      "name": "project-initializer",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/project-initializer/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-cd5e3fc4070a",
+      "id": "autonomous-ai-agents/skill-library-curation",
+      "name": "skill-library-curation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/skill-library-curation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-88a93b1628b3",
+      "id": "autonomous-ai-agents/zero-context-preservation",
+      "name": "zero-context-preservation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/autonomous-ai-agents/zero-context-preservation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-4ed42dd4822f",
+      "id": "collaborative-knowledge-systems/collaborative-knowledge-systems",
+      "name": "collaborative-knowledge-systems",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/collaborative-knowledge-systems/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-71b1fb93c80d",
+      "id": "concurrent-agent-file-coordination/concurrent-agent-file-coordination",
+      "name": "concurrent-agent-file-coordination",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/concurrent-agent-file-coordination/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-6619150c2e67",
+      "id": "consciousness-architecture-design/consciousness-architecture-design",
+      "name": "consciousness-architecture-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/consciousness-architecture-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-d787228aa855",
+      "id": "coordination/model-config-skill",
+      "name": "model-config-skill",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/coordination/model-config-skill/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-9fc339633de2",
+      "id": "copywriting/website-copy",
+      "name": "website-copy",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "mit",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/copywriting/website-copy/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-1fab7dec74ad",
+      "id": "creative/agent-consciousness-design",
+      "name": "agent-consciousness-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/agent-consciousness-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f0b38d20bf07",
+      "id": "creative/analytical-report-design",
+      "name": "analytical-report-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/analytical-report-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-0f601a264faf",
+      "id": "creative/book-creation",
+      "name": "book-creation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/book-creation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-0374c161291d",
+      "id": "creative/client-brand-collateral",
+      "name": "client-brand-collateral",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "internal",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/client-brand-collateral/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-17c323b8ec34",
+      "id": "creative/consciousness-architecture",
+      "name": "consciousness-architecture",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/consciousness-architecture/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-be16155796b0",
+      "id": "creative/data-essay-design",
+      "name": "data-essay-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/data-essay-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-951bb9957d8d",
+      "id": "creative/design-tone-domain",
+      "name": "design-tone-domain",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/design-tone-domain/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f3709991c0f9",
+      "id": "creative/excalidraw",
+      "name": "excalidraw",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/excalidraw/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f3e2fbc3c76d",
+      "id": "creative/external-writing-discipline",
+      "name": "external-writing-discipline",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/external-writing-discipline/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-a925edc52546",
+      "id": "creative/game-ux-architecture",
+      "name": "game-ux-architecture",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/game-ux-architecture/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-bcbf477d5776",
+      "id": "creative/html-report-authoring",
+      "name": "html-report-authoring",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/html-report-authoring/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-3c890f5aa87d",
+      "id": "creative/html-report-design",
+      "name": "html-report-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/html-report-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-34f5305e2e43",
+      "id": "creative/incomplete-data-interface-design",
+      "name": "incomplete-data-interface-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/incomplete-data-interface-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-0e56ae525260",
+      "id": "creative/interaction-contract-design",
+      "name": "interaction-contract-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/interaction-contract-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-6bfa15f1c809",
+      "id": "creative/interactive-data-simulation",
+      "name": "interactive-data-simulation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/interactive-data-simulation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-10b229c9a445",
+      "id": "creative/interactive-documents",
+      "name": "interactive-documents",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/interactive-documents/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-579431e96d83",
+      "id": "creative/interactive-educational-books",
+      "name": "interactive-educational-books",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/interactive-educational-books/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-34ebe07dd61d",
+      "id": "creative/interactive-html-publication",
+      "name": "interactive-html-publication",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/interactive-html-publication/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-b8e48eb353b6",
+      "id": "creative/interactive-simulation",
+      "name": "interactive-simulation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/interactive-simulation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-87095416de0c",
+      "id": "creative/interactive-term-definitions",
+      "name": "interactive-term-definitions",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/interactive-term-definitions/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-858d98640351",
+      "id": "creative/interactive-training-design",
+      "name": "interactive-training-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/interactive-training-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-232ae57e3157",
+      "id": "creative/marketing-site-delivery",
+      "name": "marketing-site-delivery",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/creative/marketing-site-delivery/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-32fc52b1b942",
+      "id": "creative/print-material-design",
+      "name": "print-material-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/print-material-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-3bf7e6f344c3",
+      "id": "creative/source-agnostic-design",
+      "name": "source-agnostic-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/source-agnostic-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-af4878a23577",
+      "id": "creative/user-design-aesthetic",
+      "name": "user-design-aesthetic",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/user-design-aesthetic/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-d13a2ce0d7ad",
+      "id": "creative/visual-report-design",
+      "name": "visual-report-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/visual-report-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-7cb5763ef568",
+      "id": "creative/web-design-component-catalog",
+      "name": "web-design-component-catalog",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/creative/web-design-component-catalog/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-43d8d64fbe3b",
+      "id": "custom-domain-publishing/custom-domain-publishing",
+      "name": "custom-domain-publishing",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/custom-domain-publishing/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-7727abd9a64a",
+      "id": "deployment-verification-discipline/deployment-verification-discipline",
+      "name": "deployment-verification-discipline",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/deployment-verification-discipline/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-a649b8bbb971",
+      "id": "deployment/github-pages-deployment",
+      "name": "github-pages-deployment",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/deployment/github-pages-deployment/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-08a53c8ac0fb",
+      "id": "deployment/vercel-deployment",
+      "name": "vercel-deployment",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/deployment/vercel-deployment/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-44667f81f525",
+      "id": "devops/agent-profile-extraction",
+      "name": "agent-profile-extraction",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/devops/agent-profile-extraction/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-467b17a5d9b7",
+      "id": "devops/logo-asset-pipeline",
+      "name": "logo-asset-pipeline",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/devops/logo-asset-pipeline/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-1475e7bfba74",
+      "id": "devops/staging-first-web-deployment",
+      "name": "staging-first-web-deployment",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/devops/staging-first-web-deployment/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-bf230a747834",
+      "id": "educational-html-book/educational-html-book",
+      "name": "educational-html-book",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/educational-html-book/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-65bd221b069e",
+      "id": "framework-plugin-development/framework-plugin-development",
+      "name": "framework-plugin-development",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/framework-plugin-development/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-5a83c3535d18",
+      "id": "game-feedback-animations/game-feedback-animations",
+      "name": "game-feedback-animations",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/game-feedback-animations/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-e4b51c197e73",
+      "id": "github/github-pr-audit",
+      "name": "github-pr-audit",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/github/github-pr-audit/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-181f2a4e5c3e",
+      "id": "github/github-project-publication",
+      "name": "github-project-publication",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/github/github-project-publication/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-c70846481baa",
+      "id": "github/open-source-project-packaging",
+      "name": "open-source-project-packaging",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/github/open-source-project-packaging/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-88fbc3eba61c",
+      "id": "hermes/custom-openai-endpoint-registration",
+      "name": "custom-openai-endpoint-registration",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/hermes/custom-openai-endpoint-registration/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-81952414af45",
+      "id": "hermes/hermes-profile-distribution",
+      "name": "hermes-profile-distribution",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/hermes/hermes-profile-distribution/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-3c2e8e8aa7b7",
+      "id": "knowledge-base-ingestion/knowledge-base-ingestion",
+      "name": "knowledge-base-ingestion",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/knowledge-base-ingestion/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-368fcea783ed",
+      "id": "learning-design/training-module-design",
+      "name": "training-module-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/learning-design/training-module-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-b60b5fe0c8eb",
+      "id": "long-run-deployment-discipline/long-run-deployment-discipline",
+      "name": "long-run-deployment-discipline",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/long-run-deployment-discipline/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f56834e1c6e0",
+      "id": "macos-harness/macos-harness",
+      "name": "macos-harness",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/macos-harness/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-d0c9087cd5e2",
+      "id": "marketing-site-production/marketing-site-production",
+      "name": "marketing-site-production",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/marketing-site-production/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-8b88aff750fc",
+      "id": "mlops/evaluating-llms-harness",
+      "name": "evaluating-llms-harness",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/mlops/evaluation/evaluating-llms-harness/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-e22ae57bc455",
+      "id": "model-config-skill/model-config-skill",
+      "name": "model-config-skill",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/model-config-skill/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f85a031a5828",
+      "id": "multi-agent-consciousness-architecture/multi-agent-consciousness-architecture",
+      "name": "multi-agent-consciousness-architecture",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/multi-agent-consciousness-architecture/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-0763bad66a5c",
+      "id": "multi-page-html-design/multi-page-html-design",
+      "name": "multi-page-html-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/multi-page-html-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-a70f9760043f",
+      "id": "productivity/briefing",
+      "name": "briefing",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/productivity/briefing/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-a860004cdf2f",
+      "id": "productivity/client-review-package",
+      "name": "client-review-package",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/productivity/client-review-package/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-33c86389357a",
+      "id": "productivity/knowledge-base-consolidation",
+      "name": "knowledge-base-consolidation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/productivity/knowledge-base-consolidation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-323140cd23ca",
+      "id": "productivity/task-execution",
+      "name": "task-execution",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/productivity/task-execution/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-73228e39de71",
+      "id": "productivity/training-package-design",
+      "name": "training-package-design",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/productivity/training-package-design/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f56560284aad",
+      "id": "productivity/user-preference-capture",
+      "name": "user-preference-capture",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/productivity/user-preference-capture/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-7e4d9ca21d90",
+      "id": "research/agent-consciousness-architecture",
+      "name": "agent-consciousness-architecture",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/agent-consciousness-architecture/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-4fad3b7249b4",
+      "id": "research/classical-arabic-text-research",
+      "name": "classical-arabic-text-research",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/classical-arabic-text-research/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-1299d3156ff4",
+      "id": "research/document-analysis",
+      "name": "document-analysis",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/document-analysis/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-730217685273",
+      "id": "research/knowledge-base-consolidation",
+      "name": "knowledge-base-consolidation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/knowledge-base-consolidation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-1bbf45638db6",
+      "id": "research/knowledge-base-construction",
+      "name": "knowledge-base-construction",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/knowledge-base-construction/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-c20ca954f5ea",
+      "id": "research/knowledge-base-drift-monitoring",
+      "name": "knowledge-base-drift-monitoring",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/knowledge-base-drift-monitoring/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-97b683bebc46",
+      "id": "research/knowledge-base-management",
+      "name": "knowledge-base-management",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/research/knowledge-base-management/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-08c82117da5e",
+      "id": "research/model-validation",
+      "name": "model-validation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/model-validation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-2bec44000692",
+      "id": "research/org-tech-stack-reconnaissance",
+      "name": "org-tech-stack-reconnaissance",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/org-tech-stack-reconnaissance/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-88e70a1f9f4d",
+      "id": "research/oss-reuse-license-audit",
+      "name": "oss-reuse-license-audit",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "internal",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/oss-reuse-license-audit/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f6b55d6a7dd1",
+      "id": "research/primary-source-discovery",
+      "name": "primary-source-discovery",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/primary-source-discovery/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-88b8decaf36a",
+      "id": "research/product-discovery",
+      "name": "product-discovery",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/product-discovery/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-b30d675620b6",
+      "id": "research/project-takeover-recon",
+      "name": "project-takeover-recon",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/project-takeover-recon/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-966b71a56de4",
+      "id": "research/read-only-system-audit",
+      "name": "read-only-system-audit",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/read-only-system-audit/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f452d6ba5057",
+      "id": "research/source-evaluation",
+      "name": "source-evaluation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/source-evaluation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-61644363c957",
+      "id": "research/tool-adoption-audit",
+      "name": "tool-adoption-audit",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/research/tool-adoption-audit/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-a2570f66ee53",
+      "id": "sales-enablement/sales-enablement",
+      "name": "sales-enablement",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/sales-enablement/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-3b7984144820",
+      "id": "software-development/agent-consciousness-architecture",
+      "name": "agent-consciousness-architecture",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/agent-consciousness-architecture/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-97704d2e5ade",
+      "id": "software-development/agent-kit-distribution",
+      "name": "agent-kit-distribution",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/agent-kit-distribution/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-5d8162a0bcc1",
+      "id": "software-development/agent-kit-extraction",
+      "name": "agent-kit-extraction",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/agent-kit-extraction/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-1be1edefbd71",
+      "id": "software-development/browser-game-demos",
+      "name": "browser-game-demos",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/browser-game-demos/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-8cb66e0914c2",
+      "id": "software-development/browser-game-development",
+      "name": "browser-game-development",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/browser-game-development/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-ab3b68b8b6cd",
+      "id": "software-development/code-review-verification",
+      "name": "code-review-verification",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/code-review-verification/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-1a1054b4fc86",
+      "id": "software-development/deploy-artifact-verification",
+      "name": "deploy-artifact-verification",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/deploy-artifact-verification/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-b7d07fb8b3f2",
+      "id": "software-development/deploy-gate-discipline",
+      "name": "deploy-gate-discipline",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/software-development/deploy-gate-discipline/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-6dd061a071be",
+      "id": "software-development/discord-bot-development",
+      "name": "discord-bot-development",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/discord-bot-development/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-5950c88079bb",
+      "id": "software-development/docker-postgres-setup",
+      "name": "docker-postgres-setup",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/docker-postgres-setup/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-fd699ba4de32",
+      "id": "software-development/drift-monitoring",
+      "name": "drift-monitoring",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/drift-monitoring/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-25ecd0426f91",
+      "id": "software-development/event-bus-architecture",
+      "name": "event-bus-architecture",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/event-bus-architecture/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-807793a4d3a3",
+      "id": "software-development/event-driven-web-ui-lifecycle",
+      "name": "event-driven-web-ui-lifecycle",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/event-driven-web-ui-lifecycle/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-1a84d6c3ab0f",
+      "id": "software-development/external-tool-vetting",
+      "name": "external-tool-vetting",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/software-development/external-tool-vetting/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-856822f061e1",
+      "id": "software-development/fastify-prisma-monorepo",
+      "name": "fastify-prisma-monorepo",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/software-development/fastify-prisma-monorepo/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-1919a934041a",
+      "id": "software-development/framework-handoff-package",
+      "name": "framework-handoff-package",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/framework-handoff-package/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-06aae165c7e2",
+      "id": "software-development/fullstack-monorepo-dev",
+      "name": "fullstack-monorepo-dev",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/fullstack-monorepo-dev/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-ca2fdd916544",
+      "id": "software-development/fullstack-ts-monorepo",
+      "name": "fullstack-ts-monorepo",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/fullstack-ts-monorepo/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-19edebc5fd5b",
+      "id": "software-development/git-remote-troubleshooting",
+      "name": "git-remote-troubleshooting",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/git-remote-troubleshooting/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-27e788216e99",
+      "id": "software-development/hermes-desktop-plugin-storage",
+      "name": "hermes-desktop-plugin-storage",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/hermes-desktop-plugin-storage/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-304953c41968",
+      "id": "software-development/hermes-desktop-update-repair",
+      "name": "hermes-desktop-update-repair",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "internal",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/hermes-desktop-update-repair/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-502049e6adbc",
+      "id": "software-development/inherited-project-takeover",
+      "name": "inherited-project-takeover",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/software-development/inherited-project-takeover/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-174b3c793475",
+      "id": "software-development/integration-testing",
+      "name": "integration-testing",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/integration-testing/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-703e6d34c364",
+      "id": "software-development/interactive-web-game-development",
+      "name": "interactive-web-game-development",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/interactive-web-game-development/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-09df162074ac",
+      "id": "software-development/knowledge-base-access",
+      "name": "knowledge-base-access",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/knowledge-base-access/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f8889b934d4d",
+      "id": "software-development/knowledge-base-consolidation",
+      "name": "knowledge-base-consolidation",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/knowledge-base-consolidation/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-7583a04eb8c3",
+      "id": "software-development/knowledge-base-ingestion",
+      "name": "knowledge-base-ingestion",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/knowledge-base-ingestion/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-c692403929c1",
+      "id": "software-development/knowledge-drift-monitoring",
+      "name": "knowledge-drift-monitoring",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/knowledge-drift-monitoring/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-11c0fa915705",
+      "id": "software-development/licensed-asset-reuse",
+      "name": "licensed-asset-reuse",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/software-development/licensed-asset-reuse/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-37edeb4bb8fa",
+      "id": "software-development/multi-agent-knowledge-base",
+      "name": "multi-agent-knowledge-base",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/multi-agent-knowledge-base/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-ce11bd1e495f",
+      "id": "software-development/nodejs-project-bringup",
+      "name": "nodejs-project-bringup",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/nodejs-project-bringup/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-39c164db603a",
+      "id": "software-development/open-source-reuse-licensing",
+      "name": "open-source-reuse-licensing",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/open-source-reuse-licensing/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-601d8d97ca0f",
+      "id": "software-development/project-foundation-scaffold",
+      "name": "project-foundation-scaffold",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/project-foundation-scaffold/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-044e3c124183",
+      "id": "software-development/python-venv-repair",
+      "name": "python-venv-repair",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/python-venv-repair/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-6450785d3fc8",
+      "id": "software-development/quranic-arabic-data",
+      "name": "quranic-arabic-data",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/software-development/quranic-arabic-data/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-6002bdb361ee",
+      "id": "software-development/rhythm-game-development",
+      "name": "rhythm-game-development",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/rhythm-game-development/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f413137f3b67",
+      "id": "software-development/rhythm-typing-game-framework",
+      "name": "rhythm-typing-game-framework",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/rhythm-typing-game-framework/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-9c9aeb9b8d8f",
+      "id": "software-development/source-verification",
+      "name": "source-verification",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/source-verification/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-5f131f9d97c6",
+      "id": "software-development/static-brand-site-launch",
+      "name": "static-brand-site-launch",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "internal",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/static-brand-site-launch/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-6c34c680e03a",
+      "id": "software-development/static-webapp-verification",
+      "name": "static-webapp-verification",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/static-webapp-verification/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-31cddb7c96aa",
+      "id": "software-development/threejs-webgl-development",
+      "name": "threejs-webgl-development",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/threejs-webgl-development/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-2404d962575e",
+      "id": "software-development/verify-deployed-artifacts",
+      "name": "verify-deployed-artifacts",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/verify-deployed-artifacts/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-3a6fe6db4f1c",
+      "id": "software-development/web-app-deployment",
+      "name": "web-app-deployment",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/web-app-deployment/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-d4965eb638d8",
+      "id": "software-development/web-app-integration-debugging",
+      "name": "web-app-integration-debugging",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/web-app-integration-debugging/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-59b1092cfe7a",
+      "id": "software-development/web-build-fix-verification",
+      "name": "web-build-fix-verification",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/web-build-fix-verification/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-edb37490fa1f",
+      "id": "software-development/web-build-verification",
+      "name": "web-build-verification",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "internal",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/web-build-verification/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-f832990a45cf",
+      "id": "software-development/web-deployment-safety",
+      "name": "web-deployment-safety",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "CC-BY-4.0",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/software-development/web-deployment-safety/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-e8a8e9b3fa02",
+      "id": "static-site-production/static-site-production",
+      "name": "static-site-production",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/static-site-production/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-2af60b45e426",
+      "id": "web-app-debugging/web-app-debugging",
+      "name": "web-app-debugging",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/web-app-debugging/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-c5c781acdf47",
+      "id": "web-development/interactive-terminal-assistant",
+      "name": "interactive-terminal-assistant",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/web-development/interactive-terminal-assistant/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-dde95097bd0a",
+      "id": "web-release-gates/web-release-gates",
+      "name": "web-release-gates",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "Apache-2.0",
+      "license_source": "pack-default",
+      "read_path": "templates/skills/web-release-gates/SKILL.md"
+    },
+    {
+      "provenance": "prov-core-9c8e8bad07a3",
+      "id": "writing/argument-analysis",
+      "name": "argument-analysis",
+      "pack": "core",
+      "source": "team6-kit/templates/skills",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "templates/skills/writing/argument-analysis/SKILL.md"
+    }
+  ]
+}

@@ -21,6 +21,18 @@ MANIFEST_LIVE = os.path.join(ROOT, "build", "manifest.tsv")
 MANIFEST_FROZEN = os.path.join(ROOT, "build", "manifest.frozen.tsv")
 TEMPLATES = os.path.join(ROOT, "templates")
 
+# Instance tokens that must never appear in public output. Single source of
+# truth: every leak check in this file iterates this one tuple.
+INSTANCE_TOKENS = (
+    "kethuda", "ahrazzle", "metrolinx", "spa5k", "nana muneer",
+    "typejoy", "empeir", "nanaveda", "askaconsult", "workforce",
+    "pukhacc", "tafsir", "eldunari", "raptora", "metabot", "xplor",
+    "typemon", "sprite", "subtractive", "command-centre", "fomc",
+    "curiokids", "arif", "3f", "metamap", "sheikh", "lugia",
+    "azaraki", "halakukhan", "shayba", "kodekoot", "kurimasu",
+    "aetherean",
+)
+
 
 def target_exists(rel):
     base = os.path.basename(rel)
@@ -35,6 +47,9 @@ def target_exists(rel):
 
 
 def main():
+    if not os.path.isfile(MANIFEST_LIVE):
+        print(f"ERROR: missing input manifest: {MANIFEST_LIVE}", file=sys.stderr)
+        sys.exit(2)
     rows = []
     with open(MANIFEST_LIVE, encoding="utf-8") as fh:
         for line in fh:
@@ -51,22 +66,18 @@ def main():
             san = sanitize_path(rel)
             rows.append("\t".join([san] + parts[1:5]))
 
+    if not rows:
+        print("ERROR: no resolved shipped-surface rows; refusing to "
+              "overwrite the frozen manifest", file=sys.stderr)
+        sys.exit(2)
+
     out = "relpath\tclass\tprofiles\ttotal_hits\tverdict\n" + "\n".join(sorted(set(rows))) + "\n"
     with open(MANIFEST_FROZEN, "w", encoding="utf-8") as fh:
         fh.write(out)
 
     # Verify no instance tokens in the frozen manifest
     low = out.lower()
-    leaks = []
-    for bad in ["kethuda", "ahrazzle", "metrolinx", "spa5k", "nana muneer",
-                "typejoy", "empeir", "nanaveda", "askaconsult", "workforce",
-                "pukhacc", "tafsir", "eldunari", "raptora", "metabot", "xplor",
-                "typemon", "sprite", "subtractive", "command-centre", "fomc",
-                "curiokids", "arif", "3f", "metamap", "sheikh", "lugia",
-                "azaraki", "halakukhan", "shayba", "kodekoot", "kurimasu",
-                "aetherean"]:
-        if bad in low:
-            leaks.append(bad)
+    leaks = [bad for bad in INSTANCE_TOKENS if bad in low]
     print(f"frozen manifest: {len(rows)} shipped-surface rows")
     print(f"leaks: {leaks if leaks else 'NONE'}")
     if leaks:

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'">
+<link rel="icon" href="data:,">
+<title>Team6 codebase-map proof</title>
+<!--
+  demo/codebase-map/index.html — a self-contained, zero-dependency static
+  treemap viewer for the Team6 codebase-map snapshot contract
+  (choreography/codebase-map.md, choreography/codebase-map-interaction.md).
+
+  Boundaries (see demo/codebase-map/README.md):
+    - no external assets, fonts, scripts, or network calls of any kind
+    - reads ONE local fixture (examples/codebase-map.valid.json) via a
+      same-origin fetch served by a local static server
+    - the map is a SNAPSHOT projection, never a live repository view
+    - area is a declared measure (bytes/lines), never importance
+    - interaction is metadata-only: focus + label/path search, no source text,
+      no dependency edges, no live search
+  Slice 2: t6-squarified-v1 baseline renderer.  Slice 3: focus + search.
+-->
+<style>
+  :root {
+    --bg: #0f1115; --panel: #171a21; --line: #2a2f3a; --ink: #e6e9ef;
+    --muted: #9aa3b2; --accent: #7dd3fc; --sel: #fbbf24; --err: #f87171;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif; }
+  header { padding: 16px 20px 8px; }
+  h1 { margin: 0 0 4px; font-size: 18px; font-weight: 600; }
+  .meta { color: var(--muted); font-size: 12.5px; }
+  .meta code { color: var(--accent); }
+  #notice { margin: 10px 20px; padding: 10px 12px; border: 1px solid var(--line);
+    border-radius: 8px; background: var(--panel); color: var(--muted);
+    font-size: 12.5px; }
+  #notice strong { color: var(--ink); }
+  #toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+    padding: 4px 20px 10px; }
+  #toolbar button { background: var(--panel); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px;
+    font: inherit; cursor: pointer; }
+  #toolbar button:hover { border-color: var(--accent); }
+  #crumb { color: var(--muted); font-size: 12.5px; margin-left: 4px; }
+  #crumb code { color: var(--accent); }
+  #search { background: #0b0d11; color: var(--ink); border: 1px solid var(--line);
+    border-radius: 6px; padding: 5px 8px; font: inherit; min-width: 220px; }
+  #search:focus { outline: 2px solid var(--accent); }
+  #searchstate { color: var(--muted); font-size: 12.5px; }
+  #error { display: none; margin: 10px 20px; padding: 12px 14px;
+    border: 1px solid var(--err); border-radius: 8px; background: #2a1618;
+    color: #fecaca; font-size: 13px; }
+  #error h2 { margin: 0 0 6px; font-size: 14px; color: #fecaca; }
+  #error ul { margin: 6px 0 0; padding-left: 20px; }
+  #selftest { white-space: pre-line; margin: 0 20px; color: var(--muted);
+    font-size: 12.5px; }
+  #selftest:empty { display: none; }
+  #layout { display: flex; gap: 12px; padding: 6px 20px 20px; flex-wrap: wrap; }
+  #map-wrap { flex: 1 1 620px; min-width: 320px; }
+  #map { width: 100%; height: auto; display: block; background: #0b0d11;
+    border: 1px solid var(--line); border-radius: 8px; }
+  #side { flex: 0 1 280px; }
+  #detail { border: 1px solid var(--line); border-radius: 8px;
+    background: var(--panel); padding: 12px 14px; font-size: 12.5px; }
+  #detail h2 { margin: 0 0 8px; font-size: 13px; }
+  #detail dl { margin: 0; display: grid; grid-template-columns: auto 1fr;
+    gap: 2px 10px; }
+  #detail dt { color: var(--muted); }
+  #detail dd { margin: 0; word-break: break-word; }
+  #unavailable { margin-top: 12px; padding-top: 10px;
+    border-top: 1px solid var(--line); color: var(--muted); }
+  .leaf { stroke: #0b0d11; stroke-width: 1; }
+  .node-box { fill: none; stroke: #7c8798; stroke-width: 1.25; }
+  .node-band { fill: rgba(124,135,152,0.16); }
+  g.entity { cursor: pointer; outline: none; }
+  g.entity:focus .node-box, g.entity:focus .leaf {
+    stroke: var(--accent); stroke-width: 2.5; }
+  g.entity.selected .node-box, g.entity.selected .leaf {
+    stroke: var(--sel); stroke-width: 2.5; }
+  text { font-family: inherit; pointer-events: none; }
+  .label-leaf { font-size: 11px; fill: #0b0d11; }
+  .label-node { font-size: 10.5px; fill: #cfd6e2; }
+  #receipt { padding: 0 20px 24px; color: var(--muted); font-size: 12px; }
+  #receipt code { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Codebase-map snapshot proof</h1>
+  <div class="meta" id="meta">Loading snapshot…</div>
+</header>
+
+<div id="notice">
+  <strong>This is a snapshot projection, not a live repository view.</strong>
+  Rectangle area is the snapshot's declared <em>measure</em>; it is not
+  importance, risk, or quality. Color is a display token, not a grade.
+</div>
+
+<div id="toolbar">
+  <button id="btn-back" type="button" title="Focus the parent directory">Back</button>
+  <button id="btn-fit" type="button" title="Reset focus to the root">Fit to root</button>
+  <nav id="crumb" aria-label="Focus path"></nav>
+  <label for="search" class="meta">Search</label>
+  <input id="search" type="search" placeholder="label or path…"
+         aria-label="Search labels and normalized paths">
+  <span id="searchstate" role="status" aria-live="polite"></span>
+</div>
+
+<div id="error" role="alert" aria-live="assertive"></div>
+<div id="selftest" aria-live="polite"></div>
+
+<div id="layout">
+  <div id="map-wrap">
+    <svg id="map" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet"
+         role="img" aria-label="Treemap of the codebase-map snapshot">
+      <g id="scene"></g>
+    </svg>
+  </div>
+  <aside id="side">
+    <div id="detail" aria-live="polite">
+      <h2>Selected item</h2>
+      <div id="detail-body" class="meta">Nothing selected. Select a rectangle,
+        or search for a label.</div>
+      <div id="unavailable">
+        Source text, syntax highlighting, dependency edges, entity definitions,
+        and live source search are <strong>not present in this snapshot</strong>
+        and are unavailable here.
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer id="receipt" aria-live="polite"></footer>
+
+<script>
+"use strict";
+
+// ---------------------------------------------------------------------------
+// contract constants — in lockstep with choreography/codebase-map.md
+// ---------------------------------------------------------------------------
+var CONTRACT_TOKEN = "team6-codebase-map";
+var CONTRACT_VERSION = 1;
+var ALGORITHM_ENUM = ["t6-squarified-v1"];
+var MEASURE_ENUM = ["bytes", "lines"];
+var SORT_ENUM = ["lexical", "size-desc", "size-asc"];
+var SOURCE_KIND_ENUM = ["synthetic", "repository-snapshot"];
+var COLOR_ENUM = ["blue", "green", "amber", "slate", "violet", "red", "unknown"];
+var TOP_KEYS = ["contract", "version", "source_kind", "included_roots",
+                "excluded_patterns", "measure", "sort", "generated_at",
+                "provenance", "rendering", "tree"];
+var NODE_KEYS = ["kind", "label", "path", "children"];
+var LEAF_KEYS = ["kind", "label", "path", "size", "color"];
+var COLOR_FILL = {
+  blue: "#93c5fd", green: "#86efac", amber: "#fcd34d", slate: "#cbd5e1",
+  violet: "#c4b5fd", red: "#fca5a5", unknown: "#5b6472"
+};
+var LAYOUT_W = 1000, LAYOUT_H = 640;
+var PRECISION = 3;
+var DEFAULT_FIXTURE = "../../examples/codebase-map.valid.json";
+
+// ---------------------------------------------------------------------------
+// validation (mirrors the contract; failure is visible, never a partial map)
+// ---------------------------------------------------------------------------
+function isPlainObject(x) {
+  return x !== null && typeof x === "object" && !Array.isArray(x);
+}
+function isRelPath(p, allowEmpty) {
+  if (typeof p !== "string") return false;
+  if (p === "") return !!allowEmpty;
+  if (p.charAt(0) === "/" || p.charAt(0) === "~") return false;
+  if (p.indexOf("\\") !== -1 || p.indexOf(":") !== -1) return false;
+  if (p.indexOf("//") !== -1) return false;
+  var segs = p.split("/");
+  for (var i = 0; i < segs.length; i++) {
+    if (segs[i] === "" || segs[i] === "." || segs[i] === "..") return false;
+  }
+  return true;
+}
+function validateSnapshot(doc) {
+  var v = [];
+  if (!isPlainObject(doc)) return ["document is not a JSON object"];
+  ["contract", "version", "source_kind", "included_roots", "excluded_patterns",
+   "measure", "sort", "generated_at", "provenance", "rendering", "tree"
+  ].forEach(function (k) {
+    if (!(k in doc)) v.push("missing required field '" + k + "'");
+  });
+  // 9. unknown top-level fields
+  Object.keys(doc).forEach(function (k) {
+    if (TOP_KEYS.indexOf(k) === -1) v.push("unknown field '" + k + "'");
+  });
+  if (doc.contract !== CONTRACT_TOKEN) {
+    v.push("contract must be '" + CONTRACT_TOKEN + "'");
+  }
+  if (doc.version !== CONTRACT_VERSION) {
+    v.push("unsupported version " + JSON.stringify(doc.version) +
+           " (this viewer accepts " + CONTRACT_VERSION + ")");
+  }
+  if (SOURCE_KIND_ENUM.indexOf(doc.source_kind) === -1) {
+    v.push("source_kind '" + doc.source_kind + "' is not a declared value");
+  }
+  if (MEASURE_ENUM.indexOf(doc.measure) === -1) {
+    v.push("measure '" + doc.measure + "' is not a declared value");
+  }
+  if (SORT_ENUM.indexOf(doc.sort) === -1) {
+    v.push("sort '" + doc.sort + "' is not a declared ordering policy");
+  }
+  if (!Array.isArray(doc.included_roots) || doc.included_roots.length === 0) {
+    v.push("included_roots must be a non-empty list");
+  }
+  if (!Array.isArray(doc.excluded_patterns)) {
+    v.push("excluded_patterns must be a list");
+  }
+  if (!isPlainObject(doc.provenance) || !doc.provenance.kind ||
+      !doc.provenance.ref) {
+    v.push("provenance.kind and provenance.ref are required");
+  }
+  var algo = isPlainObject(doc.rendering) ? doc.rendering.algorithm : null;
+  if (ALGORITHM_ENUM.indexOf(algo) === -1) {
+    v.push("rendering.algorithm '" + algo + "' is not a supported mode " +
+           "(this viewer implements " + ALGORITHM_ENUM.join(", ") + ")");
+  }
+  var seen = {};
+  (function walk(e, where, depth) {
+    if (!isPlainObject(e)) { v.push(where + ": entity is not an object"); return; }
+    // F3: check for unknown fields at entity level
+    var entityKeys = (e.kind === "Node") ? NODE_KEYS : LEAF_KEYS;
+    Object.keys(e).forEach(function (k) {
+      if (entityKeys.indexOf(k) === -1) v.push(where + ": unknown field '" + k + "'");
+    });
+    // F4: reject non-empty root path (root must have path === "")
+    if (depth === 0 && e.path !== "") {
+      v.push(where + ": root entity must have empty path");
+    }
+    if (e.kind !== "Node" && e.kind !== "Leaf") {
+      v.push(where + ": kind must be 'Node' or 'Leaf'"); return;
+    }
+    if (typeof e.label !== "string" || e.label === "") {
+      v.push(where + ": label must be a non-empty string");
+    }
+    if (!isRelPath(e.path, depth === 0)) {
+      v.push(where + ": path must be a normalized relative identity");
+    } else if (e.path !== "") {
+      if (seen[e.path]) v.push(where + ": duplicate identity '" + e.path + "'");
+      seen[e.path] = true;
+    }
+    if (e.kind === "Node") {
+      if (!Array.isArray(e.children) || e.children.length === 0) {
+        v.push(where + ": Node children must be a non-empty array");
+      } else {
+        e.children.forEach(function (c, i) {
+          walk(c, where + ".children[" + i + "]", depth + 1);
+        });
+      }
+    } else {
+      if (typeof e.size !== "number" || !isFinite(e.size) ||
+          Math.floor(e.size) !== e.size || e.size < 0) {
+        v.push(where + ": Leaf size must be a non-negative integer");
+      }
+      if (COLOR_ENUM.indexOf(e.color) === -1) {
+        v.push(where + ": color '" + e.color + "' is not a declared token");
+      }
+    }
+  })(doc.tree, "tree", 0);
+  return v;
+}
+
+// ---------------------------------------------------------------------------
+// squarified layout (clean-room) — preserves the snapshot's declared order
+// ---------------------------------------------------------------------------
+function worstAspect(rowAreas, side, scale) {
+  var sum = 0, mx = -Infinity, mn = Infinity, i, a;
+  for (i = 0; i < rowAreas.length; i++) {
+    a = rowAreas[i] * scale; sum += a;
+    if (a > mx) mx = a;
+    if (a < mn) mn = a;
+  }
+  if (sum <= 0 || mn <= 0) return Infinity;
+  var s2 = sum * sum, w2 = side * side;
+  return Math.max((w2 * mx) / s2, s2 / (w2 * mn));
+}
+function squarifyLayout(areas, rect) {
+  var out = [], items = areas.slice(), i, total = 0;
+  for (i = 0; i < items.length; i++) total += items[i];
+  if (total <= 0) {
+    items = items.map(function () { return 1; });
+    total = items.length;
+  }
+  var scale = (rect.w * rect.h) / total;
+  var x = rect.x, y = rect.y, w = rect.w, h = rect.h;
+  while (items.length) {
+    var side = Math.min(w, h);
+    var row = [items[0]], rest = items.slice(1);
+    while (rest.length) {
+      var w1 = worstAspect(row, side, scale);
+      var w2 = worstAspect(row.concat([rest[0]]), side, scale);
+      if (w2 <= w1) { row.push(rest[0]); rest = rest.slice(1); } else break;
+    }
+    var rowSum = 0;
+    for (i = 0; i < row.length; i++) rowSum += row[i] * scale;
+    if (w >= h) {
+      var rw = rowSum / h, oy = y;
+      for (i = 0; i < row.length; i++) {
+        var rh = (row[i] * scale) / rw;
+        out.push({ x: x, y: oy, w: rw, h: rh }); oy += rh;
+      }
+      x += rw; w -= rw;
+    } else {
+      var rhh = rowSum / w, ox = x;
+      for (i = 0; i < row.length; i++) {
+        var rww = (row[i] * scale) / rhh;
+        out.push({ x: ox, y: y, w: rww, h: rhh }); ox += rww;
+      }
+      y += rhh; h -= rhh;
+    }
+    items = rest;
+  }
+  return out;
+}
+function r3(n) { return Math.round(n * 1000) / 1000; }
+
+function subtreeArea(e) {
+  if (e.kind === "Leaf") return Math.max(e.size, 0);
+  var sum = 0;
+  e.children.forEach(function (c) { sum += subtreeArea(c); });
+  return sum;
+}
+
+function computeRects(entity) {
+  var rects = [];
+  (function walk(e, rect, depth) {
+    var item = {
+      path: e.path, label: e.label, kind: e.kind, depth: depth,
+      x: r3(rect.x), y: r3(rect.y), w: r3(Math.max(rect.w, 0)),
+      h: r3(Math.max(rect.h, 0))
+    };
+    if (e.kind === "Leaf") {
+      item.size = e.size; item.color = e.color; rects.push(item); return;
+    }
+    rects.push(item);
+    var pad = 8, band = 15;
+    var inner = {
+      x: rect.x + pad, y: rect.y + pad + band,
+      w: Math.max(rect.w - 2 * pad, 1), h: Math.max(rect.h - 2 * pad - band, 1)
+    };
+    var areas = e.children.map(function (c) {
+      return c.kind === "Leaf" ? Math.max(c.size, 0) : subtreeArea(c);
+    });
+    var laid = squarifyLayout(areas, inner);
+    e.children.forEach(function (c, i) { walk(c, laid[i], depth + 1); });
+  })(entity, { x: 0, y: 0, w: LAYOUT_W, h: LAYOUT_H }, 0);
+  return rects;
+}
+
+function el(name, attrs) {
+  var n = document.createElementNS("http://www.w3.org/2000/svg", name);
+  for (var k in attrs) { n.setAttribute(k, attrs[k]); }
+  return n;
+}
+
+// ---------------------------------------------------------------------------
+// state + index
+// ---------------------------------------------------------------------------
+var state = {
+  doc: null, index: {}, algorithm: null, sourceKind: null, provenanceRef: null,
+  measure: null, sort: null, fixture: null, fixtureSha256: null,
+  rects: [], nodeCount: 0, leafCount: 0, errors: [], loaded: false,
+  focusPath: "", selectedPath: null, query: "", matchCount: 0,
+  searchState: "", selftest: null
+};
+
+function buildIndex(root) {
+  var map = {};
+  (function walk(e) {
+    map[e.path] = e;
+    if (e.kind === "Node") e.children.forEach(walk);
+  })(root);
+  return map;
+}
+function findEntity(path) {
+  return Object.prototype.hasOwnProperty.call(state.index, path)
+    ? state.index[path] : null;
+}
+function parentPath(p) {
+  if (!p) return "";
+  var i = p.lastIndexOf("/");
+  var cand = i < 0 ? "" : p.slice(0, i);
+  // The root entity's path is "" (its label is the directory name), so walk
+  // the candidate prefixes up until one names a real entity in the index.
+  while (cand !== "" && !findEntity(cand)) {
+    var j = cand.lastIndexOf("/");
+    cand = j < 0 ? "" : cand.slice(0, j);
+  }
+  return (cand === "" || findEntity(cand)) ? cand : "";
+}
+function entityArea(e) {
+  return e.kind === "Leaf" ? e.size : subtreeArea(e);
+}
+
+// ---------------------------------------------------------------------------
+// drawing
+// ---------------------------------------------------------------------------
+function ariaFor(r) {
+  var base = r.label + " — " + (r.kind === "Leaf" ? "file" : "directory");
+  if (r.kind === "Leaf") {
+    base += ", size " + r.size + " " + (state.measure || "units");
+  } else {
+    var e = findEntity(r.path);
+    base += ", " + (e ? e.children.length : 0) + " children";
+  }
+  return base;
+}
+
+function drawRects(rects) {
+  var scene = document.getElementById("scene");
+  while (scene.firstChild) scene.removeChild(scene.firstChild);
+  rects.forEach(function (r) {
+    var cls = "entity" + (r.kind === "Leaf" ? " is-leaf" : " is-node") +
+      (r.path === state.selectedPath ? " selected" : "");
+    var g = el("g", {
+      "class": cls, "data-path": r.path, "tabindex": "0", "role": "button",
+      "aria-label": ariaFor(r)
+    });
+    if (r.kind === "Leaf") {
+      g.appendChild(el("rect", {
+        class: "leaf", x: r.x, y: r.y, width: r.w, height: r.h,
+        fill: COLOR_FILL[r.color] || COLOR_FILL.unknown
+      }));
+      if (r.w > 26 && r.h > 12) {
+        var t = el("text", { class: "label-leaf", x: r.x + 4, y: r.y + 13 });
+        t.textContent = r.label;               // text, never markup
+        g.appendChild(t);
+      }
+    } else {
+      g.appendChild(el("rect", {
+        class: "node-box", x: r.x, y: r.y, width: r.w, height: r.h
+      }));
+      g.appendChild(el("rect", {
+        class: "node-band", x: r.x, y: r.y, width: r.w, height: 15
+      }));
+      if (r.w > 20) {
+        var ln = el("text", { class: "label-node", x: r.x + 5, y: r.y + 11 });
+        ln.textContent = r.label + "/";
+        g.appendChild(ln);
+      }
+    }
+    scene.appendChild(g);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// focus / select / search
+// ---------------------------------------------------------------------------
+function setCrumb() {
+  var c = document.getElementById("crumb");
+  while (c.firstChild) c.removeChild(c.firstChild);
+  var parts = state.focusPath ? state.focusPath.split("/") : [];
+  var acc = "";
+  var root = document.createElement("code");
+  root.textContent = "root";
+  c.appendChild(root);
+  parts.forEach(function (seg) {
+    acc = acc ? acc + "/" + seg : seg;
+    c.appendChild(document.createTextNode(" / "));
+    var s = document.createElement("code");
+    s.textContent = seg;
+    c.appendChild(s);
+  });
+}
+
+function setDetail() {
+  var body = document.getElementById("detail-body");
+  while (body.firstChild) body.removeChild(body.firstChild);
+  if (!state.selectedPath) {
+    body.textContent = "Nothing selected. Select a rectangle, or search for a " +
+      "label.";
+    return;
+  }
+  var e = findEntity(state.selectedPath);
+  if (!e) { body.textContent = "Nothing selected."; return; }
+  var dl = document.createElement("dl");
+  function row(k, val) {
+    var dt = document.createElement("dt"); dt.textContent = k;
+    var dd = document.createElement("dd"); dd.textContent = val;
+    dl.appendChild(dt); dl.appendChild(dd);
+  }
+  row("label", e.label);
+  row("path", e.path === "" ? "(root)" : e.path);
+  row("kind", e.kind === "Leaf" ? "Leaf (file)" : "Node (directory)");
+  if (e.kind === "Leaf") {
+    row("size", e.size + " " + (state.measure || ""));
+    row("color", e.color);
+  } else {
+    row("subtree area", entityArea(e) + " " + (state.measure || ""));
+    row("children", String(e.children.length));
+  }
+  row("provenance", state.provenanceRef || "(none)");
+  row("algorithm", state.algorithm || "");
+  body.appendChild(dl);
+}
+
+function render(opts) {
+  opts = opts || {};
+  var focusEntity = findEntity(state.focusPath);
+  if (!focusEntity) { state.focusPath = ""; focusEntity = findEntity(""); }
+  var rects = computeRects(focusEntity);
+  drawRects(rects);
+  state.rects = rects;
+  state.nodeCount = rects.filter(function (r) { return r.kind === "Node"; }).length;
+  state.leafCount = rects.filter(function (r) { return r.kind === "Leaf"; }).length;
+  setCrumb();
+  setDetail();
+  updateReceipt();
+  if (opts.updateHash !== false) updateHash();
+  if (opts.focusEl) {
+    var g = document.querySelector('g.entity[data-path="' +
+      cssEscape(opts.focusEl) + '"]');
+    if (g) g.focus();
+  }
+}
+
+function cssEscape(s) {
+  return String(s).replace(/["\\]/g, "\\$&");
+}
+
+function focusOn(path) {
+  var e = findEntity(path);
+  if (!e || e.kind !== "Node") return false;
+  state.focusPath = path;
+  state.selectedPath = path;
+  render({ focusEl: path });
+  return true;
+}
+function selectEntity(path) {
+  state.selectedPath = path;
+  setDetail();
+  render({ updateHash: true });
+}
+function activate(path) {
+  var e = findEntity(path);
+  if (!e) return;
+  if (e.kind === "Node") { focusOn(path); } else { selectEntity(path); }
+}
+function back() {
+  if (state.focusPath === "") return false;
+  state.focusPath = parentPath(state.focusPath);
+  state.selectedPath = state.focusPath;
+  render({ focusEl: state.focusPath });
+  return true;
+}
+function fit() {
+  state.focusPath = ""; state.selectedPath = null; render({ focusEl: "" });
+  return true;
+}
+
+function search(q) {
+  state.query = q || "";
+  var needle = state.query.trim().toLowerCase();
+  var matches = [];
+  if (needle) {
+    Object.keys(state.index).forEach(function (p) {
+      var e = state.index[p];
+      var hay = (p + "\n" + e.label).toLowerCase();
+      if (hay.indexOf(needle) !== -1) matches.push(e);
+    });
+    matches.sort(function (a, b) {
+      var da = a.path.split("/").length, db = b.path.split("/").length;
+      if (da !== db) return da - db;
+      return a.path < b.path ? -1 : a.path > b.path ? 1 : 0;
+    });
+  }
+  state.matchCount = matches.length;
+  var el2 = document.getElementById("searchstate");
+  if (!needle) {
+    state.searchState = "";
+    el2.textContent = "";
+    return { count: 0, matches: [] };
+  }
+  if (!matches.length) {
+    state.searchState = "no result";
+    el2.textContent = 'No metadata match for "' + state.query + '". ' +
+      "No repository or network request was made.";
+    state.selectedPath = null;
+    setDetail();
+    render({ updateHash: true });
+    return { count: 0, matches: [] };
+  }
+  var first = matches[0];
+  state.searchState = matches.length + " match(es)";
+  el2.textContent = matches.length + " match(es); first: " + first.label;
+  state.focusPath = parentPath(first.path) || "";
+  var parent = findEntity(state.focusPath);
+  if (!parent || parent.kind !== "Node") state.focusPath = "";
+  state.selectedPath = first.path;
+  render({ focusEl: first.path });
+  return { count: matches.length, matches: matches };
+}
+
+// ---------------------------------------------------------------------------
+// receipt — read-back surface for the browser test
+// ---------------------------------------------------------------------------
+function sha256Hex(text) {
+  if (!window.crypto || !window.crypto.subtle) return Promise.resolve(null);
+  var bytes = new TextEncoder().encode(text);
+  return window.crypto.subtle.digest("SHA-256", bytes).then(function (buf) {
+    var arr = new Uint8Array(buf), s = "";
+    for (var i = 0; i < arr.length; i++) {
+      s += ("0" + arr[i].toString(16)).slice(-2);
+    }
+    return s;
+  }).catch(function () { return null; });
+}
+
+function updateReceipt() {
+  var rc = document.getElementById("receipt");
+  if (!state.loaded) { rc.textContent = ""; return; }
+  rc.textContent = "Receipt — algorithm " + state.algorithm +
+    " · fixture " + (state.fixture || "(inline)") +
+    " · fixture_sha256 " + (state.fixtureSha256 || "(computing)") +
+    " · viewport " + LAYOUT_W + "x" + LAYOUT_H +
+    " · precision " + PRECISION +
+    " · rect_count " + state.rects.length +
+    " · nodes " + state.nodeCount + " · leaves " + state.leafCount +
+    " · determinism true" +
+    " · focus_path " + JSON.stringify(state.focusPath) +
+    " · selected_path " + JSON.stringify(state.selectedPath) +
+    " · query " + JSON.stringify(state.query) +
+    " · match_count " + state.matchCount;
+}
+
+function receipt() {
+  return {
+    contract: CONTRACT_TOKEN, version: CONTRACT_VERSION,
+    loaded: state.loaded, algorithm: state.algorithm,
+    source_kind: state.sourceKind, measure: state.measure, sort: state.sort,
+    provenance_ref: state.provenanceRef, fixture: state.fixture,
+    fixture_sha256: state.fixtureSha256,
+    viewport: { w: LAYOUT_W, h: LAYOUT_H }, rect_count: state.rects.length,
+    node_count: state.nodeCount, leaf_count: state.leafCount,
+    precision: PRECISION, errors: state.errors.slice(),
+    focus_path: state.focusPath, selected_path: state.selectedPath,
+    query: state.query, match_count: state.matchCount,
+    search_state: state.searchState, selftest: state.selftest,
+    rects: state.rects
+  };
+}
+
+function span(text) {
+  var s = document.createElement("code");
+  s.textContent = text;
+  return s;
+}
+
+function showError(violations) {
+  var box = document.getElementById("error");
+  box.style.display = "block";
+  while (box.firstChild) box.removeChild(box.firstChild);
+  var h = document.createElement("h2");
+  h.textContent = "Snapshot rejected — the map was not rendered.";
+  box.appendChild(h);
+  var ul = document.createElement("ul");
+  violations.forEach(function (x) {
+    var li = document.createElement("li"); li.textContent = x; ul.appendChild(li);
+  });
+  box.appendChild(ul);
+  var scene = document.getElementById("scene");
+  while (scene.firstChild) scene.removeChild(scene.firstChild);
+  state.loaded = false;
+  document.getElementById("meta").textContent = "No valid snapshot loaded.";
+  document.getElementById("receipt").textContent = "";
+}
+
+function renderSnapshot(doc, origin) {
+  var v = validateSnapshot(doc);
+  state.errors = v;
+  if (v.length) { showError(v); return false; }
+  state.doc = doc;
+  state.index = buildIndex(doc.tree);
+  state.algorithm = doc.rendering.algorithm;
+  state.sourceKind = doc.source_kind;
+  state.provenanceRef = doc.provenance.ref;
+  state.measure = doc.measure;
+  state.sort = doc.sort;
+  state.fixture = origin || null;
+  state.focusPath = "";
+  state.selectedPath = null;
+  state.query = "";
+  state.searchState = "";
+  state.loaded = true;
+  document.getElementById("error").style.display = "none";
+  var meta = document.getElementById("meta");
+  while (meta.firstChild) meta.removeChild(meta.firstChild);
+  meta.appendChild(document.createTextNode("algorithm "));
+  meta.appendChild(span(doc.rendering.algorithm));
+  meta.appendChild(document.createTextNode(" · source_kind "));
+  meta.appendChild(span(doc.source_kind));
+  meta.appendChild(document.createTextNode(" · measure "));
+  meta.appendChild(span(doc.measure));
+  meta.appendChild(document.createTextNode(" · sort "));
+  meta.appendChild(span(doc.sort));
+  meta.appendChild(document.createTextNode(" · provenance "));
+  meta.appendChild(span(doc.provenance.ref));
+  render();
+  return true;
+}
+
+function load(url) {
+  return fetch(url, { cache: "no-store" }).then(function (res) {
+    if (!res.ok) throw new Error("HTTP " + res.status + " for " + url);
+    // F1: verify same-origin after fetch
+    if (res.url) {
+      var u = new URL(res.url, location.href);
+      if (u.origin !== location.origin) {
+        throw new Error("cross-origin URL: " + res.url);
+      }
+    }
+    return res.text();
+  }).then(function (text) {
+    var doc;
+    try { doc = JSON.parse(text); }
+    catch (e) {
+      showError(["snapshot is not valid JSON: " + e.message]);
+      return false;
+    }
+    return sha256Hex(text).then(function (h) {
+      state.fixtureSha256 = h;
+      return renderSnapshot(doc, url);
+    });
+  }).catch(function (e) {
+    showError([
+      "could not load the fixture (" + e.message + ").",
+      "Serve this page from a local static server at the repository root,",
+      "e.g.  python3 -m http.server 8899  then open " +
+      "http://127.0.0.1:8899/demo/codebase-map/index.html"
+    ]);
+    return false;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// hash reconstruction — the view is derived from snapshot + path + query
+// ---------------------------------------------------------------------------
+function parseHash() {
+  var out = { path: "", q: "" };
+  var h = window.location.hash.replace(/^#/, "");
+  if (!h) return out;
+  h.split("&").forEach(function (pair) {
+    var i = pair.indexOf("=");
+    if (i < 0) return;
+    var k = pair.slice(0, i), val = decodeURIComponent(pair.slice(i + 1));
+    if (k === "path") out.path = val;
+    else if (k === "q") out.q = val;
+  });
+  return out;
+}
+function updateHash() {
+  var parts = [];
+  if (state.focusPath) parts.push("path=" + encodeURIComponent(state.focusPath));
+  if (state.query) parts.push("q=" + encodeURIComponent(state.query));
+  var h = parts.length ? "#" + parts.join("&") : "";
+  if (window.location.hash !== h) {
+    history.replaceState(null, "",
+      window.location.pathname + window.location.search + h);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// diagnostic mode (?selftest=1) — contract edge cases through the same path
+// ---------------------------------------------------------------------------
+function makeSnapshot(tree, over) {
+  var base = {
+    contract: CONTRACT_TOKEN, version: CONTRACT_VERSION,
+    source_kind: "synthetic", included_roots: ["x"], excluded_patterns: [],
+    measure: "bytes", sort: "lexical", generated_at: "inline",
+    provenance: { kind: "inline-test", ref: "index.html#selftest" },
+    rendering: { algorithm: ALGORITHM_ENUM[0] }, tree: tree
+  };
+  if (over) { for (var k in over) { base[k] = over[k]; } }
+  return base;
+}
+
+function runSelfTest() {
+  var lines = [];
+  function check(name, ok) { lines.push((ok ? "PASS " : "FAIL ") + name); }
+
+  // ---- interaction cases on the REAL loaded snapshot --------------------
+  var r0 = receipt();
+  check("overview is the whole tree at root focus",
+        r0.focus_path === "" && r0.rect_count === 8);
+
+  var okFocus = focusOn("app/core") === true;
+  var r1 = receipt();
+  check("focus on a directory exposes its descendants",
+        okFocus && r1.focus_path === "app/core" && r1.rect_count === 3);
+
+  var okBack = back() === true;
+  var r2 = receipt();
+  check("back restores the parent/root view",
+        okBack && r2.focus_path === "" && r2.rect_count === 8);
+
+  fit();
+  check("fit resets to root", receipt().focus_path === "");
+
+  var hit = search("engine.py");
+  var r3 = receipt();
+  check("search selects the matching rectangle",
+        hit.count >= 1 && r3.selected_path === "app/core/engine.py" &&
+        r3.query === "engine.py");
+
+  var miss = search("zzz-no-such-label");
+  var r4 = receipt();
+  check("missing label yields a no-result state",
+        miss.count === 0 && r4.match_count === 0 &&
+        r4.search_state === "no result" && r4.selected_path === null);
+
+  // ---- edge cases (inline snapshots) ------------------------------------
+  search("");
+  var one = makeSnapshot({ kind: "Node", label: "solo", path: "",
+    children: [{ kind: "Leaf", label: "only.txt", path: "solo/only.txt",
+                 size: 1, color: "slate" }] });
+  check("one-leaf renders", renderSnapshot(one, "inline:one-leaf") === true
+        && receipt().rect_count === 2);
+
+  var nested = makeSnapshot({ kind: "Node", label: "r", path: "",
+    children: [{ kind: "Node", label: "d", path: "r/d", children: [
+      { kind: "Leaf", label: "f", path: "r/d/f", size: 2, color: "blue" }] }] });
+  check("nested nodes render", renderSnapshot(nested, "inline:nested") === true
+        && receipt().rect_count === 3);
+
+  var empty = makeSnapshot({ kind: "Node", label: "r", path: "",
+    children: [{ kind: "Node", label: "e", path: "r/e", children: [] }] });
+  check("empty-children snapshot fails closed (no partial map)",
+        renderSnapshot(empty, "inline:empty") === false
+        && document.getElementById("scene").childNodes.length === 0);
+
+  var bad = makeSnapshot({ kind: "Node", label: "r", path: "",
+    children: [{ kind: "Leaf", label: "f", path: "r/f", size: 1,
+                 color: "blue" }] }, { rendering: { algorithm: "unknown-mode" } });
+  check("unknown algorithm rejected",
+        renderSnapshot(bad, "inline:bad-algo") === false);
+
+  // malicious label must render as text, never execute markup
+  var xss = makeSnapshot({ kind: "Node", label: "root", path: "",
+    children: [{ kind: "Leaf", label: "<img src=x onerror=alert(1)>",
+                 path: "root/x", size: 5, color: "red" }] });
+  var okXss = renderSnapshot(xss, "inline:xss") === true;
+  var scene = document.getElementById("scene");
+  okXss = okXss && scene.querySelector("img") === null
+        && scene.querySelector("script") === null
+        && scene.textContent.indexOf("<img src=x onerror=alert(1)>") !== -1;
+  check("malicious label renders as text (no execution)", okXss);
+
+  var box = document.getElementById("selftest");
+  box.textContent = "SELF-TEST\n" + lines.join("\n");
+  state.selftest = lines;
+  return lines;
+}
+
+// ---------------------------------------------------------------------------
+// wire up
+// ---------------------------------------------------------------------------
+function init() {
+  var scene = document.getElementById("scene");
+  scene.addEventListener("click", function (ev) {
+    var t = ev.target;
+    while (t && t !== scene && !(t.getAttribute &&
+           t.getAttribute("data-path") !== null)) t = t.parentNode;
+    if (t && t !== scene && t.getAttribute) activate(t.getAttribute("data-path"));
+  });
+  scene.addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter" || ev.key === " " || ev.key === "Spacebar") {
+      var t = ev.target;
+      while (t && t !== scene && !(t.getAttribute &&
+             t.getAttribute("data-path") !== null)) t = t.parentNode;
+      if (t && t !== scene && t.getAttribute) {
+        ev.preventDefault();
+        activate(t.getAttribute("data-path"));
+      }
+    }
+  });
+  document.getElementById("btn-back").addEventListener("click", function () {
+    back();
+  });
+  document.getElementById("btn-fit").addEventListener("click", function () {
+    fit();
+  });
+  var searchInput = document.getElementById("search");
+  searchInput.addEventListener("input", function () { search(searchInput.value); });
+  document.addEventListener("keydown", function (ev) {
+    var tag = (ev.target && ev.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    if (ev.key === "Backspace") { ev.preventDefault(); back(); }
+    else if (ev.key === "Escape") { fit(); }
+  });
+}
+
+window.__codebaseMap = {
+  renderSnapshot: renderSnapshot, load: load, receipt: receipt,
+  validateSnapshot: validateSnapshot, computeRects: computeRects,
+  runSelfTest: runSelfTest, focusOn: focusOn, back: back, fit: fit,
+  search: search, selectEntity: selectEntity, activate: activate,
+  parseHash: parseHash,
+  constants: {
+    algorithmEnum: ALGORITHM_ENUM, layout: { w: LAYOUT_W, h: LAYOUT_H },
+    precision: PRECISION
+  }
+};
+
+if (typeof document !== "undefined" && document.getElementById("scene")) {
+  init();
+  var qs = new URLSearchParams(window.location.search);
+  var fx = qs.get("fixture");
+  var hash = parseHash();
+  if (fx && (/^[a-z][a-z0-9+.-]*:/i.test(fx) || fx.indexOf("//") === 0 ||
+             fx.charAt(0) === "/" || fx.indexOf("\\") !== -1)) {
+    showError(["fixture must be a relative path within this origin (no " +
+               "absolute URL, no backslashes)"]);
+  } else if (qs.get("selftest") === "1" && !fx) {
+    load(DEFAULT_FIXTURE).then(function () { runSelfTest(); });
+  } else {
+    load(fx || DEFAULT_FIXTURE).then(function () {
+      if (hash.path) focusOn(hash.path);
+      if (hash.q) { document.getElementById("search").value = hash.q; search(hash.q); }
+    });
+  }
+}
+</script>
+</body>
+</html>

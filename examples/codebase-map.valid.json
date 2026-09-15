@@ -1,0 +1,74 @@
+{
+  "contract": "team6-codebase-map",
+  "version": 1,
+  "source_kind": "synthetic",
+  "included_roots": ["app"],
+  "excluded_patterns": ["**/__pycache__/**", "**/*.pyc"],
+  "measure": "bytes",
+  "sort": "lexical",
+  "generated_at": "2026-09-15T00:00:00Z",
+  "provenance": {
+    "kind": "synthetic-fixture",
+    "ref": "examples/codebase-map.valid.json",
+    "note": "Authored fresh for the Team6 snapshot contract; not a live repository capture."
+  },
+  "rendering": {
+    "algorithm": "t6-squarified-v1"
+  },
+  "tree": {
+    "kind": "Node",
+    "label": "app",
+    "path": "",
+    "children": [
+      {
+        "kind": "Node",
+        "label": "core",
+        "path": "app/core",
+        "children": [
+          {
+            "kind": "Leaf",
+            "label": "engine.py",
+            "path": "app/core/engine.py",
+            "size": 4200,
+            "color": "blue"
+          },
+          {
+            "kind": "Leaf",
+            "label": "state.py",
+            "path": "app/core/state.py",
+            "size": 1800,
+            "color": "green"
+          }
+        ]
+      },
+      {
+        "kind": "Node",
+        "label": "web",
+        "path": "app/web",
+        "children": [
+          {
+            "kind": "Leaf",
+            "label": "routes.py",
+            "path": "app/web/routes.py",
+            "size": 2600,
+            "color": "amber"
+          },
+          {
+            "kind": "Leaf",
+            "label": "views.py",
+            "path": "app/web/views.py",
+            "size": 900,
+            "color": "unknown"
+          }
+        ]
+      },
+      {
+        "kind": "Leaf",
+        "label": "README.md",
+        "path": "app/README.md",
+        "size": 1200,
+        "color": "slate"
+      }
+    ]
+  }
+}
