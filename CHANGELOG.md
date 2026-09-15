@@ -39,6 +39,28 @@ outside this repository.
 
 ## Unreleased
 
+- **What:** add the anti-loop discipline contract. It defines four rules to prevent
+  thinking loops: load once then use, read once then act, plan once then execute,
+  and trust tool output as the receipt. Published artifacts and live pages still
+  require read-back because the deployed state can differ from local state.
+- **Why it changed:** agents can enter thinking loops that add zero new information
+  but consume model budget and time. The previous system had no guard against
+  redundant operations.
+- **Evidence:** [VERIFIED — internal operating record] grounded in the team's shared
+  doctrine and dated session history.
+
+- **What:** add the self-improving flywheel contract (`choreography/self-improving-flywheel.md`).
+- **Why it changed:** without it, each incident is treated as a one-off and the team
+  relearns the same lesson; root causes stay in session history and do not
+  become encoded rules that prevent recurrence.
+- **Evidence:** [VERIFIED — internal operating record]
+
+- **What:** add the open-source contribution contract (`choreography/open-source-contribution.md`).
+- **Why it changed:** without it, patches are written on design preference or
+  assumptions rather than proven defects, risking rejection, wasting time, and
+  potentially exposing internal context.
+- **Evidence:** [VERIFIED — internal operating record]
+
 - **What:** correct the canonical-site labels in the README. The canonical
   public documentation site for Team6-kit is `team6.askaconsult.com`; the
   ASKA corporate page at `www.askaconsult.com/team6` is the service listing.
