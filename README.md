@@ -321,20 +321,18 @@ replacing the Team6 ownership and QA gates.
 
 ### What
 
-Add three choreography rules plus the README, CHANGELOG, and site entries that carry them:
+Add four choreography rules, one worked example, and one session-start practice. The README, CHANGELOG, and site entries carry them:
 
-1. **Fresh-branch requirement** (choreography/open-source-contribution.md) — every contribution branch must be created from a fresh fetch of the target repository's default branch.
-2. **Commit serialization boundary** (choreography/orchestration.md) — stage and commit must be serialized for a declared file set.
-3. **Stale-tree hazard worked example** (choreography/self-improving-flywheel.md) — encodes the same incident as rule 1.
-4. **Session-start router** (templates/personas/SOUL.md.tmpl) — at session start, read the orchestration contract once and apply it before the first dispatch.
-5. **Mirror forks rule** (choreography/self-improving-flywheel.md) — when one repository has mirror forks, one change must reach every mirror with consistent author identity and file set.
-6. **Peer-team cross-review** (choreography/orchestration.md) — a second team may review a staged PR via a written handoff message carried by the operator.
-
-These rules prevent PRs that revert or duplicate existing work due to stale branches, enable multi-mirror consistency, and provide a clean cross-team review procedure. The README, CHANGELOG, and index.html surfaces carry the change.
+1. **Fresh-branch requirement** (choreography/open-source-contribution.md). Every contribution branch must start from a fresh fetch of the target repository's default branch.
+2. **Commit serialization boundary** (choreography/orchestration.md). Stage and commit must be serialized for one declared file set.
+3. **Stale-tree hazard worked example** (choreography/self-improving-flywheel.md). This example records the same incident as item 1.
+4. **Session-start router** (templates/personas/SOUL.md.tmpl). At session start, read the orchestration contract once and apply it before the first dispatch.
+5. **Mirror forks rule** (choreography/self-improving-flywheel.md). When one repository has mirror forks, one change must reach every mirror with the same author identity and file set.
+6. **Peer-team cross-review** (choreography/orchestration.md). A second team may review a staged PR. The operator carries a written handoff message.
 
 ### Why
 
-During an orchestration test, a stale branch 14 commits behind origin/main was used as a PR base, which would have deleted content already shipped on main. A stale base produces a PR that reverts or duplicates existing work.
+During an orchestration test, a stale branch 14 commits behind the main branch was used as a PR base. That base would have deleted content already shipped on main.
 
 ### Evidence
 

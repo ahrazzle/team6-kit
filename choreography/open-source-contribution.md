@@ -35,6 +35,18 @@ used. A stale reproduction is not proof that a new patch is needed.
 
 `[REQUIRED — repository evidence]`
 
+## Branch freshness requirement
+
+Every contribution branch must be created from a fresh fetch of the target
+repository's default branch. An agent created a PR branch from a local branch
+that was 14 commits behind origin/main. The diff would have deleted content
+that had already shipped on main. A stale base produces a PR that reverts or
+duplicates existing work. Before creating a contribution branch, fetch the
+target repository's default branch and create the branch from the fetched head,
+not from a local branch that may be stale. This is enforced by the defect-bar paragraph (line 33), which requires checking "the current upstream state", and by the `1. Identify` step under `The four steps`, which records the upstream revision checked.
+
+`[VERIFIED — internal operating record]`
+
 ## The four steps
 
 ### 1. Identify
@@ -45,20 +57,6 @@ proof of unintended behaviour. Record the upstream revision checked and the
 smallest plausible fix.
 
 `[REQUIRED — repository evidence]`
-
-## Branch freshness requirement
-
-Every contribution branch must be created from a fresh fetch of the target
-repository's default branch. An agent created a PR branch from a local branch
-that was 14 commits behind origin/main. The diff would have deleted content
-that had already shipped on main. A stale base produces a PR that reverts or
-duplicates existing work. Before creating a contribution branch, fetch the
-target repository's default branch and create the branch from the fetched head,
-not from a local branch that may be stale. This is enforced in the `The four
-steps` > `1. Identify` step, which already requires checking "the current
-upstream state."
-
-`[VERIFIED — internal operating record]`
 
 ### 2. Draft
 

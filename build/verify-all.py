@@ -116,6 +116,10 @@ def main():
     gates.append(("check-unique-headings",
                   [sys.executable, os.path.join(HERE, "check-unique-headings.py")]))
 
+    # 10. internal-names check
+    gates.append(("check-internal-names",
+                  [sys.executable, os.path.join(HERE, "check-internal-names.py"), ROOT]))
+
     # 9. review-repair checker — self-test + fixture corpus. Exercises the
     #    guarded review/repair contract (choreography/review-repair-workflow.md)
     #    across the review, adversarial, browser, and artifact lanes.

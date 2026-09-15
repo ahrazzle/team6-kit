@@ -131,10 +131,10 @@ proposal. It does not enter the shared layer.
 
 ### 5. Mirror forks
 
-- **Incident:** When a repository has mirror forks, a change to one mirror does not automatically propagate to the others.
+- **Incident:** No dated event is on record for this rule. State the hazard until one is: with mirror forks, a change to one mirror does not propagate to the others.
 - **Root cause:** No rule required that a change reach every mirror with consistent author identity and file set.
-- **Smallest rule:** When one repository has mirror forks, one change must reach every mirror; extract the diff once, apply it to each mirror, rebuild each commit with its own file set and its own author identity, and confirm the rebuilt trees are identical across mirrors.
-- **Canonical home:** The shared choreography contract, where multi-repo synchronization rules are inherited by every role.
+- **Smallest rule:** When one repository has mirror forks, one change must reach every mirror. Extract the diff once and apply it to each mirror. Rebuild each commit with its own file set and its own author identity. Confirm the rebuilt trees are identical across mirrors.
+- **Canonical home:** This section is the only home today. The shared choreography contract (choreography/orchestration.md) carries no mirror-forks rule, so the rule is not yet canonical.
 - **Verification:** A different member checks that each mirror has the same tree and the commit author identity matches the mirror's convention.
 - **Re-test:** The next change applied to mirrors confirms identical trees across all mirrors.
 
