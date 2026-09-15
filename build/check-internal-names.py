@@ -71,6 +71,7 @@ def scan_file(path, patterns):
 
 def main():
     repo = sys.argv[1] if len(sys.argv) > 1 else '.'
+    repo = os.path.abspath(repo)
     
     blocklist = load_blocklist(repo)
     if not blocklist:
@@ -107,9 +108,10 @@ def main():
             count, matches = scan_file(fpath, patterns)
             
             if count > 0:
-                files_with_hits.append((fpath, count))
+                # Always use relative path from repo root, prefixed with ./
+                rel_path = './' + os.path.relpath(fpath, repo)
+                files_with_hits.append((rel_path, count))
                 for line_num, line, pat_name in matches:
-                    rel_path = os.path.relpath(fpath, repo)
                     all_leaks.append((rel_path, line_num, line, pat_name))
     
     baseline_files = set(baseline.keys())
