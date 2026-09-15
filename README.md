@@ -121,6 +121,13 @@ It runs all public gates in documented order and fails if any check fails.
 GitHub Actions runs this automatically on push and pull requests to ensure
 the repository stays in a verified state.
 
+**Golden-artifact regression gate.** Inspired by AntV Infographic's SSR golden
+examples, the kit now includes a dependency-free golden-artifact gate at
+`build/check-golden.py`. It compares generated output from a small, committed
+fixture to a committed expected file. The gate uses only Python stdlib, requires
+no network or external dependencies, and produces a clear diff on mismatch.
+Read `AUDIT/infographic-learnings.md` for provenance.
+
 Read `choreography/release-gates.md` for the full gate list and order.
 **Fresh-clone contract validator gate.** The kit's validators are now exercised
 as part of the fresh-clone test. Run `bash scripts/fresh-clone-test.sh` to

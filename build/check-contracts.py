@@ -9,10 +9,10 @@ or writes. This is the aggregate contract gate: step 7 in the release runner
 working tree's validators are operational.
 
 Covered contracts: artifact-contract, preflight, report, review-repair,
-grouped scored-rollout (self-test + both fixtures), and the declarative
-reward catalogue (self-test + both fixtures). The two new fixtures are asserted to
-their expected verdicts: the valid fixture must exit 0 and the invalid
-fixture must exit non-zero (so the step names an expected return code).
+golden-artifact gate (self-test + fixtures), grouped scored-rollout (self-test
++ both fixtures), and the declarative reward catalogue (self-test + both
+fixtures). The fixtures are asserted to their expected verdicts: valid fixtures
+must exit 0 and invalid fixtures must exit non-zero.
 """
 import os
 import subprocess
@@ -26,6 +26,9 @@ def main():
     os.chdir(repo_root)
 
     steps = [
+        ("build/check-golden.py --self-test", "golden-artifact gate self-test", 0),
+        ("build/check-golden.py demo/golden-artifact/input.json demo/golden-artifact/expected.txt",
+         "golden-artifact gate fixture", 0),
         ("build/check-artifact-contract.py --self-test", "artifact-contract validator", 0),
         ("build/check-artifact-contract.py --example-check", "artifact-contract examples", 0),
         ("build/preflight/check.py --selftest", "preflight validator", 0),

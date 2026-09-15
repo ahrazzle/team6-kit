@@ -1,0 +1,4 @@
+Agent: team6-demo
+Version: 1.0.0
+Agent count: 3
+Status: verified

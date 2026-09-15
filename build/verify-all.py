@@ -6,17 +6,18 @@ Runs the repository's public gates in documented order. Uses subprocess with
 fail-closed behavior: nonzero exit on any failure. No dependencies beyond stdlib.
 
 ORDER (as documented in choreography/release-gates.md):
-  1. sweep-gate.py — extraction source verification
-  2. review-gate.py — semantic sign-off enforcement
-  3. surface-scan.py — multi-surface leak detector
-  4. check-artifact-contract.py self-test
-  5. preflight/check.py self-test
-  6. report/check.py self-test
-  7. check-contracts.py — aggregate contract gate (artifact-contract,
+  1. check-golden.py — golden-artifact regression gate
+  2. sweep-gate.py — extraction source verification
+  3. review-gate.py — semantic sign-off enforcement
+  4. surface-scan.py — multi-surface leak detector
+  5. check-artifact-contract.py self-test
+  6. preflight/check.py self-test
+  7. report/check.py self-test
+  8. check-contracts.py — aggregate contract gate (artifact-contract,
      preflight, report, grouped scored-rollout, and declarative reward
      catalogue validators, each with both fixtures)
-  8. fresh-clone test (generate.py fork-dryrun check)
-  9. review-repair checker self-test + fixture corpus
+  9. fresh-clone test (generate.py fork-dryrun check)
+  10. review-repair checker self-test + fixture corpus
 
 Exit: 0 = all gates pass; 1 = any gate failed.
 """
@@ -76,7 +77,13 @@ def main():
 
     gates = []
 
-    # 1. sweep-gate
+    # 1. golden-artifact gate
+    gates.append(("golden-artifact gate",
+                  [sys.executable, os.path.join(HERE, "check-golden.py"),
+                   os.path.join(ROOT, "demo", "golden-artifact", "input.json"),
+                   os.path.join(ROOT, "demo", "golden-artifact", "expected.txt")]))
+
+    # 2. sweep-gate
     gates.append(("sweep-gate.py", [sys.executable, os.path.join(HERE, "sweep-gate.py")]))
 
     # 2. review-gate
