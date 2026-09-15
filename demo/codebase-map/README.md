@@ -117,4 +117,4 @@ same-origin paths.
 
 ## Provenance and attribution
 
-This module implements a treemap-based codebase visualization inspired by the progressive-zoom navigation metaphor pioneered in Yoann Padioleau's Codemap (GitHub: aryx/codemap) and its antecedents (SeeSoft, Code Thumbnails). The implementation is a clean reimplementation from scratch in TypeScript/Python; no source code from Codemap was copied.
+This module implements a treemap-based codebase visualization inspired by the progressive-zoom navigation metaphor pioneered in Yoann Padioleau's Codemap (GitHub: aryx/codemap) and its antecedents (SeeSoft, Code Thumbnails). The implementation is a clean reimplementation from scratch in zero-dependency static HTML/JavaScript and Python; no source code from Codemap was copied.

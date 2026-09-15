@@ -39,6 +39,23 @@ outside this repository.
 
 ## Unreleased
 
+- **What:** adds `choreography/codebase-map.md` (versioned snapshot contract defining Node/Leaf grammar, deterministic ordering, measure units, exclusion rules, and provenance fields), `build/check-codebase-map.py` (stdlib-only structural validator with 16-case self-test), `examples/codebase-map.valid.json`, and `examples/codebase-map.invalid.json`.
+- **Why it changed:** Team6 needed a portable, machine-checkable snapshot format for spatial codebase evidence. The contract requires explicit algorithm and sorting declarations; absolute paths and credential-like values are rejected.
+- **Evidence:** [VERIFIED — public conceptual source] the treemap concept is inspired by Yoann Padioleau's Codemap (GitHub: aryx/codemap; license: LGPL-2.1-only WITH OCaml-LGPL-linking-exception). The contract schema is authored fresh; no source code, comments, or fixtures from Codemap were copied. [VERIFIED — internal operating record] validator self-test: 16/16 pass; surface-scan: PASS.
+- **Files:** `choreography/codebase-map.md`, `build/check-codebase-map.py`, `examples/codebase-map.valid.json`, `examples/codebase-map.invalid.json`.
+
+- **What:** adds a self-contained HTML viewer at `demo/codebase-map/index.html` that consumes the synthetic fixture locally and renders a squarified treemap. The viewer exposes the selected algorithm identifier, records a read-back receipt (fixture hash, algorithm, rectangle count), and issues zero external requests.
+- **Why it changed:** A proof artifact validates the snapshot contract in a browser without runtime dependencies, live watchers, or external assets. The viewer stays read-only and local-only.
+- **Evidence:** [VERIFIED — public conceptual source] progressive-zoom navigation metaphor inspired by Codemap's README. Implementation is a clean reimplementation in HTML/JavaScript; no Codemap source was ported. [VERIFIED — internal operating record] browser read-back receipt recorded; console: no uncaught errors; network inspection: zero external requests; determinism verified (same fixture renders identical geometry twice).
+- **Files:** `demo/codebase-map/index.html`, `demo/codebase-map/README.md`.
+
+- **What:** extends `choreography/codebase-map-interaction.md` to define overview, focus, back/fit, and metadata-only search behavior. The contract requires explicit unavailable states for source-text or dependency requests absent from the snapshot.
+- **Why it changed:** To ensure the viewer remains read-only and local-only. Searching matches normalized relative identities and display labels only; no grep, source fetch, or external call is permitted.
+- **Evidence:** [VERIFIED — public conceptual source] the progressive disclosure pattern is inspired by Codemap's zoomable metaphor. [VERIFIED — internal operating record] Team6's operating pattern for metadata-only search and unavailable-state requirements.
+- **Files:** `choreography/codebase-map-interaction.md`.
+
+- **Evidence:** [VERIFIED — internal operating record] the three slices (S1–S3) were reviewed and passed verification gates per E-CODEMAP-001.
+
 - **What:** correct the canonical-site labels in the README. The canonical
   public documentation site for Team6-kit is `team6.askaconsult.com`; the
   ASKA corporate page at `www.askaconsult.com/team6` is the service listing.
