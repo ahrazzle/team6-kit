@@ -84,6 +84,16 @@ curl -s https://sub.apex.com/demo.html | grep -c "expected-marker"
 
 Every deploy claim is gated on a served read-back: `gh api .../pages` for the domain registration, `curl` (optionally `--resolve`) for live content, `dig` for DNS. Never report "live" from local source or a successful push alone.
 
+## Conceptual reference: Makepad WASM examples
+
+[VERIFIED - public conceptual source] Source: [`makepad/makepad.github.io`](https://github.com/makepad/makepad.github.io), license: [`LICENSE`](https://github.com/makepad/makepad.github.io/blob/master/LICENSE), Apache-2.0.
+
+This skill adopts one principle from the Makepad WASM example site: a static WASM example should be treated as a published artifact whose exact URL, relative assets, and served bytes are checked independently.
+
+The Makepad site is a reference only. It does not change Team6's canonical host, does not authorize GitHub Pages for Team6, and adds no asset or deployment configuration.
+
+Provenance record: [AUDIT/makepad-learnings.md](../../../../AUDIT/makepad-learnings.md)
+
 ## References
 
 - `references/{CLIENT}` — the {CLIENT} deployment: page registration, Cloudflare CNAME, Vercel-conflict cleanup, stale-cache quirk

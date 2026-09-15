@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "team6-kit/registry/catalog/schemas/pack.schema.json",
+  "title": "Team6-kit catalog pack declaration",
+  "description": "A pack is a parameter file that declares a skill root, a license boundary, and the domain funnels the router may serve. No skill bodies live here.",
+  "type": "object",
+  "required": ["schema_version", "pack", "license", "source", "skill_root", "funnels"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "pack": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "license": { "type": "string", "minLength": 1 },
+    "license_scope": { "type": "string" },
+    "source": { "type": "string", "minLength": 1 },
+    "skill_root": { "type": "string", "minLength": 1 },
+    "entry_glob": { "type": "string", "minLength": 1 },
+    "funnels": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["categories"],
+        "additionalProperties": false,
+        "properties": {
+          "title": { "type": "string" },
+          "purpose": { "type": "string" },
+          "categories": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" }
+          }
+        }
+      }
+    }
+  }
+}

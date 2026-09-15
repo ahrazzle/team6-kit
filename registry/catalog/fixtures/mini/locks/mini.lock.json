@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "lock_id": "team6-kit/mini",
+  "pack": "mini",
+  "source": "team6-kit/registry/catalog/fixtures/mini",
+  "catalog_id": "team6-kit/mini",
+  "catalog_digest": "sha256:fa968bfcf5d73f6fc92aa02b1fc37003ca52ed917ec9238e3fae7990a7f01e07",
+  "generated_from": "skills",
+  "entries": [
+    {
+      "provenance": "prov-mini-74b1c60a8b7f",
+      "id": "creative/diagram-maker",
+      "name": "diagram-maker",
+      "pack": "mini",
+      "source": "team6-kit/registry/catalog/fixtures/mini",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "skills/creative/diagram-maker/SKILL.md"
+    },
+    {
+      "provenance": "prov-mini-2ef9a3361d43",
+      "id": "engineering/code-review",
+      "name": "code-review",
+      "pack": "mini",
+      "source": "team6-kit/registry/catalog/fixtures/mini",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "skills/engineering/code-review/SKILL.md"
+    },
+    {
+      "provenance": "prov-mini-f71a7c4e5042",
+      "id": "research/source-scan",
+      "name": "source-scan",
+      "pack": "mini",
+      "source": "team6-kit/registry/catalog/fixtures/mini",
+      "license": "MIT",
+      "license_source": "frontmatter",
+      "read_path": "skills/research/source-scan/SKILL.md"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "pack": "mini",
+  "title": "Catalog router fixture pack",
+  "description": "A tiny, hermetic pack used by the catalog fixtures. Its skill bodies carry a sentinel string so a test can prove the router never returns bodies.",
+  "license": "MIT",
+  "source": "team6-kit/registry/catalog/fixtures/mini",
+  "skill_root": "skills",
+  "entry_glob": "**/SKILL.md",
+  "funnels": {
+    "engineering": {
+      "title": "Engineering",
+      "purpose": "Fixture engineering funnel.",
+      "categories": ["engineering"]
+    },
+    "creative": {
+      "title": "Creative",
+      "purpose": "Fixture creative funnel.",
+      "categories": ["creative"]
+    },
+    "research": {
+      "title": "Research",
+      "purpose": "Fixture research funnel.",
+      "categories": ["research"]
+    }
+  }
+}

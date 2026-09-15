@@ -267,7 +267,17 @@ def main():
     review_cmd = [sys.executable, os.path.join(HERE, "review-gate.py")]
     if params_path and os.path.isfile(params_path):
         review_cmd += ["--params", params_path]
-    for cmd in (sweep_cmd, review_cmd):
+    # freeze-manifest.py runs only on the LIVE-manifest path: it rebuilds
+    # build/manifest.frozen.tsv from build/manifest.tsv and runs the leak
+    # guard over it. A fresh clone has no live manifest (use_frozen), so the
+    # committed frozen artifact is used as-is and this gate is skipped — the
+    # frozen fallback path stays untouched. A non-zero result is a hard stop
+    # below: assembly never continues on a failed freeze.
+    preconditions = [sweep_cmd, review_cmd]
+    if not use_frozen:
+        preconditions.append(
+            [sys.executable, os.path.join(HERE, "freeze-manifest.py")])
+    for cmd in preconditions:
         r = subprocess.run(cmd, capture_output=True, text=True)
         print(r.stdout)
         if r.returncode != 0:
@@ -368,6 +378,8 @@ def main():
          "contracts/examples/artifact-contract.valid.yaml", False),
         ("examples/artifact-contract.invalid.yaml",
          "contracts/examples/artifact-contract.invalid.yaml", False),
+        ("choreography/session-recall.md",
+         "choreography/session-recall.md", False),
         # Grouped scored-rollout contract (v1.7.0): a JSONL interchange shape
         # for runs of scored samples grouped for comparison, its dependency-free
         # checker, and valid/invalid fixtures. Authored fresh generic content —

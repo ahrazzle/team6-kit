@@ -64,6 +64,18 @@ Step alignment uses a stable key based on `kind + tool/name`. Model changes appe
 - No secrets or raw prompts stored by default
 - Loopback/local guidance for any services (no 0.0.0.0 binding)
 
+## Optional transcript artifacts
+
+[VERIFIED - public conceptual source] Source: [`makepad/ai_snake`](https://github.com/makepad/ai_snake), example metadata surface [`ai/snake_demo.mpai`](https://github.com/makepad/ai_snake/blob/main/ai/snake_demo.mpai), license: [`LICENSE`](https://github.com/makepad/ai_snake/blob/main/LICENSE), MIT.
+
+A transcript or session artifact can support provenance when recorded as an explicit artifact reference with source, commit or version, license status, and evidence boundary.
+
+Provenance requires metadata-first and privacy rules: no raw prompts, secrets, or transcript body by default; no model-session content copied from the source; use a hash or durable artifact reference when an implementation later elects to retain a transcript.
+
+Checklist items: source URL, source revision, license status, artifact reference, and explicit redaction state. Transcript retention is not required.
+
+Provenance record: [AUDIT/makepad-learnings.md](../AUDIT/makepad-learnings.md)
+
 ## Acceptance Checklist
 
 For any implementation of this contract:
