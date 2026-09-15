@@ -328,7 +328,7 @@ the encoded rule, not another retry.
 corrected single-pass role sequence + supervision, durable-state, provenance,
 and served-truth doctrine (2026-09-09). See `../CHANGELOG.md`.*
 
-## 16. Provider-Neutral Orchestration Economics (B01 Reference)
+## 17. Provider-Neutral Orchestration Economics (B01 Reference)
 
 Reference patterns for turn-dense orchestration, cost-bounded routing, and context economics. Provider-neutral; does not require any specific installer or hooks.
 
