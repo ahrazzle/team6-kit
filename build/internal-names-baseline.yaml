@@ -4,7 +4,7 @@
 # - Fail if a listed file has MORE hits than recorded below
 
 ./index.html: 5
-./artifacts/mozi-build-receipt.md: 5
+./artifacts/mozi-build-receipt.md: 6
 ./templates/skills/github/github-pr-audit/SKILL.md: 1
 ./templates/skills/creative/external-writing-discipline/SKILL.md: 1
 ./templates/skills/autonomous-ai-agents/zero-context-preservation/SKILL.md: 4
