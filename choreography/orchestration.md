@@ -360,6 +360,11 @@ Reference patterns for turn-dense orchestration, cost-bounded routing, and conte
 
 ### Routing and Configuration Principles
 
+- **Additive config only:** Reference patterns extend existing choreography without renaming surfaces
+- **No provider locks:** All economic rules apply regardless of underlying model
+- **Fallback semantics:** When provider-specific features are unavailable, use generic equivalents (e.g., turn counters instead of native cache APIs)
+
+
 
 
 ## 18. Commit serialization boundary
