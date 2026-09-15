@@ -167,6 +167,62 @@ class TestGateScripts(unittest.TestCase):
             f"report/check self-test failed:\n{result.stdout}\n{result.stderr}")
 
 
+class TestNewContractValidators(unittest.TestCase):
+    """Tests for the v1.7.0 contract validators (scored-rollout, reward catalogue)."""
+
+    def _selftest(self, relpath):
+        path = os.path.join(ROOT, relpath)
+        self.assertTrue(os.path.isfile(path), f"missing {relpath}")
+        with open(path, encoding="utf-8") as f:
+            compile(f.read(), path, "exec")  # syntax check
+        result = subprocess.run(
+            [sys.executable, path, "--self-test"],
+            capture_output=True, text=True, cwd=ROOT, timeout=120,
+        )
+        self.assertEqual(result.returncode, 0,
+            f"{relpath} --self-test failed:\n{result.stdout}\n{result.stderr}")
+
+    def _example_check(self, relpath):
+        path = os.path.join(ROOT, relpath)
+        result = subprocess.run(
+            [sys.executable, path, "--example-check"],
+            capture_output=True, text=True, cwd=ROOT, timeout=120,
+        )
+        self.assertEqual(result.returncode, 0,
+            f"{relpath} --example-check failed:\n{result.stdout}\n{result.stderr}")
+
+    def test_scored_rollout_script_exists(self):
+        self.assertTrue(os.path.isfile(os.path.join(BUILD, "check-scored-rollout.py")))
+
+    def test_scored_rollout_selftest(self):
+        self._selftest("build/check-scored-rollout.py")
+
+    def test_scored_rollout_example_check(self):
+        self._example_check("build/check-scored-rollout.py")
+
+    def test_reward_registry_script_exists(self):
+        self.assertTrue(os.path.isfile(os.path.join(BUILD, "check-reward-registry.py")))
+
+    def test_reward_registry_selftest(self):
+        self._selftest("build/check-reward-registry.py")
+
+    def test_reward_registry_example_check(self):
+        self._example_check("build/check-reward-registry.py")
+
+    def test_aggregate_names_new_gates(self):
+        """check-contracts.py (the aggregate gate) must name both new validators."""
+        with open(os.path.join(BUILD, "check-contracts.py"), encoding="utf-8") as f:
+            source = f.read()
+        self.assertIn("check-scored-rollout.py", source)
+        self.assertIn("check-reward-registry.py", source)
+
+    def test_release_runner_names_aggregate(self):
+        """verify-all.py must run the aggregate contract gate."""
+        with open(os.path.join(BUILD, "verify-all.py"), encoding="utf-8") as f:
+            source = f.read()
+        self.assertIn("check-contracts.py", source)
+
+
 class TestGitHubWorkflow(unittest.TestCase):
     """Tests for GitHub Actions workflow."""
 
@@ -176,14 +232,30 @@ class TestGitHubWorkflow(unittest.TestCase):
         self.assertTrue(os.path.isfile(path), f"verify.yml not found at {path}")
 
     def test_workflow_syntax(self):
-        """verify.yml should be valid YAML."""
-        import yaml
+        """verify.yml should define name/on/jobs.
+
+        PyYAML is not a kit dependency — the kit's validators are stdlib-only
+        and CI installs nothing beyond setup-python — so when it is absent the
+        test falls back to a structural check instead of failing the whole
+        suite on an environment gap. When PyYAML is available the full parse
+        is used.
+        """
         path = os.path.join(ROOT, ".github", "workflows", "verify.yml")
         with open(path, encoding="utf-8") as f:
-            workflow = yaml.safe_load(f)
-        self.assertIn("name", workflow)
-        self.assertIn(True, workflow)  # 'on' is parsed as True in Python YAML
-        self.assertIn("jobs", workflow)
+            source = f.read()
+        try:
+            import yaml
+        except ImportError:
+            yaml = None
+        if yaml is not None:
+            workflow = yaml.safe_load(source)
+            self.assertIn("name", workflow)
+            self.assertIn(True, workflow)  # 'on' is parsed as True in Python YAML
+            self.assertIn("jobs", workflow)
+        else:
+            self.assertIn("name:", source)
+            self.assertIn("\non:", source)
+            self.assertIn("jobs:", source)
 
 
 if __name__ == "__main__":

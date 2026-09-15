@@ -1,0 +1,25 @@
+# reward-functions.valid.yaml — a COMPLETE, VALID reward catalogue example.
+# Check: python3 build/check-reward-registry.py examples/reward-functions.valid.yaml
+# All names and descriptions are generic; no instance identifiers appear here.
+version: 1
+rewards:
+  - id: exact_match
+    description: compare a scored answer with an expected reference answer
+    input: scored_rollout_sample
+    output: scalar
+    min_score: 0
+    max_score: 1
+    deterministic: true
+    modes: train
+    implementation_ref: project-local
+    source: operator-documentation
+  - id: response_length_penalty
+    description: penalize an answer that exceeds a declared reference length
+    input: scored_rollout_sample
+    output: scalar
+    min_score: -1
+    max_score: 0
+    deterministic: true
+    modes: eval
+    implementation_ref: project-local
+    source: pending-verification

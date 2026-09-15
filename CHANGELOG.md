@@ -60,6 +60,7 @@ give implementations one stable boundary for recall without turning observation 
 
 ### Evidence
 [VERIFIED — public conceptual source] the read-only observer shape and deterministic recall principles are derived from the linked public conceptual source, adopted as principles only. No source code, prompts, anti-slop lists, or source prose is copied. https://github.com/NousResearch/hermes-memory-wiki
+
 - **What:** adds `choreography/codebase-map.md` (versioned snapshot contract defining Node/Leaf grammar, deterministic ordering, measure units, exclusion rules, and provenance fields), `build/check-codebase-map.py` (stdlib-only structural validator with 16-case self-test), `examples/codebase-map.valid.json`, and `examples/codebase-map.invalid.json`.
 - **Why it changed:** Team6 needed a portable, machine-checkable snapshot format for spatial codebase evidence. The contract requires explicit algorithm and sorting declarations; absolute paths and credential-like values are rejected.
 - **Evidence:** [VERIFIED — public conceptual source] the treemap concept is inspired by Yoann Padioleau's Codemap (GitHub: aryx/codemap; license: LGPL-2.1-only WITH OCaml-LGPL-linking-exception). The contract schema is authored fresh; no source code, comments, or fixtures from Codemap were copied. [VERIFIED — internal operating record] validator self-test: 16/16 pass; surface-scan: PASS.
@@ -74,6 +75,28 @@ give implementations one stable boundary for recall without turning observation 
 - **Why it changed:** To ensure the viewer remains read-only and local-only. Searching matches normalized relative identities and display labels only; no grep, source fetch, or external call is permitted.
 - **Evidence:** [VERIFIED — public conceptual source] the progressive disclosure pattern is inspired by Codemap's zoomable metaphor. [VERIFIED — internal operating record] Team6's operating pattern for metadata-only search and unavailable-state requirements. [VERIFIED — internal operating record] all three slices (S1–S3) are locally verified by the repository's own gates: `python3 build/verify-all.py` (7/7 gates pass), `python3 build/surface-scan.py` (PASS, 0 leaks across all 8 surfaces), and `python3 build/check-codebase-map.py --self-test` (16/16 pass).
 - **Files:** `choreography/codebase-map-interaction.md`.
+
+- **What:** add the anti-loop discipline contract. It defines four rules to prevent
+  thinking loops: load once then use, read once then act, plan once then execute,
+  and trust tool output as the receipt. Published artifacts and live pages still
+  require read-back because the deployed state can differ from local state.
+- **Why it changed:** agents can enter thinking loops that add zero new information
+  but consume model budget and time. The previous system had no guard against
+  redundant operations.
+- **Evidence:** [VERIFIED — internal operating record] grounded in the team's shared
+  doctrine and dated session history.
+
+- **What:** add the self-improving flywheel contract (`choreography/self-improving-flywheel.md`).
+- **Why it changed:** without it, each incident is treated as a one-off and the team
+  relearns the same lesson; root causes stay in session history and do not
+  become encoded rules that prevent recurrence.
+- **Evidence:** [VERIFIED — internal operating record]
+
+- **What:** add the open-source contribution contract (`choreography/open-source-contribution.md`).
+- **Why it changed:** without it, patches are written on design preference or
+  assumptions rather than proven defects, risking rejection, wasting time, and
+  potentially exposing internal context.
+- **Evidence:** [VERIFIED — internal operating record]
 
 - **What:** correct the canonical-site labels in the README. The canonical
   public documentation site for Team6-kit is `team6.askaconsult.com`; the
@@ -131,6 +154,105 @@ give implementations one stable boundary for recall without turning observation 
   `build/freeze-manifest.py`, `build/generate.py`, and `CHANGELOG.md`.
 
 ---
+
+## 1.7.0 — Grouped scored-rollout contract and declarative reward catalogue (2026-09-15)
+
+### Grouped scored-rollout contract
+
+- **What:** add a grouped scored-rollout interchange contract and its
+  dependency-free validator. One JSON Lines artifact holds a run header
+  (`record_type: run`, schema `team6.scored_rollout/v1`), one declaration per
+  group, and exactly `expected_samples` scored samples per group. Evaluation
+  handling (`STOP_TRAIN` / `LIMIT_TRAIN` / `NONE`), off-policy caps, and
+  per-group allocation minima are recorded and validated as metadata. Ships as
+  `choreography/scored-rollouts.md` (format + rules),
+  `templates/contracts/scored-rollout-group.jsonl.tmpl` (fill-in template),
+  `build/check-scored-rollout.py` (validator + 11-case self-test), and
+  valid/invalid fixtures in `examples/`. The generator ships all five under
+  `contracts/` in the instantiated kit; the template resolves through the same
+  placeholder-substitution path as the artifact-contract template. The
+  aggregate contract gate (`build/check-contracts.py`) now runs this validator
+  and both fixtures, and `build/verify-all.py` runs that aggregate gate before
+  the fresh-clone gate.
+- **Why:** a future Team6 evaluation or post-training adapter needs one stable,
+  inspectable artifact for a run of scored samples grouped for comparison.
+  Writing the shape down as a checked file format preserves the useful grouped
+  scoring, evaluation-policy, off-policy, and allocation semantics without
+  pretending the kit runs a rollout service, trainer, or inference server.
+- **Evidence:** [VERIFIED — public conceptual source] the archived
+  `NousResearch/atropos` project (MIT, `https://github.com/NousResearch/atropos`)
+  as a **conceptual source only** — grouped scoring, evaluation handling,
+  off-policy limits, and allocation minima are adopted as contract semantics.
+  No Atropos source, dependency, prompt, default, service, tokenizer, SLURM
+  setting, W&B setting, trainer, or server wrapper is copied. The enum values
+  are Team6 contract values, not an Atropos import. **No benchmark claim is
+  made.** Local receipts: validator self-test (11/11), fixture verdicts, the
+  aggregate contract gate, fresh-clone, surface-scan, and unit tests.
+- **Files:** `choreography/scored-rollouts.md`,
+  `templates/contracts/scored-rollout-group.jsonl.tmpl`,
+  `build/check-scored-rollout.py`, `build/check-contracts.py`,
+  `build/verify-all.py`, `build/generate.py`,
+  `examples/scored-rollout-group.{valid,invalid}.jsonl`,
+  `tests/test_gates.py`, `registry/kit.yaml`, README, CHANGELOG.
+- **Proof status:** [PROPOSED / PENDING] documentation contract plus local
+  validator; independent QA must verify both validators run from a fresh
+  generated kit and that all public-artifact and instance-token gates remain
+  clean before release.
+
+### Declarative reward catalogue
+
+- **What:** add a declarative reward catalogue and its dependency-free
+  validator. `registry/reward-functions.yaml.example` names reward identities
+  and their declared behaviour (`id`, `description`, `input`, `output`,
+  `min_score`, `max_score`, `deterministic`, `modes`, `implementation_ref`,
+  `source`). `build/check-reward-registry.py` validates the restricted,
+  YAML-like, line-oriented shape with no third-party YAML library, plus
+  valid/invalid fixtures in `examples/`. `choreography/reward-registry.md`
+  documents the shape and rules. The catalogue is metadata only: the kit never
+  imports, evaluates, or executes a named reward, and executable hook fields
+  (`callable`, `entrypoint`, `python`, `command`) fail validation.
+- **Why:** naming a reward in code (a decorator, an import path, a registry
+  factory) creates an execution and import boundary the kit does not own. A
+  declarative catalogue keeps the useful part — a stable identifier and an
+  explicit declaration a reviewer can check before use — and defers the
+  executable part to a real Team6 trajectory task with an owner and a runtime
+  boundary.
+- **Evidence:** [VERIFIED — public conceptual source] the archived
+  `NousResearch/atropos` project (MIT) **registry pattern as a conceptual
+  source only** — stable identifiers, explicit registration metadata, and
+  validation before use. **No Atropos registry code, decorator, dependency, or
+  prompt is copied**, and there is **no claim that a listed reward executes.**
+  Local receipts: validator self-test (10/10), fixture verdicts, the aggregate
+  contract gate, fresh-clone, surface-scan, and unit tests.
+- **Files:** `choreography/reward-registry.md`,
+  `registry/reward-functions.yaml.example`, `build/check-reward-registry.py`,
+  `build/check-contracts.py`, `build/verify-all.py`, `tests/test_gates.py`,
+  `examples/reward-functions.{valid,invalid}.yaml`, `registry/kit.yaml`,
+  README, CHANGELOG.
+- The registry file stays in-source only; the kit does not copy it into
+  generated kits (no executable reward registration code is bundled).
+- **Proof status:** [PROPOSED / PENDING] documentation contract plus local
+  validator; independent QA must verify the validators run from a fresh
+  generated kit and that all instance-token gates remain clean before release.
+
+### Licensing and scope boundary
+
+- **MIT-to-Apache conceptual reuse is recorded, with no code copied.** The
+  Atropos licence is MIT (the upstream repository is archived and receives no
+  security or bug fixes). Both enhancements adopt Atropos patterns as a
+  **conceptual source only**; no Atropos source, dependency, prompt, default,
+  service, tokenizer, SLURM setting, W&B setting, trainer, or server wrapper is
+  copied into this repo or a generated kit. See `LICENSING.md`.
+- **Explicit exclusions for this slice:** no wholesale Atropos install or fork;
+  no environment microservices or trajectory API; no `BaseEnvConfig` class; no
+  `ManagedServer`, vLLM/SGLang wrappers, or native log-probability plumbing; no
+  SLURM-first server discovery; no W&B rollout logging; no `view-run` /
+  `jsonl2html` tooling; no example GRPO trainer; no SFT/DPO data-generation
+  CLIs; no Prime Intellect verifiers bridge; no decorator-based executable
+  `RewardRegistry`; no Atropos benchmark figure cited as acceptance evidence.
+- **Not settled by this entry:** the successor recommendation (TRL / Prime
+  Intellect) and the credibility of Atropos benchmark figures remain DRAFT open
+  items; this release does not present either as decided.
 
 ## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
 

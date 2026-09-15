@@ -72,6 +72,31 @@ installer, hook commands, MCP declarations, or book text. The root Apache-2.0
 grant and the CC BY-NC-SA 4.0 book terms apply to the source alone and do
 **not** extend to this repo's Apache-2.0 kit layer. Review recorded in PR #5.
 
+### Atropos conceptual-adoption boundary (v1.7.0)
+
+v1.7.0 adds two Team6 contract capabilities — a **grouped scored-rollout
+interchange contract** and a **declarative reward catalogue** — whose grouping,
+evaluation-handling, off-policy, allocation, and registry-and-validation
+semantics were adopted as a **conceptual source** from the archived
+**`NousResearch/atropos`** project.
+
+- **The upstream licence is MIT** (the repository is archived and receives no
+  security or bug fixes). MIT-to-Apache-2.0 conceptual reuse is permissible;
+  the kit records the attribution and the no-code-copy boundary. This does
+  **not** change the kit's Apache-2.0 licence.
+- **No Atropos code, dependency, prompt, default, service, tokenizer, SLURM
+  setting, W&B setting, trainer, or server wrapper is copied** into this repo
+  or into a generated kit. The contract enum values (`STOP_TRAIN`,
+  `LIMIT_TRAIN`, `NONE`) are Team6 contract values, not an Atropos import.
+- **Explicit exclusions:** wholesale Atropos install or fork; environment
+  microservices or trajectory API; `BaseEnvConfig`; `ManagedServer`, vLLM/SGLang
+  wrappers, or native log-probability plumbing; SLURM-first server discovery;
+  W&B rollout logging; `view-run` / `jsonl2html` tooling; example GRPO trainer;
+  SFT/DPO data-generation CLIs; the Prime Intellect verifiers bridge; and a
+  decorator-based executable `RewardRegistry`.
+- **No benchmark claim.** A reference to any Atropos-reported gain is not
+  acceptance evidence and is not cited as a result of this change.
+
 ### Local preprocessing model boundary (v1.2.0)
 
 v1.2.0 documents a **vendor-neutral local preprocessing adapter contract**
