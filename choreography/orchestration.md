@@ -243,6 +243,17 @@ doctrine.
 - **Standardized handoff brief**, every stage: `context / locked decisions /
   assumptions / done / next / OPEN`. The `done` item lists exactly the
   verifiable artifact(s) produced; `OPEN` lists anything uncommitted.
+- **Refuse to spawn on an incomplete brief.** A required field left empty or
+  marked `TBD` is not a gap to fill later. It is a unit that has not been scoped
+  yet. The orchestrator MUST NOT dispatch a worker on a partially filled brief.
+  Resolve it first: scope the missing field into a discrete unit, fill it, then
+  spawn. This applies to the artifact-contract fields (`task_id`, `project`,
+  `phase`, `status`, `runtime_state`, `last_stable_phase`, `resume_phase`,
+  `expected_artifacts`, `required_sections`, `size_bounds`, `tests`,
+  `evidence_refs`) and to the handoff-brief fields (`context`,
+  `locked_decisions`, `assumptions`, `done`, `next`, `OPEN`). The contract checker
+  rejects any contract with a required field missing. See `artifact-contract.md`
+  and `examples/artifact-contract.invalid.yaml`.
 - **JIT handoff + producer-committed signals.** Forward each stable partial
   immediately, marked **STABLE** vs **DRAFT**. A downstream gate may only poll
   a signal the producer's brief actually commits to writing — introduce marker
