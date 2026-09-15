@@ -38,6 +38,32 @@ outside this repository.
 ---
 ## Unreleased
 
+**What:** Add a golden-artifact regression gate at `build/check-golden.py`,
+inspired by AntV Infographic's SSR golden examples. The gate uses only Python
+stdlib, compares generated output from a committed fixture to a committed
+expected file, and produces a clear diff on mismatch. Add `demo/golden-artifact/`
+fixtures, wire into `build/verify-all.py` and `build/check-contracts.py`, add
+tests to `tests/test_gates.py`, and record provenance in
+`AUDIT/infographic-learnings.md`.
+
+**Why:** To add a dependency-free, deterministic regression guard that proves
+basic artifact generation behaves correctly without network calls or external
+dependencies. This pattern provides a minimal but useful sanity check for the
+release pipeline.
+
+**Evidence:** [VERIFIED — public conceptual source] AntV Infographic (MIT) as a
+conceptual source only — Team6 implements a clean, independent Python-only
+version. Local receipts: gate self-test (all cases pass), gate fixture (PASS),
+surface-scan (PASS), unit tests (PASS).
+
+**Files:** `build/check-golden.py`, `demo/golden-artifact/`, `build/verify-all.py`,
+`build/check-contracts.py`, `tests/test_gates.py`, `AUDIT/infographic-learnings.md`,
+README, CHANGELOG.
+
+---
+
+## Unreleased
+
 **What:** Docs-only reference notes in eight existing guidance and provenance surfaces: `README.md`, `WHY.md`, `AUDIT/makepad-learnings.md`, `choreography/run-evidence.md`, `templates/skills/creative/html-report-authoring/SKILL.md`, `templates/skills/software-development/project-foundation-scaffold/SKILL.md`, `templates/skills/mlops/evaluation/evaluating-llms-harness/SKILL.md`, `templates/skills/deployment/github-pages-deployment/SKILL.md`. Seven adopted candidates: A1, A2, A3, A4, B2, B3, C5. Three proof-pending candidates: B1, C1, C3.
 
 **Why:** Selected Makepad repositories provide conceptual or historical reference points. The change does not add code, dependencies, runtime support, deployment, or a registry default.

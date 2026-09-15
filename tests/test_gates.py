@@ -194,7 +194,47 @@ class TestGateScripts(unittest.TestCase):
 
 
 class TestNewContractValidators(unittest.TestCase):
-    """Tests for the v1.7.0 contract validators (scored-rollout, reward catalogue)."""
+    """Tests for the v1.7.0 contract validators (scored-rollout, reward catalogue, golden gate)."""
+
+    def test_golden_gate_script_exists(self):
+        """check-golden.py should exist in build directory."""
+        path = os.path.join(BUILD, "check-golden.py")
+        self.assertTrue(os.path.isfile(path), f"check-golden.py not found at {path}")
+
+    def test_golden_gate_syntax(self):
+        """check-golden.py should have valid Python syntax."""
+        path = os.path.join(BUILD, "check-golden.py")
+        with open(path, encoding="utf-8") as f:
+            source = f.read()
+        compile(source, path, "exec")
+
+    def test_golden_gate_selftest(self):
+        """check-golden.py --self-test should pass."""
+        path = os.path.join(BUILD, "check-golden.py")
+        result = subprocess.run(
+            [sys.executable, path, "--self-test"],
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=60
+        )
+        self.assertEqual(result.returncode, 0,
+            f"check-golden.py --self-test failed:\n{result.stdout}\n{result.stderr}")
+
+    def test_golden_gate_fixture(self):
+        """check-golden.py on demo fixture should pass."""
+        path = os.path.join(BUILD, "check-golden.py")
+        input_file = os.path.join(ROOT, "demo", "golden-artifact", "input.json")
+        expected_file = os.path.join(ROOT, "demo", "golden-artifact", "expected.txt")
+        result = subprocess.run(
+            [sys.executable, path, input_file, expected_file],
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=60
+        )
+        self.assertEqual(result.returncode, 0,
+            f"check-golden.py fixture failed:\n{result.stdout}\n{result.stderr}")
 
     def _selftest(self, relpath):
         path = os.path.join(ROOT, relpath)
