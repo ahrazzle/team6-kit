@@ -110,7 +110,7 @@ def main():
     manifest = load_manifest(manifest_path)
     review = parse_review(review_path)
 
-    # Provenance enforcement (Azaraki/Shayba): the frozen review is the
+    # Provenance enforcement (team): the frozen review is the
     # open-core demo sign-off — using it IS the documented demo path (fresh
     # clone, no fleet, self-contained instantiation). The protection that
     # matters: if a LIVE review exists and it predates the params file, the

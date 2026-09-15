@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-surface-scan.py — Multi-surface leak detector (Azaraki's surface matrix).
+surface-scan.py — Multi-surface leak detector.
 
 "Clean" means 0 across N surfaces with N DEDICATED detectors, never one
 catch-all grep. Each surface is scanned independently so a content-grep can
@@ -14,7 +14,7 @@ SURFACES (each with its own detector):
   S5 config defaults— DEFAULT_PARAMS / hardcoded defaults in build/
   S6 gitignore      — generated artifacts are excluded, not committed
   S7 reachability   — live third-party integrations a stranger could reach
-                      (Shayba's bar: "can a stranger touch our instance?")
+                      (strict reachability test: "can a stranger touch our instance?")
   S8 git history    — checked at commit time (this scanner is pre-commit;
                       the fork's first commit runs the same terms via git log)
 
@@ -117,7 +117,7 @@ GENERIC_SERVICE_TERMS = [
 SELF_EXCLUDE = {"build/surface-scan.py"}
 
 # Brand allowlist — terms that are the PRODUCT's own intentional name, not
-# instance leaks. Shayba's reachability test resolves these: reaching
+# instance leaks. The reachability test resolves these: reaching
 # "Team6-kit" is reaching the product (a public artifact), never our
 # instance. Keep this minimal — it is the ONLY exemption from S1/S2, and
 # adding a term here is a branding decision, not a leak fix.
@@ -247,7 +247,7 @@ def main():
             if t in low:
                 findings['7-generic-service'].append((f, t))
 
-    # S8 network egress — no-telemetry enforcement (Halakukhan's point:
+    # S8 network egress — no-telemetry enforcement
     # a stated rule isn't enforced; the scanner is the enforcement).
     # Scans for NETWORK-EGRESS PRIMITIVES, not just imports: http.client,
     # urllib, requests, socket, subprocess-with-network-args. Applies to
