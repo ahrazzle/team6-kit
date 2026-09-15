@@ -8,9 +8,9 @@ or writes. This is the aggregate contract gate: step 7 in the release runner
 (build/verify-all.py) and step 5 in the fresh-clone gate, verifying the
 working tree's validators are operational.
 
-Covered contracts: artifact-contract, preflight, report, grouped
-scored-rollout (self-test + both fixtures), and the declarative reward
-catalogue (self-test + both fixtures). The two new fixtures are asserted to
+Covered contracts: artifact-contract, preflight, report, review-repair,
+grouped scored-rollout (self-test + both fixtures), and the declarative
+reward catalogue (self-test + both fixtures). The two new fixtures are asserted to
 their expected verdicts: the valid fixture must exit 0 and the invalid
 fixture must exit non-zero (so the step names an expected return code).
 """
@@ -30,6 +30,8 @@ def main():
         ("build/check-artifact-contract.py --example-check", "artifact-contract examples", 0),
         ("build/preflight/check.py --selftest", "preflight validator", 0),
         ("build/report/check.py --selftest", "report validator", 0),
+        ("build/review-repair/check.py --selftest", "review-repair validator", 0),
+        ("build/review-repair/check.py --fixtures", "review-repair fixtures", 0),
         ("build/check-scored-rollout.py --self-test", "scored-rollout contract validator", 0),
         ("build/check-scored-rollout.py --example-check", "scored-rollout contract examples", 0),
         ("build/check-scored-rollout.py examples/scored-rollout-group.valid.jsonl",

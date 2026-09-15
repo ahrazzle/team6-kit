@@ -84,6 +84,37 @@ When an artifact ships with a visual asset list ("contact sheet", "starter pack"
 - **The artifact must agree with itself**: demo-tile labels vs the in-page data table disagreeing means the vote cannot run until the artifact is fixed.
 - **Tooling retry**: `vision_analyze` can 404 on file paths containing spaces — copy to a space-free path (e.g. `/tmp/name.png`) and retry before concluding the image can't be read.
 
+## Forcing Questions (before the build)
+
+The highest-value adversarial pass happens before anyone writes code, when
+forcing the questions a plan quietly answered for itself can still change what
+gets built. Attack the framing, not only the detail:
+
+- **What is actually being asked?** Restate the request in one line. If the plan
+  solves a different problem than the one stated, that mismatch is the finding.
+- **Which premise, if false, collapses the plan?** Name it and ask for the
+  evidence that it holds.
+- **What is the simplest thing that works?** If a smaller build reaches the same
+  outcome, the larger plan is overcomplexity, not thoroughness.
+- **Which orthogonal edits does the plan smuggle in?** Scope creep is a finding,
+  never a bonus.
+- **What does this NOT do?** State the non-goals; a plan with no non-goals has
+  undefined scope.
+- **How will we know it worked?** The plan must name the observation that fails
+  if the plan is wrong — otherwise it is unfalsifiable (attack vector 1).
+
+Force these before scaffolding, not after. The output is unchanged: strongest
+objection first, then a binary verdict.
+
+## Proposal-only output
+
+An adversarial pass critiques; it does not perform the change it recommends.
+Hand the finding (and any proposed action) to the actor, who owns the mutation
+and the approval. When the pass runs against a contribution, record it as a
+guarded review report (`choreography/review-repair-workflow.md`, lane
+`adversarial`); the report is proposal-only and every repair it names carries a
+regression-test contract (pre-fix fail / post-fix pass).
+
 ## The Verification Pass (After Revisions)
 
 When the output is revised, do NOT re-read for general quality. Instead:

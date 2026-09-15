@@ -196,6 +196,25 @@ When two platforms (Vercel project + GitHub Pages) both target the same custom s
 - **"Text too small" on a button is a RELATIVE complaint.** The user's screenshot showed the CTA at ~60-70% of the adjacent orange button's text. The fix is not "bigger than before" (12→14px), it's "equal to or larger than the sibling" — compare painted text heights across adjacent elements in one frame, and separate the user's pre-fix screenshot from the current served state before judging (the screenshot may show the previous deploy).
 - **Identify WHICH surface a screenshot shows BEFORE fixing.** Two sequential fixes targeted different surfaces (topbar nav spacing, then CTA-card button spacing) because the room never confirmed what the screenshot depicted. Vision-read the context first (nav bar with links vs dark CTA card with headline + button pair), then fix that surface. A bare inline-anchor pair with ~10-15px gap inside a CTA card needs a flex wrapper (`display:flex;gap:16px;justify-content:center;flex-wrap:wrap`), not a nav-gap tweak.
 
+## 11g. Browser-lane verification: bind evidence to content, gate every fix
+
+Two rules turn a browser pass from a screenshot into evidence.
+
+- **Bind verification to the served bytes, not a commit sha.** The commit you
+  *believe* produced the page is a hypothesis the served bytes can refute (deploy
+  lag, wrong-project deploy, stale CDN edge — all earlier sections). Record that
+  a surface was verified against a cache-busted fetch and its hash, so the
+  evidence survives a rebase, amend, or squash and cannot be quietly re-pointed
+  at a different tree.
+- **Every browser-QA fix ships with its regression test.** A real-browser pass
+  that finds a bug proves nothing on its own. Name the case, and record BOTH
+  results: it FAILED before the fix and PASSES after. A case that passes on both
+  sides is a guard, not a pin. Record the pass as a guarded review report
+  (`choreography/review-repair-workflow.md`, lane `browser`); validate it with
+  `python3 build/review-repair/check.py <report.json>`. The report is
+  proposal-only — it proposes the fix and its regression test; it does not
+  deploy, and the deploy stays an approval-gated mutation.
+
 ## 11. Reporting contract (what the verifier ships back)
 
 - Table of surfaces/routes with status, verified minutes ago, timestamped.

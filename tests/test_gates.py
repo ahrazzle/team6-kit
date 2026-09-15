@@ -166,6 +166,32 @@ class TestGateScripts(unittest.TestCase):
         self.assertEqual(result.returncode, 0,
             f"report/check self-test failed:\n{result.stdout}\n{result.stderr}")
 
+    def test_review_repair_selftest(self):
+        """review-repair/check.py --selftest should pass."""
+        path = os.path.join(BUILD, "review-repair", "check.py")
+        result = subprocess.run(
+            [sys.executable, path, "--selftest"],
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=60
+        )
+        self.assertEqual(result.returncode, 0,
+            f"review-repair self-test failed:\n{result.stdout}\n{result.stderr}")
+
+    def test_review_repair_fixtures(self):
+        """review-repair/check.py --fixtures should pass."""
+        path = os.path.join(BUILD, "review-repair", "check.py")
+        result = subprocess.run(
+            [sys.executable, path, "--fixtures"],
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=60
+        )
+        self.assertEqual(result.returncode, 0,
+            f"review-repair fixtures failed:\n{result.stdout}\n{result.stderr}")
+
 
 class TestNewContractValidators(unittest.TestCase):
     """Tests for the v1.7.0 contract validators (scored-rollout, reward catalogue)."""

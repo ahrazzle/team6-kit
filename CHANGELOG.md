@@ -254,6 +254,42 @@ give implementations one stable boundary for recall without turning observation 
   Intellect) and the credibility of Atropos benchmark figures remain DRAFT open
   items; this release does not present either as decided.
 
+## 1.7.0 — Guarded review/repair workflows (2026-09-15)
+
+- **What:** add `choreography/review-repair-workflow.md`, a proposal-only
+  review/repair contract, and `build/review-repair/check.py`, a
+  standard-library-only validator with a self-test and a fixture corpus for the
+  review, adversarial, browser, and artifact lanes. A report binds every step to
+  the live target head with its source evidence, owner, and rollback path; keeps
+  proposed mutations separate from the review output and approval-required; and
+  gives every repair a regression-test contract with the pre-fix / post-fix
+  distinction. An agent report may not propose a merge, a rename, or a
+  slash-command name. Wire the validator and its fixtures into
+  `build/verify-all.py` and `build/check-contracts.py`, and strengthen the
+  existing `github-pr-audit`, `adversarial-review`, `code-review-verification`,
+  and `web-build-verification` skills in place — no new skill name, no rename,
+  no second GitHub control plane, and no bot.
+- **Why it changed:** a review that quietly mutates (closing, labeling, or
+  merging as it reports) is the self-approval failure in another costume, and a
+  repair whose test also passed before the fix pins nothing. The contract makes
+  the separation and the regression-test contract explicit and machine-checkable.
+- **Evidence:** [VERIFIED — public conceptual source] ClawSweeper
+  (`100yenadmin/clawsweeper`, MIT) for the proposal-only review/repair and
+  exact-head contracts, and gstack (`100yenadmin/gstack`, MIT) for the forcing
+  questions, real-browser QA regression test, and review-to-ship handoff.
+  Principles only; no source, workflow YAML, prompt, or bot is bundled.
+- **Files:** `choreography/review-repair-workflow.md`,
+  `build/review-repair/check.py`, `build/review-repair/README.md`,
+  `build/review-repair/fixtures/`, `build/verify-all.py`,
+  `build/check-contracts.py`, `tests/test_gates.py`,
+  `templates/skills/github/github-pr-audit/SKILL.md`,
+  `templates/skills/adversarial-review/SKILL.md`,
+  `templates/skills/software-development/code-review-verification/SKILL.md`,
+  `templates/skills/software-development/web-build-verification/SKILL.md`,
+  `README.md`.
+
+---
+
 ## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
 
 - **What:** add a deterministic release gate runner at `build/verify-all.py`

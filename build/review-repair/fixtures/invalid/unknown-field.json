@@ -1,0 +1,72 @@
+{
+  "contract_version": 1,
+  "lane": "review",
+  "target": {
+    "repo": "ahrazzle/team6-kit",
+    "live_head": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+    "head_source": "gh api repos/ahrazzle/team6-kit/commits/main --jq .sha"
+  },
+  "steps": [
+    {
+      "id": "read-live-head",
+      "action": "read the live target head",
+      "head": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+      "evidence": [
+        {
+          "ref": "gh api ... --jq .sha",
+          "proves": "the head the review is bound to"
+        }
+      ],
+      "owner": "reviewer-profile",
+      "rollback": "read-only step; nothing to roll back"
+    },
+    {
+      "id": "prod-readback",
+      "action": "release readback: confirm the served artifact",
+      "head": "a1b2c3d4e5f60718293a4b5c6d7e8f9012345678",
+      "evidence": [
+        {
+          "ref": "curl -sI <url>",
+          "proves": "the served surface matches the reviewed head"
+        }
+      ],
+      "owner": "release-owner-profile",
+      "rollback": "revert to the previous release artifact"
+    }
+  ],
+  "review_output": {
+    "verdict": "changes-requested",
+    "findings": [
+      {
+        "id": "F1",
+        "severity": "high",
+        "summary": "the guard swallows the quoted-string case"
+      }
+    ],
+    "mutations_performed": []
+  },
+  "proposed_mutations": [
+    {
+      "id": "M1",
+      "kind": "comment",
+      "target": "ahrazzle/team6-kit#123",
+      "requires_approval": true,
+      "approved_by": null,
+      "rollback": "delete the review comment"
+    }
+  ],
+  "repairs": [
+    {
+      "id": "P1",
+      "finding": "F1",
+      "owner": "implementer-profile",
+      "regression_test": {
+        "name": "quoted-string guard case",
+        "command": "python3 -m pytest tests/test_guard.py -q",
+        "pre_fix_result": "fail",
+        "post_fix_result": "pass"
+      }
+    }
+  ],
+  "unknown_extra": "value"
+}

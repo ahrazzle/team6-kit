@@ -196,6 +196,24 @@ report — no Agency Orchestrator code is copied — and the Team6 Kanban board
 remains authoritative: the packet is a derived shareable report, not a second
 state store.
 
+## Guarded review and repair
+
+A review that quietly mutates — closing, labeling, or merging as it reports — is
+the self-approval failure in another costume. The kit's guarded review/repair
+contract separates the two roles. One report records a review, an adversarial
+pass, a browser verification, or an artifact verification; it binds every step to
+the live target head with its source evidence, owner, and rollback path; it keeps
+proposed mutations separate from the review output and approval-required; and it
+gives every repair a regression-test contract with the pre-fix / post-fix
+distinction. An agent report may not propose a merge, a rename, or a
+slash-command name. `choreography/review-repair-workflow.md` defines the
+contract; `build/review-repair/check.py` is a dependency-free validator that
+fails closed, with a fixture corpus for the review, adversarial, browser, and
+artifact lanes. It is adapted from public review/repair contracts and workflow
+patterns as principles only — no bot, workflow YAML, or source is bundled — and
+the Team6 Kanban board remains authoritative: the report is a derived record, not
+a second state store.
+
 ## Execution evidence
 
 The kit defines a vendor-neutral execution-evidence contract that records what

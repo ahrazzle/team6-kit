@@ -84,6 +84,15 @@ Pitfalls:
 - A test that passes pre-fix is not worthless — it can be a guard for a
   property that already held — but it does not pin THIS regression.
 
+### The regression-test contract (state it, don't imply it)
+
+Record the pin as a contract, not a narrative: the test name, its command, and
+both results — `pre_fix_result: fail` and `post_fix_result: pass`. A repair whose
+`pre_fix_result` is `pass` pins nothing; report it as a guard. This is the shape
+the guarded review/repair report requires
+(`choreography/review-repair-workflow.md`); validate with
+`python3 build/review-repair/check.py <report.json>`.
+
 ## 3. Write-path effectiveness (delete-on-falsy and merge fixes)
 
 A delete-on-falsy / merge fix is only real if the WRITE path actually

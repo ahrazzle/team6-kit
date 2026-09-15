@@ -105,6 +105,35 @@ With no branch protection and `admin`, merge it yourself (`gh pr merge N --repo 
   with the existing `sessions list` command — extend it instead") as
   `gh issue comment`.
 
+## Guarded review/repair (proposal-only, approval-gated)
+
+Review output and GitHub mutation are two roles; keep them apart. This is the
+kit's guarded review/repair contract (`choreography/review-repair-workflow.md`);
+validate a report with `python3 build/review-repair/check.py <report.json>`.
+
+- **A review proposes; it does not mutate.** Your report lists findings and
+  *proposed* maintainer actions (a comment, a label, a close). It never carries
+  a mutation it already performed. A report that shows `close`/`label`/`comment`
+  as done has blended reviewer and actor — the self-approval failure in another
+  costume (see section 6).
+- **Bind every step to the LIVE head.** Name the exact head each step was
+  verified against (`gh api repos/O/R/commits/<ref> --jq .sha`), its source
+  evidence, its owner, and its rollback path. A step bound to a different head
+  is a stale review, not a review (see section 1). Release steps are steps too:
+  the readback that proves the served artifact names a live target and a
+  rollback.
+- **Every proposed mutation is approval-required.** A proposed mutation is never
+  automatic and always names its rollback. An agent report may not propose a
+  merge (no automatic merge authority), may not propose a rename, and may not
+  introduce a slash-command name.
+- **Every repair carries a regression-test contract.** State the test and BOTH
+  results: it FAILS before the fix and PASSES after. A test that passes on both
+  sides is a guard, not a pin (see `code-review-verification`). The loop is
+  bounded — it stops and hands back to the operator.
+- **The review-to-ship handoff carries the evidence forward.** A reviewer that
+  signs off cites the same head, evidence, and open findings the ship step will
+  re-check; do not let the release step re-derive a different story.
+
 ## Offering a policy choice
 
 When a fix has two defensible policies and the maintainer should pick one, ship
