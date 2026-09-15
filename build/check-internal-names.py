@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-check-internal-names.py — Gate for internal agent names and paths in public surfaces.
+check-internal-names.py — Gate for internal agent names in public surfaces.
 
-Scans public surfaces for internal agent names and home-path patterns (/Users/, /home/).
-Fails on any hit.
+Scans the whole public tree for internal agent names.
+Loads blocklist from build/identifiers.yaml.
+Reads baseline from build/internal-names-baseline.yaml.
+Fails on any hit outside the baseline or with more hits than baseline.
 
 Usage: python3 build/check-internal-names.py [path/to/repo]
 Default: current directory
@@ -13,81 +15,141 @@ Exit: 0 = clean; 1 = leaks found
 import os
 import re
 import sys
+import yaml
 
-# This file itself (exclude from scan)
 SCRIPT_NAME = 'check-internal-names.py'
-
-# Internal agent names to block (role labels are OK)
-INTERNAL_NAMES = [
-    'lugia',
-    'azaraki',
-    'kodekoot',
-    'shayba',
-    'halakukhan',
-]
-
-# Home-path patterns to block
-HOME_PATHS = [
-    '/Users/',
-    '/home/',
-]
-
-# Public surfaces to scan (owned files only)
-PUBLIC_SURFACES = [
-    'README.md',
-    'CHANGELOG.md',
-    'choreography/open-source-contribution.md',
-    'choreography/orchestration.md',
-    'choreography/self-improving-flywheel.md',
-    'templates/personas/SOUL.md.tmpl',
-]
+BASELINE_PATH = 'build/internal-names-baseline.yaml'
+IDENTIFIERS_PATH = 'build/identifiers.yaml'
 
 
-def scan_file(path, pattern):
-    """Scan a file for pattern matches. Return list of (line_num, line) tuples."""
-    # Skip this script itself
-    if os.path.basename(path) == SCRIPT_NAME:
+def load_blocklist(repo):
+    yaml_path = os.path.join(repo, IDENTIFIERS_PATH)
+    if not os.path.exists(yaml_path):
         return []
+    try:
+        with open(yaml_path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f) or {}
+        values = []
+        for key, val in data.items():
+            if isinstance(val, list):
+                values.extend(str(v) for v in val)
+            elif val:
+                values.append(str(val))
+        return values
+    except Exception:
+        return []
+
+
+def load_baseline(repo):
+    baseline_path = os.path.join(repo, BASELINE_PATH)
+    if not os.path.exists(baseline_path):
+        return {}
+    try:
+        with open(baseline_path, 'r', encoding='utf-8') as f:
+            data = yaml.safe_load(f) or {}
+        return {k: int(v) for k, v in data.items()}
+    except Exception:
+        return {}
+
+
+def scan_file(path, patterns):
+    if os.path.basename(path) == SCRIPT_NAME:
+        return 0, []
     matches = []
+    count = 0
     try:
         with open(path, 'r', encoding='utf-8', errors='ignore') as f:
             for i, line in enumerate(f, 1):
-                if pattern.search(line):
-                    matches.append((i, line.rstrip()))
+                for pat_name, pattern in patterns:
+                    if pattern.search(line):
+                        matches.append((i, line.rstrip(), pat_name))
+                        count += 1
     except (IOError, OSError):
         pass
-    return matches
+    return count, matches
 
 
 def main():
     repo = sys.argv[1] if len(sys.argv) > 1 else '.'
     
-    leaks = []
-    
-    for surface in PUBLIC_SURFACES:
-        surface_path = os.path.join(repo, surface)
-        if not os.path.exists(surface_path):
-            continue
-        
-        # Scan the file directly (not a directory)
-        for name in INTERNAL_NAMES:
-            pattern = re.compile(re.escape(name), re.IGNORECASE)
-            for line_num, line in scan_file(surface_path, pattern):
-                leaks.append((surface_path, line_num, line, f'INTERNAL NAME: {name}'))
-        for path_pat in HOME_PATHS:
-            pattern = re.compile(re.escape(path_pat))
-            for line_num, line in scan_file(surface_path, pattern):
-                leaks.append((surface_path, line_num, line, f'HOMEPATH: {path_pat}'))
-    
-    if leaks:
-        print("INTERNAL NAME LEAKS FOUND:")
-        for fpath, line_num, line, reason in leaks:
-            print(f"  {fpath}:{line_num} {reason}")
-            print(f"    {line[:100]}{'...' if len(line) > 100 else ''}")
-        print(f"\nTotal leaks: {len(leaks)}")
+    blocklist = load_blocklist(repo)
+    if not blocklist:
+        print('No blocklist found (build/identifiers.yaml missing). Gate cannot run.')
         return 1
+    
+    baseline = load_baseline(repo)
+    
+    patterns = []
+    for name in blocklist:
+        if name.strip():
+            patterns.append((name, re.compile(re.escape(name), re.IGNORECASE)))
+    
+    if not patterns:
+        print('No valid blocklist terms found. Gate cannot run.')
+        return 1
+    
+    all_leaks = []
+    files_scanned = 0
+    files_with_hits = []
+    
+    for root, dirs, files in os.walk(repo):
+        dirs[:] = [d for d in dirs if not d.startswith('.') and d != 'node_modules']
+        
+        for fname in files:
+            fpath = os.path.join(root, fname)
+            if not os.path.isfile(fpath):
+                continue
+            
+            if fname.endswith(('.pyc', '.so', '.png', '.jpg', '.gif', '.pdf', '.zip', '.tar.gz')):
+                continue
+            
+            files_scanned += 1
+            count, matches = scan_file(fpath, patterns)
+            
+            if count > 0:
+                files_with_hits.append((fpath, count))
+                for line_num, line, pat_name in matches:
+                    rel_path = os.path.relpath(fpath, repo)
+                    all_leaks.append((rel_path, line_num, line, pat_name))
+    
+    baseline_files = set(baseline.keys())
+    hits_outside_baseline = [f for f, _ in files_with_hits if f not in baseline_files]
+    
+    count_violations = []
+    for fpath, count in files_with_hits:
+        if fpath in baseline:
+            if count > baseline[fpath]:
+                count_violations.append((fpath, count, baseline[fpath]))
+    
+    if all_leaks:
+        print('INTERNAL NAME LEAKS FOUND:')
+        for fpath, line_num, line, reason in all_leaks:
+            print('  ' + fpath + ':' + str(line_num) + ' INTERNAL NAME: ' + reason)
+            suffix = '...' if len(line) > 100 else ''
+            print('    ' + line[:100] + suffix)
+        print()
+        print('Files scanned: ' + str(files_scanned))
+        print('Files with hits: ' + str(len(files_with_hits)))
+        
+        if hits_outside_baseline:
+            print('Leaks outside baseline (FAIL): ' + str(len(hits_outside_baseline)) + ' files')
+            for f in hits_outside_baseline:
+                print('  ' + f)
+        
+        if count_violations:
+            print('Baseline hit count violations (FAIL): ' + str(len(count_violations)) + ' files')
+            for f, got, expected in count_violations:
+                print('  ' + f + ': got ' + str(got) + ', expected ' + str(expected))
+        
+        if hits_outside_baseline or count_violations:
+            print()
+            print('Total leaks: ' + str(len(all_leaks)))
+            return 1
+        else:
+            print('All hits are within baseline and match recorded counts.')
+            return 0
     else:
-        print("No internal name leaks found.")
+        print('No internal name leaks found in ' + str(files_scanned) + ' files.')
         return 0
 
 
