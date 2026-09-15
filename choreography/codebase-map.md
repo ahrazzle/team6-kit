@@ -153,10 +153,41 @@ and reads only the snapshot path it is given.
 
 ## Rendering
 
+> This section was extended in Slice 2. It records the single Team6 baseline
+> selected for the first proof and the geometry receipt fields. It is a Team6
+> experiment choice, **not** a claim about any other tool's default.
+
 `rendering.algorithm` is a required named field; a viewer that meets an
 unrecognized token must reject it rather than fall back to a default. Version 1
 defines exactly one accepted token:
 
 | Token | Meaning |
 |---|---|
-| `t6-squarified-v1` | The Team6 baseline for the first proof. The token is a fresh, clean-room Team6 name. Its selection rationale, behavior, and the geometry receipt fields are recorded in the Slice 2 extension of this section. |
+| `t6-squarified-v1` | The Team6 baseline: a squarified treemap layout applied to the snapshot's **declared child order** (the layout does not re-sort, because child order is part of the snapshot). It is a fresh, clean-room Team6 identifier. |
+
+**Provenance note.** The token is a fresh Team6 name. It maps to the general
+"squarified" family of treemap layouts (long-standing public algorithmic
+knowledge) purely as documentation — no enum label is copied from any external
+project, and no external project's default is claimed or inferred. Alternative
+layouts (`Classic`, `SquarifiedNoSort`, ordered variants) remain **comparison
+candidates**, not implemented modes; the first proof implements the one
+baseline so it measures value rather than breadth.
+
+### Geometry receipt fields
+
+A rendering receipt records, at minimum:
+
+| Field | Rule |
+|---|---|
+| `algorithm` | the snapshot's `rendering.algorithm` token, echoed |
+| `fixture` | the snapshot path that was rendered |
+| `fixture_sha256` | SHA-256 of the snapshot bytes |
+| `viewport` | pixel width × height the layout was computed for |
+| `precision` | the documented coordinate serialization precision |
+| `rect_count` | number of laid-out rectangles (entities rendered) |
+| `node_count` / `leaf_count` | grammar counts from the snapshot |
+| `determinism` | a second render at the same viewport produces identical rectangle coordinates and labels, within the documented precision |
+
+A rendering receipt proves the viewer produced a geometry from a specific
+snapshot at a specific viewport. It is **not** a claim of visual quality,
+usability, or that the map improves any task.
