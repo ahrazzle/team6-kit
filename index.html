@@ -228,7 +228,7 @@
     <div class="container">
       <p class="kicker">WHAT CHANGED · v1.1.0 OPERATING UPGRADES</p>
       <h2 id="upgrades-title">How the team stays reliable.</h2>
-      <p class="lead measure">These rules each exist because the team hit that exact failure and fixed it. Full details in the repo: <span class="mono">choreography/orchestration.md</span>, <span class="mono">choreography/governance.md</span>, <span class="mono">choreography/ai-assisted-development.md</span>, <span class="mono">choreography/router-security.md</span>, <span class="mono">choreography/side-effect-cost-preflight.md</span>, <span class="mono">choreography/artifact-contract.md</span>, <span class="mono">choreography/io-delegation.md</span>, <span class="mono">choreography/safe-run-packet.md</span>, and <span class="mono">choreography/run-evidence.md</span>.</p>
+      <p class="lead measure">These rules each exist because the team hit that exact failure and fixed it. Full details in the repo: <span class="mono">choreography/orchestration.md</span>, <span class="mono">choreography/governance.md</span>, <span class="mono">choreography/ai-assisted-development.md</span>, <span class="mono">choreography/router-security.md</span>, <span class="mono">choreography/side-effect-cost-preflight.md</span>, <span class="mono">choreography/artifact-contract.md</span>, <span class="mono">choreography/io-delegation.md</span>, <span class="mono">choreography/safe-run-packet.md</span>, <span class="mono">choreography/run-evidence.md</span>, <span class="mono">choreography/anti-loop-discipline.md</span>, <span class="mono">choreography/self-improving-flywheel.md</span>, and <span class="mono">choreography/open-source-contribution.md</span>.</p>
 
       <div class="up-grid">
         <article class="up-card">
@@ -294,6 +294,22 @@
         <article class="up-card">
           <p class="up-title">16 / OPENSHORTS ROUTE (EXTERNAL, DOCS ONLY)</p>
           <p class="up-body">Finished short-video production requests — where the user explicitly asks for a rendered short — route to OpenShorts, an external local-first tool Team6 has studied as a reference. This is a documentation route only: the kit does not bundle or run OpenShorts, does not render video by itself, and does not post, publish, or schedule anything on the user's behalf. Transcript, summary, and media-research requests stay on the existing media skills. Users install OpenShorts separately and check its current license and dependency terms before use. Read <span class="mono">registry/openshorts-route.yaml.example</span> and <span class="mono">choreography/openshorts-route.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">17 / VERIFICATION DISCIPLINE</p>
+          <p class="up-body">The team requires independent proofread and fact audit before any prose is delivered. Quoted source text is extracted programmatically and compared byte for byte. For behavioural claims, implementing code or a pinned test outranks repository prose. A durable record carries only verbatim values from the producing command. Third-party tools are piloted in an authorised sandbox before adoption. Read <span class="mono">templates/skills/creative/external-writing-discipline/SKILL.md</span>, <span class="mono">templates/skills/software-development/source-verification/SKILL.md</span>, <span class="mono">templates/skills/research/source-evaluation/SKILL.md</span>, <span class="mono">templates/contracts/artifact-contract.md.tmpl</span>, and <span class="mono">templates/skills/software-development/external-tool-vetting/SKILL.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">18 / THE SAME MOVE TWICE IS A DEFECT</p>
+          <p class="up-body">An agent that repeats an operation that returns nothing new is stuck, not working. The team stops, reports, and encodes the rule. Read <span class="mono">choreography/anti-loop-discipline.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">19 / THE SYSTEM FIXES ITSELF ON PURPOSE</p>
+          <p class="up-body">Every failure the team hits becomes one written rule at the shared layer, so the next run inherits the fix. A rule must name the incident, the failure it prevents, and where it is enforced &mdash; or it is rejected. Read <span class="mono">choreography/self-improving-flywheel.md</span>.</p>
+        </article>
+        <article class="up-card">
+          <p class="up-title">20 / WE GIVE BACK TO WHAT WE USE</p>
+          <p class="up-body">When the team finds a bug or a gap in an open-source project it depends on, it writes the fix or the report and shows it to the owner before anything is sent. Nothing is posted without a human seeing it first. Read <span class="mono">choreography/open-source-contribution.md</span>.</p>
         </article>
       </div>
 

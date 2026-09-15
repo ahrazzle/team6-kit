@@ -139,6 +139,34 @@ to do costs nothing and beats assembling a manual kill list.
 used skill" is not yours, and reasoning from another agent's numbers about your library
 produces confident wrong conclusions. Run it where the question is being asked.
 
+## The Catalog Router Layer (Read On Demand)
+
+The three failure modes above assume the library gets loaded. A large library
+has a fourth lever: **do not load it at all.** Keep the library read-on-demand
+behind a small router that returns compact metadata plus an exact local read
+path, and load a body only when a task actually selects it.
+
+The kit ships that layer in `registry/catalog/`: a declared pack, a generated
+compact catalog, a provenance lock, and a router CLI. Two properties make it
+safe to rely on:
+
+- **The router never returns a body.** A result is metadata and a read path;
+  the body is read on demand. A "search" that returns full skills is the
+  original bloat with extra steps.
+- **Unprovenanced entries fail closed.** An entry with no pack, source,
+  license, or provenance record — or one whose read path no longer resolves —
+  is excluded from results, never guessed at. `skill-catalog.py audit` lists
+  what was excluded and why.
+
+Retrieval has an FTS5 fast path and a deterministic JSON fallback that produce
+the same ranked order for the same catalog, so ranking never depends on
+whether the host's SQLite build has FTS5.
+
+When curating a library that uses this layer, treat the catalog as the
+measurable surface: its provenance records are what make a prune or an
+adoption auditable, and its bounded results are what keep a large library from
+becoming a context load.
+
 ## Authoring Standard (agentskills.io)
 
 Condensed spec, frontmatter constraints, and the writing rules that change output quality:
@@ -200,8 +228,11 @@ The three rules worth memorising:
   before adopting it (candidate → proof on a real task → scoped verdict), the finding that
   decision-rule skills are for targeted single-decision lookups NOT broad refreshes on
   mature work, and the guardrails for authoring your own skill from the source project
-- `scripts/audit-skill-library.py` — measures all three failure modes across a skills tree;
-  run before proposing any change
+- `scripts/audit-skill-library.py` — measures all three failure modes across a
+  skills tree; run before proposing any change
+- `registry/catalog/README.md` — the catalog/router contract in the kit: pack,
+  compact catalog, provenance lock, the FTS5 fast path and JSON fallback, the
+  fail-closed visibility rules, and how to regenerate the catalog and lock
 
 ## Related Skills
 

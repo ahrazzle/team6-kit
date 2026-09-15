@@ -36,6 +36,108 @@ https://askaconsult.com/digital/. The deployment and DNS boundary is managed
 outside this repository.
 
 ---
+## Unreleased
+
+**What:** Docs-only reference notes in eight existing guidance and provenance surfaces: `README.md`, `WHY.md`, `AUDIT/makepad-learnings.md`, `choreography/run-evidence.md`, `templates/skills/creative/html-report-authoring/SKILL.md`, `templates/skills/software-development/project-foundation-scaffold/SKILL.md`, `templates/skills/mlops/evaluation/evaluating-llms-harness/SKILL.md`, `templates/skills/deployment/github-pages-deployment/SKILL.md`. Seven adopted candidates: A1, A2, A3, A4, B2, B3, C5. Three proof-pending candidates: B1, C1, C3.
+
+**Why:** Selected Makepad repositories provide conceptual or historical reference points. The change does not add code, dependencies, runtime support, deployment, or a registry default.
+
+**Evidence:** [VERIFIED - public conceptual source] Each adopted Makepad repository links to its source and committed license. MIT and Apache-2.0 sources are conceptual-reference-only. All-rights-reserved sources are inspiration-only with no excerpt.
+
+**Proof status:** Documentation reference only. No Makepad build, Team6 compatibility, benchmark, or live-site parity is claimed.
+
+**Files:** `README.md`, `WHY.md`, `AUDIT/makepad-learnings.md`, `choreography/run-evidence.md`, `templates/skills/creative/html-report-authoring/SKILL.md`, `templates/skills/software-development/project-foundation-scaffold/SKILL.md`, `templates/skills/mlops/evaluation/evaluating-llms-harness/SKILL.md`, `templates/skills/deployment/github-pages-deployment/SKILL.md`.
+
+Provenance record: [AUDIT/makepad-learnings.md](AUDIT/makepad-learnings.md)
+
+## Unreleased
+
+### What
+add `choreography/session-recall.md`, a vendor-neutral read-only observer contract for session history and persistent-memory recall views. It defines missing-store-to-empty behavior, failure opacity, memory parse agreement, deterministic non-normative subject signals, and a prohibition on history or memory writes. Register the authored-fresh document in `build/generate.py` so generated kits carry it verbatim.
+
+### Why it changed
+give implementations one stable boundary for recall without turning observation into a second memory writer or exposing internal failure details. The change is documentation and generated-surface registration only; it adds no runtime, template, dependency, or site behavior.
+
+### Evidence
+[VERIFIED — public conceptual source] the read-only observer shape and deterministic recall principles are derived from the linked public conceptual source, adopted as principles only. No source code, prompts, anti-slop lists, or source prose is copied. https://github.com/NousResearch/hermes-memory-wiki
+- **What:** add the anti-loop discipline contract. It defines four rules to prevent
+  thinking loops: load once then use, read once then act, plan once then execute,
+  and trust tool output as the receipt. Published artifacts and live pages still
+  require read-back because the deployed state can differ from local state.
+- **Why it changed:** agents can enter thinking loops that add zero new information
+  but consume model budget and time. The previous system had no guard against
+  redundant operations.
+- **Evidence:** [VERIFIED — internal operating record] grounded in the team's shared
+  doctrine and dated session history.
+
+- **What:** add the self-improving flywheel contract (`choreography/self-improving-flywheel.md`).
+- **Why it changed:** without it, each incident is treated as a one-off and the team
+  relearns the same lesson; root causes stay in session history and do not
+  become encoded rules that prevent recurrence.
+- **Evidence:** [VERIFIED — internal operating record]
+
+- **What:** add the open-source contribution contract (`choreography/open-source-contribution.md`).
+- **Why it changed:** without it, patches are written on design preference or
+  assumptions rather than proven defects, risking rejection, wasting time, and
+  potentially exposing internal context.
+- **Evidence:** [VERIFIED — internal operating record]
+
+- **What:** correct the canonical-site labels in the README. The canonical
+  public documentation site for Team6-kit is `team6.askaconsult.com`; the
+  ASKA corporate page at `www.askaconsult.com/team6` is the service listing.
+  The README previously called the corporate page the "official site" and
+  the canonical site the "technical guide".
+- **Why it changed:** the README labels contradicted the v1.2.0 canonical-site
+  decision recorded below, which names `team6.askaconsult.com` as the official
+  public Team6 site. No code, layout, or route behavior changed.
+
+- **What:** document a resume-channel redirect. A finished one-shot worker
+  leaves its session saved on disk, so a follow-up command can run one bounded
+  turn into that same session and exit. A /steer-prefixed follow-up is accepted
+  as instruction text. Follow-ups are scoped read-only unless the turn owns
+  files. Attaching to a session whose worker is still alive is prohibited.
+
+- **Why it changed:** without a defined channel, a correction after a finished
+  run meant starting a new session, which duplicated context, or attaching to a
+  session that might still be running, which risked two live writers on one
+  receipt boundary. One documented command closes the gap.
+
+- **Evidence:** [VERIFIED, internal operating record] mechanism and scope were
+  verified on a completed session on 2026-09-14 (internal QA record,
+  E-PROTEUS-008). The steering block is patched into the subagent-spawning
+  skill as the procedure's home.
+
+- **What:** strengthen the generic kit contracts for independent proofread and
+  fact audit, byte-exact quote capture, enforcement-first evidence, verbatim
+  receipt integrity, and bounded third-party pilots. In
+  `build/freeze-manifest.py`, keep one `INSTANCE_TOKENS` tuple as the single
+  source of truth for the leak checks that exist in that script, and add
+  pre-write guards that refuse to overwrite the frozen artifact when the input
+  is missing or resolves to zero rows.
+
+- **Why it changed:** review machinery, source citations, receipt fields,
+  adoption checks, and the frozen manifest each covered part of the failure
+  class, but the missing boundaries allowed self-audited prose, retyped quotes,
+  prose-only behavioural claims, inferred receipt values, under-scoped pilots,
+  and an empty freeze input overwriting the frozen artifact.
+
+- **Evidence:** [VERIFIED — internal operating record] verified experience and
+  read-only inspection of the live repository. The implementation must preserve
+  generic placeholders and must pass the repository's independent public-surface
+  checks.
+
+- **Proof status:** [PROPOSED / PENDING] documentation and gate specification;
+  independent proofread, fact audit, and release-gate verification required
+  before treating it as release policy.
+
+- **Files:** `templates/skills/creative/external-writing-discipline/SKILL.md`,
+  `templates/skills/software-development/source-verification/SKILL.md`,
+  `templates/skills/research/source-evaluation/SKILL.md`,
+  `templates/contracts/artifact-contract.md.tmpl`,
+  `templates/skills/software-development/external-tool-vetting/SKILL.md`,
+  `build/freeze-manifest.py`, `build/generate.py`, and `CHANGELOG.md`.
+
+---
 
 ## 1.6.0 — Verification, evidence, and release gates (2026-09-14)
 

@@ -2,10 +2,11 @@
 
 Turn one AI agent engine (Hermes, from Nous Research) into a small team of AI agents that work together under clear rules — with a supervisor, a quality checker, and a builder that assembles your own team from ready-made parts.
 
-Official site: https://www.askaconsult.com/team6
-Technical guide: https://team6.askaconsult.com/
+Canonical site: https://team6.askaconsult.com/
+ASKA corporate page: https://www.askaconsult.com/team6
 
-The official site is the canonical public documentation for Team6-kit. The
+The canonical site is the public documentation for Team6-kit. The ASKA
+corporate page is the service listing for the team that uses it. The
 interactive experience is served by the Team6 Frontier Vercel project through
 ASKA's `/team6` route.
 
@@ -14,6 +15,7 @@ ASKA's `/team6` route.
 One AI agent can lose track, skip steps, or claim work is done when it isn't. Team6-kit sets up several agents with separate jobs — planner, builder, checker — and rules so that:
 
 - Work is checked by a different agent than the one that did it.
+- Writing is proofread and fact-audited by a different agent than the one who wrote it.
 - Progress is saved on disk, so a crashed agent can resume where it left off.
 - Long tasks pause for review instead of running silently forever.
 - Knowledge is stored in small files that load only when needed.
@@ -43,6 +45,14 @@ You get a folder with your team's agents, ready to run.
 | `AUDIT/` | Records of where content came from |
 | `WHY.md` | Why the system is designed this way |
 | `CHANGELOG.md` | What changed in each release |
+
+## Anti-loop discipline
+
+The kit includes a contract to prevent thinking loops. It defines four rules:
+load once then use, read once then act, plan once then execute, and trust tool
+output as the receipt. Published artifacts and live pages still require read-back.
+
+Read `choreography/anti-loop-discipline.md` for the full contract.
 
 ## Model rate-limit protection
 
@@ -86,6 +96,23 @@ handoff snapshot written out of it. Read
 `python3 build/check-artifact-contract.py <contract>` (or `--self-test`).
 The pattern is a conceptual adoption; no external orchestration code is
 included or required.
+
+A finished worker stays reachable. When a one-shot run ends, it leaves its
+session saved, so a follow-up can be sent to that same session. The worker
+answers that single turn, then stops again.
+
+This lets you add one correction or ask one question after a task is done
+without starting a new session or losing the thread. Send a follow-up only
+after the worker has fully stopped, and only for a turn that reads state.
+Never attach a second live writer to a session that is still running.
+
+## Session-recall observer
+
+The session-recall observer reads existing session history and persistent memory to produce recall views.
+It is read-only: it does not create a missing store and never writes history or memory.
+A missing store appears as an empty view; a real failure is logged internally and returned as a generic error without a traceback.
+Memory recall uses the same parse agreement as the memory tool, so the view does not reinterpret saved entries.
+Subject signals are deterministic guidance from titles, paths, tool names, slash commands, quoted phrases, and identifiers; read `choreography/session-recall.md` for the full contract.
 
 ## Release gate verification
 
@@ -166,6 +193,25 @@ and establishes rules for token accounting (innermost spans only), cost honesty
 (unknown models remain unknown), run comparison with stable step keys, and
 bounded retention with no secrets or raw prompts by default.
 Read `choreography/run-evidence.md`.
+
+## Makepad references
+
+The kit records selected Makepad work as conceptual references only.
+
+[VERIFIED - public conceptual source]
+- **Core UI runtime** (makepad/makepad, MIT): Declarative design separate from renderer.
+- **Serialization tooling** (makepad/microserde, MIT): Build/runtime design question.
+- **Model-wire reference** (makepad/llama_antirez_deepseek, MIT): Integration pattern only.
+- **Quantization reference** (makepad/llama_nvfp4, MIT): Hardware-specific pattern only.
+- **Historical live-coding** (makepad/makepad_history, MIT): Historical context only.
+- **Static WASM publishing** (makepad/makepad.github.io, Apache-2.0): Artifact checking reference.
+- **Transcript provenance** (makepad/ai_snake, MIT): Metadata shape reference.
+
+No Makepad code, dependency, runtime, model, asset, transcript, or deployment is included or required.
+
+B1 (cross-platform Rust UI), C1 (native GPU backends), and C3 (declarative UI DSL) remain proof-pending follow-up spikes. They do not affect the current build.
+
+Full source table: [AUDIT/makepad-learnings.md](AUDIT/makepad-learnings.md)
 
 ## The main rules
 

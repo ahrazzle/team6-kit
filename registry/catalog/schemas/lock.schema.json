@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "team6-kit/registry/catalog/schemas/lock.schema.json",
+  "title": "Team6-kit catalog lock (provenance record)",
+  "description": "A generated provenance lock. It records one record per catalog entry (pack, source, license, provenance id, read path) plus a digest over the catalog's canonical entry set, so a tampered catalog fails closed.",
+  "type": "object",
+  "required": ["schema_version", "lock_id", "pack", "source", "catalog_digest", "entries"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "lock_id": { "type": "string", "minLength": 1 },
+    "pack": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "catalog_id": { "type": "string", "minLength": 1 },
+    "catalog_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "generated_from": { "type": "string" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["provenance", "id", "pack", "source", "license", "license_source", "read_path"],
+        "additionalProperties": false,
+        "properties": {
+          "provenance": { "type": "string", "minLength": 1 },
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string" },
+          "pack": { "type": "string", "minLength": 1 },
+          "source": { "type": "string", "minLength": 1 },
+          "license": { "type": "string", "minLength": 1 },
+          "license_source": { "type": "string", "enum": ["frontmatter", "pack-default"] },
+          "read_path": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

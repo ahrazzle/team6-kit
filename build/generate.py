@@ -58,6 +58,9 @@ REVIEW_FROZEN = os.path.join(HERE, "REVIEW.frozen.md")
 # never placeholder-substituted. Declaring a path here is a provenance act:
 # a directory is walked and every file copied; a file is copied as-is.
 AUTHORED_FRESH = [
+    "choreography/anti-loop-discipline.md",
+    "choreography/open-source-contribution.md",
+    "choreography/self-improving-flywheel.md",
     "choreography/side-effect-cost-preflight.md",
     "choreography/safe-run-packet.md",
     "build/preflight",
@@ -267,7 +270,17 @@ def main():
     review_cmd = [sys.executable, os.path.join(HERE, "review-gate.py")]
     if params_path and os.path.isfile(params_path):
         review_cmd += ["--params", params_path]
-    for cmd in (sweep_cmd, review_cmd):
+    # freeze-manifest.py runs only on the LIVE-manifest path: it rebuilds
+    # build/manifest.frozen.tsv from build/manifest.tsv and runs the leak
+    # guard over it. A fresh clone has no live manifest (use_frozen), so the
+    # committed frozen artifact is used as-is and this gate is skipped — the
+    # frozen fallback path stays untouched. A non-zero result is a hard stop
+    # below: assembly never continues on a failed freeze.
+    preconditions = [sweep_cmd, review_cmd]
+    if not use_frozen:
+        preconditions.append(
+            [sys.executable, os.path.join(HERE, "freeze-manifest.py")])
+    for cmd in preconditions:
         r = subprocess.run(cmd, capture_output=True, text=True)
         print(r.stdout)
         if r.returncode != 0:
@@ -368,6 +381,8 @@ def main():
          "contracts/examples/artifact-contract.valid.yaml", False),
         ("examples/artifact-contract.invalid.yaml",
          "contracts/examples/artifact-contract.invalid.yaml", False),
+        ("choreography/session-recall.md",
+         "choreography/session-recall.md", False),
     ]
     for src_rel, dst_rel, do_sub in GENERIC_SHIP:
         src = os.path.join(ROOT, src_rel)
