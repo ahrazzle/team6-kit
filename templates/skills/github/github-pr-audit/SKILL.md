@@ -1,7 +1,7 @@
 ---
 name: github-pr-audit
 description: "Use when auditing a GitHub PR or issue before merge."
-version: 1.2.0
+version: 1.3.0
 author: Team6
 license: MIT
 platforms: [linux, macos, windows]
@@ -104,6 +104,178 @@ With no branch protection and `admin`, merge it yourself (`gh pr merge N --repo 
 - For issues: post scoping nits (e.g. "proposed `sessions list --model` collides
   with the existing `sessions list` command — extend it instead") as
   `gh issue comment`.
+
+## Cross-artifact and public-claim gates (PQA-CLM / PQA-DOL / PQA-STAND)
+
+Three gate contracts cover every public artifact — issue body, PR body, comment,
+review. They sit on top of the evidence register in section 4a: that register
+proves the internal audit; these three decide what may be published. A red or
+missing claim register, pair manifest, standalone scan, or second-member
+proofread blocks the lane. The lane inputs these gates read are declared in the
+handoff brief; the field list is at the end of this section.
+
+| gate | minimum pass condition | required evidence |
+|---|---|---|
+| **PQA-CLM** evidence-linked public claims | every factual claim is linked, or explicitly scoped as observed in testing; `known` / `known defect` carries a claim-specific public issue/PR URL | complete claim register, boundary, scope wording, public ref where required |
+| **PQA-DOL** cross-artifact division | the primary artifact is complete; the secondary carries only new information, a pointer, the ask, and a defect absent from the primary; both deletion tests pass | pair manifest, overlap result, two deletion-test results |
+| **PQA-STAND** standalone public prose | issue/PR bodies never address a person; comments are standalone except for a recorded, required one-line handle; no second-person address, salutation, or addressed imperative | surface policy, requirement ref, scan hits, handle-removal result |
+
+### PQA-CLM — evidence-linked public claim gate
+
+**Checklist item.** One claim-register row per factual sentence, in every public
+artifact. Classify each row as linked fact, scoped observation, proposal or
+question, or defect/status claim. A factual assertion hidden in a heading, a
+bullet, a closing offer, a quoted log, or a follow-up sentence is still a claim.
+
+**Pass/fail rule.** PASS only when every factual claim has either:
+
+1. an inline or adjacent evidence link or register entry that names the exact
+   proof and its boundary; or
+2. scoped wording — `observed in our testing`, `in the local prototype`, `in
+   this run`, `not verified beyond <scope>` — plus a register entry naming the
+   internal evidence with its environment and measurement time.
+
+`known`, `known defect`, `established`, and equivalent certainty FAIL unless the
+same claim carries a verified public GitHub issue or PR link that tracks that
+exact fact or defect. A private receipt, local path, private log, or private
+evidence register never satisfies that link. A cited public issue/PR URL must
+resolve to an existing public item and be claim-specific: a future URL for the
+artifact being drafted is not evidence, and a link to an unrelated tracking item
+does not pass. An unfiled observation is written as an observation, never as a
+known defect.
+
+**Required evidence fields.** `claim_id`; `surface`; `artifact_path_or_url`;
+`section_or_line`; `claim_text`; `claim_class`; `evidence_ref`;
+`evidence_boundary` (base/head, commit or composition, environment, measurement
+time); `scope_wording` (required for an observation); `public_issue_or_pr_ref`
+(required for known/defect certainty); `status`.
+
+**Lane prompt.** `Public claim register: list every factual claim by artifact and
+line. For each row provide claim_id, claim class, exact evidence_ref, boundary,
+and either a public issue/PR URL or the scoped observation wording. Mark any
+unfiled observation as observed-in-testing; do not call it known or a known
+defect. Private receipts do not satisfy public_issue_or_pr_ref.`
+
+### PQA-DOL — cross-artifact division-of-labor gate
+
+**Checklist item.** For each pair of public artifacts, declare the primary
+artifact, the secondary artifact, the job of each, and the information units the
+secondary may carry. Test the pair, not each file in isolation.
+
+**Pass/fail rule.** PASS only when the primary carries the complete proposal or
+story and the secondary repeats no primary claim, even when the repetition is
+paraphrased or fact-correct. The secondary may contain only:
+
+- new information absent from the primary, with its own claim/evidence row;
+- a pointer to the primary;
+- the direct ask; and
+- a defect only when the primary is missing that defect.
+
+Run both deletion tests:
+
+- Delete the secondary. The primary must still carry the proposal, its necessary
+  facts, and the decision context.
+- Delete the primary. The secondary must not tell the whole story. If it does,
+  FAIL the pair as self-contained duplication.
+
+A repeated number, mechanism, question list, follow-up, or defect fails the
+secondary. Fact correctness, clean overlap, or a pointer somewhere in the
+repeated prose does not rescue it.
+
+**Required evidence fields.** `pair_id`; `primary_surface`; `secondary_surface`;
+`primary_job`; `secondary_job`; `primary_claim_ids`; `secondary_new_claim_ids`;
+`secondary_pointer`; `ask`; `secondary_defect_claim_ids`;
+`defect_absent_from_primary` (yes/no with line evidence);
+`delete_secondary_result`; `delete_primary_result`; `overlap_result`.
+
+**Lane prompt.** `Artifact pair contract: name primary and secondary surfaces and
+their distinct jobs. List the primary claim IDs. List only
+secondary_new_claim_ids, the pointer, the direct ask, and defects absent from the
+primary. Record the two deletion-test results. If the second artifact still tells
+the whole story after the primary is deleted, mark FAIL.`
+
+### PQA-STAND — standalone public-prose gate
+
+**Checklist item.** Fix the exact surface class before the prose gate: issue
+body, PR body, comment, review, or other public reply. Scan all natural-language
+prose, including headings and asks, not only the first paragraph.
+
+**Exact surface rule.**
+
+- **Issue body** and **PR body**: standalone unconditionally. No `@handle`, no
+  second-person `you`/`your`, no `Hi`/`Dear` salutation, no single-person
+  imperative such as `please ...` or `point us ...`, and no claim whose meaning
+  depends on a named reader.
+- **Comment or review**: standalone by default with the same bans. One separate
+  first-line `@handle` is allowed only when the lane brief records
+  `comment_addressee_required: yes` and says why. The substantive text still
+  carries no second-person address, salutation, or addressed imperative. Remove
+  the handle and re-read the claim and the ask: both must remain intelligible.
+  Any wording beyond that one handle needs its own recorded requirement and a
+  second-member review.
+
+**Pass/fail rule.** PASS when the applicable surface rule holds and the
+removal-of-handle test passes. FAIL when an issue or PR body addresses a person,
+when any surface carries a personal salutation or addressed imperative, when a
+comment relies on the named reader, or when a comment uses the handle exception
+without the recorded lane requirement.
+
+**Required evidence fields.** `surface_class`; `standalone_policy`;
+`addressee_required` (yes/no); `requirement_ref`; `prose_scan_result`;
+`second_person_hits`; `salutation_hits`; `imperative_hits`;
+`named_reader_dependency`; `handle_removal_result`; `proofreader`.
+
+**Lane prompt.** `Public surface prose: declare surface_class. For issue_body or
+pr_body set addressee_required=no. For a comment/review set
+comment_addressee_required=yes only with the requirement reference; otherwise no.
+Record prose-scan hits and the result after removing any allowed @handle. State
+that the public text is interpretable without a named reader.`
+
+### Historical fixture matrix (escape corpus)
+
+Six read-only fixtures keep the three escape classes covered. Run each against
+its gate and record the observed result in the QA receipt. They are regression
+fixtures, not claims about any live artifact; the fixture files live outside this
+repository, so this matrix carries the IDs and the expected verdicts only.
+
+| fixture ID | gate | expected | why |
+|---|---|---|---|
+| `F-CLM-114364-known` | PQA-CLM | FAIL | a `known` defect claim with no claim-specific public issue/PR URL |
+| `F-CLM-114364-unfiled-hindsight` | PQA-CLM | FAIL in certainty form; PASS after scoped observed-in-testing wording or a verified public tracker link | an unfiled observation written as a real provider defect |
+| `F-DOL-114364-redundant-pair` | PQA-DOL | FAIL | the secondary repeats the primary's framing, mechanism, numbers, defect, questions, and follow-ups, and the overlap is fact-correct |
+| `F-DOL-114364-trim-pass-shape` | PQA-DOL | PASS | the primary already carries the defect; the secondary keeps only the pointer, the ask, and new material |
+| `F-STAND-114364-addressed` | PQA-STAND | FAIL | second-person substantive wording: as an issue body it fails unconditionally, as a comment only a recorded one-line handle may remain |
+| `F-STAND-114364-body-pass` | PQA-STAND | PASS | a neutral standalone body; the new gate must not reject it |
+
+### Acceptance tests
+
+| test | requirement |
+|---|---|
+| AT-1 | `F-CLM-114364-known` fails PQA-CLM because `known provider defect` has no claim-specific public issue/PR URL. |
+| AT-2 | `F-CLM-114364-unfiled-hindsight` fails in certainty form and passes only after scoped observed-in-testing wording or a verified public tracker link. |
+| AT-3 | `F-DOL-114364-redundant-pair` fails PQA-DOL despite clean fact overlap. |
+| AT-4 | The trimmed-comment shape in `F-DOL-114364-trim-pass-shape` passes PQA-DOL when the body already carries the defect and the comment contains only pointer, ask, and new material. |
+| AT-5 | `F-STAND-114364-addressed` fails when treated as an issue body; as a comment, only an explicitly required one-line handle may remain, and its second-person substantive wording fails. |
+| AT-6 | `F-STAND-114364-body-pass` passes PQA-STAND and stays neutral. |
+| AT-8 | A claim with an internal receipt but no scope wording and no public issue/PR ref fails. |
+| AT-9 | A comment that repeats a body number or mechanism fails PQA-DOL even when its evidence row points at the same receipt. |
+| AT-10 | Removing an allowed comment handle leaves the claim and the ask interpretable; otherwise PQA-STAND fails. |
+| AT-11 | Each public artifact receives a second-member proofread/fact-audit record before the lane stop condition can pass. |
+
+AT-7 is a lane-admission requirement, not a checklist rule: it lives in the
+handoff brief fields below.
+
+### Lane fields these gates read
+
+The lane brief supplies the inputs; the canonical field definitions live in the
+handoff brief template (`choreography/orchestration.md`, section 11). A brief
+that omits any of them is incomplete and cannot enter public-writing QA:
+`public_surfaces`; `claim_register`; `artifact_pair`; `standalone_policy`;
+`qa_fixture_set`; `handoff_stop_condition` — the last meaning all three gates
+PASS with the second-member proofread and fact audit recorded. A lane producing
+no public text records `public_surface: none`. This checklist names the inputs
+and never redefines them; the lane template names them and never restates these
+gate conditions.
 
 ## Guarded review/repair (proposal-only, approval-gated)
 
