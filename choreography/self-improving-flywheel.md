@@ -110,6 +110,36 @@ proposal. It does not enter the shared layer.
 
 `[VERIFIED — internal operating record, 2026-09-15]`
 
+### 4. Stale-tree hazard
+
+- **Incident:** A stale branch was used as a PR base. An agent created a PR
+  branch from a local branch that was 14 commits behind origin/main. The diff
+  would have deleted content that had already shipped on main.
+- **Root cause:** No rule required verifying branch freshness before creating a
+  PR branch.
+- **Smallest rule:** Before creating a contribution branch, fetch the target
+  repository's default branch and create the branch from the fetched head, not
+  from a local branch that may be stale.
+- **Canonical home:** The shared contribution contract (choreography/open-source-contribution.md).
+- **Verification:** A different member checks that the PR base commit matches
+  the fetched head of the target default branch.
+- **Re-test:** The next contribution PR must show a base commit that is at or
+  ahead of the target repository's default branch head at the time of branch
+  creation.
+
+`[VERIFIED — internal operating record, 2026-09-15]`
+
+### 5. Mirror forks
+
+- **Incident:** No dated event is on record for this rule. State the hazard until one is: with mirror forks, a change to one mirror does not propagate to the others.
+- **Root cause:** No rule required that a change reach every mirror with consistent author identity and file set.
+- **Smallest rule:** When one repository has mirror forks, one change must reach every mirror. Extract the diff once and apply it to each mirror. Rebuild each commit with its own file set and its own author identity. Confirm the rebuilt trees are identical across mirrors.
+- **Canonical home:** This section is the only home today. The shared choreography contract (choreography/orchestration.md) carries no mirror-forks rule, so the rule is not yet canonical.
+- **Verification:** A different member checks that each mirror has the same tree and the commit author identity matches the mirror's convention.
+- **Re-test:** The next change applied to mirrors confirms identical trees across all mirrors.
+
+`[VERIFIED — internal operating record, 2026-09-15]`
+
 ## Operating record
 
 The flywheel is complete only when the rule is canonical, independently

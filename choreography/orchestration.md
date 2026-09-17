@@ -33,13 +33,13 @@ sequence doubles as the phase pipeline.
 
 | # | Role (instance) | Lane | Explicitly NOT |
 |---|---|---|---|
-| 0 | **Director** (Lugia) | Frame: ingest, delegate, decide | Hands-on coding |
+| 0 | **Director** | Frame: ingest, delegate, decide | Hands-on coding |
 | 1 | **Researcher** (RESEARCHER-001) | Evidence, prior art, constraint mapping | Architecture decisions |
-| 2 | **Architect** (Azaraki) | Analysis, structure, planning (thinking only) | Writing code |
-| 3 | **UX** (Shayba) | Human experience, interface design | Backend logic |
-| 4 | **Coder** (KodeKoot) | Software development (sole developer) | Strategy prose |
-| 5 | **QA** (Halakukhan) | Adversarial verification, scope-cut, loop-back | Feature expansion |
-| 6 | **Director** (Lugia) | Integrate, summarize, report | Hands-on coding |
+| 2 | **Architect** | Analysis, structure, planning (thinking only) | Writing code |
+| 3 | **UX** | Human experience, interface design | Backend logic |
+| 4 | **Coder** | Software development (sole developer) | Strategy prose |
+| 5 | **QA** | Adversarial verification, scope-cut, loop-back | Feature expansion |
+| 6 | **Director** | Integrate, summarize, report | Hands-on coding |
 
 **Invariants that make the sequence correct:**
 
@@ -48,7 +48,7 @@ sequence doubles as the phase pipeline.
 - **Scope-cutting and feature-extension-prevention belong to QA** — they are
   not a separate early phase and not the coder's job.
 - **UX is a single design role**, not two slots. Ideation, human-experience,
-  and interface design all live in the one UX lane (Shayba).
+  and interface design all live in the one UX lane.
 - Role ownership never changes. Post-QA dynamic delegation executes *within*
   roles only; it never blurs a specialist into a generalist.
 
@@ -57,7 +57,7 @@ twice and QA/Scoper as a distinct early stage): dynamic-over-specialization
 broke down — the first agent to receive instruction executed indiscriminately,
 reducing specialists to reviewers, eroding the coder's dev role, and letting
 the architect drift into code. Un-gated advancement also let defects compound.
-The verified operating records (Eldunari `lugia` doctrine, 2026-08-31 onward)
+The verified operating records (team choreography, 2026-08-31 onward)
 restore strict lanes and gate every stage. See `governance.md` §2.
 
 ## 3. Phase-gated pipeline (Definition of Done per stage)
@@ -362,5 +362,26 @@ Reference patterns for turn-dense orchestration, cost-bounded routing, and conte
 
 - **Additive config only:** Reference patterns extend existing choreography without renaming surfaces
 - **No provider locks:** All economic rules apply regardless of underlying model
-- **Fallback semantics:** When provider-specific features unavailable, use generic equivalents (e.g., turn counters instead of native cache APIs)
+- **Fallback semantics:** When provider-specific features are unavailable, use generic equivalents (e.g., turn counters instead of native cache APIs)
 
+
+
+
+## 18. Commit serialization boundary
+
+Stage and commit must be serialized for a declared file set. When multiple
+agents share a worktree, only one agent may stage and commit a declared file set
+at a time. The lock boundary is the declared file set, not the entire repository.
+After staging, verify the commit identity (author, email) and file scope (only
+declared files) before releasing the lock. This rule stems from concurrent
+writers in one shared worktree contaminating commit attribution because the
+stage-and-commit step was not serialized. Serialize stage and commit for a
+declared file set under a single lock. Verify identity and file scope after
+commit. This is enforced in the shared orchestration contract, where repository
+write boundaries are enforced for every role.
+
+## 19. Peer-team cross-review
+
+A second team running the same roles on different models may review a staged PR. The handoff between the two teams is a written message carried by the operator, because no shared channel exists. The message states the PR URL, the exact head SHA, what to verify, the condition that counts as PASS, and what to return on FAIL.
+
+A peer verdict is advisory unless that team holds merge authority. No team may report a peer's result it did not receive.

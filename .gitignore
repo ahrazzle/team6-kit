@@ -12,3 +12,4 @@ kits/
 identifiers.yaml
 __pycache__/
 *.pyc
+artifacts/

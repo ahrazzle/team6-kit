@@ -317,6 +317,27 @@ For work performed with an AI coding agent, use the compact
 testing, security checks, scope control, and evidence requirements without
 replacing the Team6 ownership and QA gates.
 
+## What's new in this release (1.8.0)
+
+### What
+
+Add four choreography rules, one worked example, and one session-start practice. The README, CHANGELOG, and site entries carry them:
+
+1. **Fresh-branch requirement** (choreography/open-source-contribution.md). Every contribution branch must start from a fresh fetch of the target repository's default branch.
+2. **Commit serialization boundary** (choreography/orchestration.md). Stage and commit must be serialized for one declared file set.
+3. **Stale-tree hazard worked example** (choreography/self-improving-flywheel.md). This example records the same incident as item 1.
+4. **Session-start router** (templates/personas/SOUL.md.tmpl). At session start, read the orchestration contract once and apply it before the first dispatch.
+5. **Mirror forks rule** (choreography/self-improving-flywheel.md). When one repository has mirror forks, one change must reach every mirror with the same author identity and file set.
+6. **Peer-team cross-review** (choreography/orchestration.md). A second team may review a staged PR. The operator carries a written handoff message.
+
+### Why
+
+During an orchestration test, a stale branch 14 commits behind the main branch was used as a PR base. That base would have deleted content already shipped on main.
+
+### Evidence
+
+[VERIFIED — internal operating record] Grounded in the team's shared doctrine and dated session history.
+
 ## What's new in this release (1.7.0)
 
 This release adds two documentation-first contracts with dependency-free local

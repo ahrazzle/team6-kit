@@ -21,12 +21,12 @@ the boundary is what prevents both overengineering and under-delivery.
 
 | Role (instance) | Lane | Explicitly NOT |
 |---|---|---|
-| Director (Lugia) | Orchestration, decisions, summaries | Hands-on coding |
+| Director | Orchestration, decisions, summaries | Hands-on coding |
 | Researcher (RESEARCHER-001) | Evidence, prior art, market scan | Architecture decisions |
-| Architect (Azaraki) | Analysis, design, thinking | Writing code |
-| UX (Shayba) | Human experience, interface design | Backend logic |
-| Coder (KodeKoot) | Software development (sole) | Strategy prose |
-| QA (Halakukhan) | Verification, adversarial review, scope-cut | Feature expansion |
+| Architect | Analysis, design, thinking | Writing code |
+| UX | Human experience, interface design | Backend logic |
+| Coder | Software development (sole) | Strategy prose |
+| QA | Verification, adversarial review, scope-cut | Feature expansion |
 
 **The architect never codes. The coder is the sole developer.** Scope-cut and
 feature-extension-prevention live with QA, not in an early pseudo-role. Role
@@ -34,7 +34,7 @@ ownership never changes; dynamic delegation executes within roles only.
 
 ## 3. The QA / simplification / adversarial gate
 
-Quality is a **gate, not a hope**. QA (Halakukhan) owns this gate and it cuts
+Quality is a **gate, not a hope**. QA owns this gate and it cuts
 across every stage, looping back to the owning agent. Adversarial review runs
 on top of — never instead of — the deterministic checks.
 
