@@ -18,6 +18,8 @@ ORDER (as documented in choreography/release-gates.md):
      catalogue validators, each with both fixtures)
   9. fresh-clone test (generate.py fork-dryrun check)
   10. review-repair checker self-test + fixture corpus
+  11. check-codebase-map.py self-test — snapshot contract validator
+     (choreography/codebase-map.md)
 
 Exit: 0 = all gates pass; 1 = any gate failed.
 """
@@ -135,6 +137,13 @@ def main():
                   [sys.executable, review_repair, "--selftest"]))
     gates.append(("review-repair fixtures",
                   [sys.executable, review_repair, "--fixtures"]))
+
+    # 11. codebase-map validator self-test — the snapshot contract validator
+    #     (choreography/codebase-map.md). Covers the valid/invalid examples,
+    #     the no-argument usage exit, and the unreadable-input exit.
+    gates.append(("check-codebase-map self-test",
+                  [sys.executable, os.path.join(HERE, "check-codebase-map.py"),
+                   "--self-test"]))
 
     # Run all gates
     results = []

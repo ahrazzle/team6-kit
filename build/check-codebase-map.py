@@ -17,9 +17,18 @@ USAGE
   python3 build/check-codebase-map.py <snapshot.json>   # validate a snapshot
   python3 build/check-codebase-map.py --self-test       # the repo's own cases
 
-EXIT  0 = valid (all self-test cases pass)   1 = invalid (violations listed)
+EXIT  0 = valid snapshot (all self-test cases pass)
+      1 = invalid snapshot (violations listed)
+      2 = usage error (no snapshot path given)
+      3 = unreadable input (path missing or not readable)
+
+An unreadable input is reported under a distinct `UNREADABLE` banner and never
+as an invalid snapshot: 3 means the input could not be read, so its contents are
+unknown; 1 means it was read and rejected by the contract.
 """
 
+import contextlib
+import io
 import json
 import os
 import sys
@@ -29,6 +38,18 @@ ROOT = os.path.dirname(HERE)
 
 CONTRACT_TOKEN = "team6-codebase-map"
 CONTRACT_VERSION = 1
+
+# Exit codes: callers distinguish operator misuse (2) and unavailable input (3)
+# from a snapshot the contract actually rejected (1).
+EXIT_VALID = 0
+EXIT_INVALID = 1
+EXIT_USAGE = 2
+EXIT_UNREADABLE = 3
+
+# check_file outcomes.
+STATUS_VALID = "valid"
+STATUS_INVALID = "invalid"
+STATUS_UNREADABLE = "unreadable"
 
 SOURCE_KIND_ENUM = ("synthetic", "repository-snapshot")
 MEASURE_ENUM = ("bytes", "lines")
@@ -148,9 +169,9 @@ def validate(doc):
                                 f"relative path")
     elif inc is not None and inc != "":
         v.append("TYPE: 'included_roots' must be a list")
+    # NOTE: the wrong-type case for 'excluded_patterns' is reported once, in the
+    # required-field pass above. Re-checking it here duplicated the message.
     exc = doc.get("excluded_patterns")
-    if exc is not None and exc != "" and not isinstance(exc, list):
-        v.append("TYPE: 'excluded_patterns' must be a list")
     # F2: check each excluded pattern is relative/short
     if isinstance(exc, list):
         for i, p in enumerate(exc):
@@ -269,16 +290,23 @@ def _walk(entity, where, depth, v, seen):
 
 
 def check_file(path):
+    """Return (status, violations, doc).
+
+    Only a readable snapshot can be STATUS_INVALID: an unreadable path yields
+    STATUS_UNREADABLE with a READ violation, while a file that is readable but
+    not valid JSON (or that breaks a contract rule) stays STATUS_INVALID.
+    """
     try:
         with open(path, encoding="utf-8") as fh:
             text = fh.read()
     except OSError as exc:
-        return [f"READ: {exc}"], None
+        return STATUS_UNREADABLE, [f"READ: {exc}"], None
     try:
         doc = json.loads(text)
     except json.JSONDecodeError as exc:
-        return [f"PARSE: invalid JSON ({exc})"], None
-    return validate(doc), doc
+        return STATUS_INVALID, [f"PARSE: invalid JSON ({exc})"], None
+    violations = validate(doc)
+    return (STATUS_VALID if not violations else STATUS_INVALID), violations, doc
 
 
 def counts(doc):
@@ -439,6 +467,50 @@ def self_test():
     cases.append(("unknown top-level field fails",
                   any("UNKNOWN FIELD" in x for x in v), v))
 
+    # no-argument usage: prints the usage text and exits 2
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = main([])
+    usage = buf.getvalue()
+    codes_documented = all(
+        (f"EXIT  {n} =" in usage) or (f"\n      {n} =" in usage)
+        for n in (EXIT_VALID, EXIT_INVALID, EXIT_USAGE, EXIT_UNREADABLE))
+    cases.append(("no-argument usage exits 2 and documents all four codes",
+                  rc == EXIT_USAGE and codes_documented,
+                  [f"rc={rc}", f"usage documents codes: {codes_documented}"]))
+
+    # unreadable input: a path that cannot be read exits 3, not 1
+    missing = os.path.join(ROOT, "build", "self-test-missing", "snapshot.json")
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = main([missing])
+    out = buf.getvalue()
+    cases.append(("unreadable input exits 3 under the UNREADABLE banner",
+                  rc == EXIT_UNREADABLE and "UNREADABLE — " in out
+                  and "INVALID" not in out, [f"rc={rc}", out.strip()]))
+
+    status, uv, undoc = check_file(missing)
+    cases.append(("unreadable input reports the unreadable status",
+                  status == STATUS_UNREADABLE and bool(uv) and undoc is None, uv))
+
+    # wrong-type excluded_patterns: the message is emitted exactly once
+    d = json.loads(_sub(VALID_SNAPSHOT, '"excluded_patterns": []',
+                        '"excluded_patterns": "oops"'))
+    v = validate(d)
+    dupes = [x for x in v if "excluded_patterns" in x and "must be a list" in x]
+    cases.append(("wrong-type excluded_patterns reported exactly once",
+                  len(dupes) == 1, [f"count={len(dupes)}"] + v))
+
+    # exit-code mapping on the repo fixtures: 0 valid, 1 invalid
+    ex = os.path.join(ROOT, "examples")
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc_valid = main([os.path.join(ex, "codebase-map.valid.json")])
+        rc_invalid = main([os.path.join(ex, "codebase-map.invalid.json")])
+    cases.append(("repo fixtures map to exit 0 (valid) and 1 (invalid)",
+                  rc_valid == EXIT_VALID and rc_invalid == EXIT_INVALID,
+                  [f"valid rc={rc_valid}", f"invalid rc={rc_invalid}"]))
+
     passed = failed = 0
     for name, ok, detail in cases:
         mark = "PASS" if ok else "FAIL"
@@ -450,7 +522,6 @@ def self_test():
                 print(f"         got: {d}")
 
     # repo fixtures
-    ex = os.path.join(ROOT, "examples")
     for fname, want_ok in (("codebase-map.valid.json", True),
                            ("codebase-map.invalid.json", False)):
         p = os.path.join(ex, fname)
@@ -458,7 +529,7 @@ def self_test():
             print(f"  [FAIL] repo example {fname} missing")
             failed += 1
             continue
-        v, _ = check_file(p)
+        _, v, _ = check_file(p)
         ok = (not v) if want_ok else bool(v)
         mark = "PASS" if ok else "FAIL"
         passed += bool(ok)
@@ -473,12 +544,18 @@ def self_test():
     return 0 if failed == 0 else 1
 
 
-def report(path, violations, doc):
+def report(path, status, violations, doc):
+    if status == STATUS_UNREADABLE:
+        print(f"UNREADABLE — {path}")
+        for x in violations:
+            print(f"  x {x}")
+        print("  input was not readable; no snapshot was validated")
+        return EXIT_UNREADABLE
     if violations:
         print(f"INVALID — {path}")
         for x in violations:
             print(f"  x {x}")
-        return 1
+        return EXIT_INVALID
     nodes, leaves = counts(doc)
     print(f"VALID — {path}")
     print(f"  contract: {doc.get('contract')}")
@@ -488,20 +565,20 @@ def report(path, violations, doc):
     print(f"  sort: {doc.get('sort')}")
     print(f"  algorithm: {(doc.get('rendering') or {}).get('algorithm')}")
     print(f"  nodes: {nodes}  leaves: {leaves}")
-    return 0
+    return EXIT_VALID
 
 
-def main():
-    args = sys.argv[1:]
+def main(argv=None):
+    args = list(sys.argv[1:] if argv is None else argv)
     if "--self-test" in args:
         print("check-codebase-map — self-test")
         return self_test()
     if not args or args[0].startswith("-"):
         print((__doc__ or "").strip())
-        return 2
+        return EXIT_USAGE
     path = args[0]
-    violations, doc = check_file(path)
-    return report(path, violations, doc)
+    status, violations, doc = check_file(path)
+    return report(path, status, violations, doc)
 
 
 if __name__ == "__main__":
