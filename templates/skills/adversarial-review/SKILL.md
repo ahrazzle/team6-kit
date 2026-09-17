@@ -123,6 +123,8 @@ When the output is revised, do NOT re-read for general quality. Instead:
 2. **Check for introduced errors**: revision creates new errors — duplicate headings, broken references, orphaned captions. These are more common than uncaught original errors.
 3. **Check label consistency**: a section called "Five Claims" that lists seven claims is a credibility killer. A heading that appears twice signals sloppy editing.
 4. **Check the counterexamples**: if you raised a counterexample in your stress pass and the author added a response, read the response carefully. A weak response is worse than no response.
+5. **Input sovereignty proof**: for overlay/window/supervisor work, verify (a) no forbidden-API patterns in the diff (grep the canonical list) and (b) pointer/keyboard unaffected by behavioral probe or documented LIMIT. If (b) is impossible, record as LIMIT and accept static proof only.
+6. **Polling loop discipline**: verify hysteresis AND cooldown on any timer-driven visible change; an input held at boundary must produce at most one state flip.
 
 ## Pitfalls
 
