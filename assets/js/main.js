@@ -1,5 +1,5 @@
 /* =========================================================================
-   Team6-kit official site — main.js
+   Proteus-kit official site — main.js
    Progressive enhancement only. Content never depends on this script.
    Boot guard: page is already complete without JS; this only adds motion
    and a convenience copy button. Spec: 02-spec §6, 03-spec §4.
