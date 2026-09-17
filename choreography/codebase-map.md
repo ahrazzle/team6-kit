@@ -126,7 +126,20 @@ Each entity is an object with a `kind` of `Node` or `Leaf`.
 10. Source-bounded fields (`label`, `provenance.ref`, `excluded_patterns[]`,
     `generated_at`) must be short and relative, not absolute instance paths.
 
-Exit `0` = valid, `1` = invalid (each violation printed with its field path).
+Exit codes (each violation is printed with its field path):
+
+- `0` — **valid.** The snapshot satisfies every rule above.
+- `1` — **invalid.** The snapshot was read and rejected; fix it and re-run.
+- `2` — **usage.** No snapshot path was given, or the first argument was an
+  option. The usage text is printed, and it documents all four codes.
+- `3` — **unreadable.** The path could not be read — missing, unreadable, or not
+  a file. The input is printed under a distinct `UNREADABLE` banner.
+
+An unreadable input is not an invalid snapshot: `3` means the checker never read
+the input, so its contents are unknown rather than wrong. A file that is
+readable but not valid JSON stays `1` (a `PARSE` violation), as does a readable
+snapshot that breaks any rule above (an `INVALID` banner). Each violation is
+reported once.
 
 ## Using it
 
