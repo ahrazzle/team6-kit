@@ -315,7 +315,7 @@ repository, so this matrix carries the IDs and the expected verdicts only.
 | `F-STAND-114364-addressed` | PQA-STAND | FAIL | second-person substantive wording: as an issue body it fails unconditionally, as a comment only a recorded one-line handle may remain |
 | `F-STAND-114364-body-pass` | PQA-STAND | PASS | a neutral standalone body; the new gate must not reject it |
 | `F-SEM-114364-flatlist-shape` | PQA-SEM | FAIL | verdict cites only the flat list with duplicate keys `api_key`, `api_url` and no per-mode evaluation or mechanism citation |
-| `F-SEM-114364-arm-evaluated` | PQA-SEM | PASS | verdict shows per-mode effective keys unique (cloud: 32/32, local_external: 32/32, local_embedded: 36/36), mechanism `config_schema.py:414-459` cited, independent agent reproduction recorded, verdict reclassified as non-defect |
+| `F-SEM-114364-arm-evaluated` | PQA-SEM | PASS | verdict shows per-mode effective keys unique (cloud: 32/32, local_external: 32/32, local_embedded: 36/36), mechanism `__init__.py:414-459` cited, independent agent reproduction recorded, verdict reclassified as non-defect |
 
 ### Acceptance tests
 
