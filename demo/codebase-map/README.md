@@ -78,8 +78,8 @@ Serve the root, then capture the post-JavaScript DOM with headless Chrome:
 python3 -m http.server 8899 &
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
   --headless=new --disable-gpu --user-data-dir=/tmp/cm-profile \
-  --virtual-time-budget=6000 --dump-dom \
-  "http://127.0.0.1:8899/demo/codebase-map/index.html"
+  --enable-logging=stderr --virtual-time-budget=6000 --dump-dom \
+  "http://127.0.0.1:8899/demo/codebase-map/index.html?selftest=1"
 ```
 
 Expected read-back (measured):
@@ -91,8 +91,49 @@ Expected read-back (measured):
   8 text labels; two renders at the same viewport are byte-identical.
 - `#path=app/core` → `rect_count 3`, `focus_path "app/core"`.
 - `#q=routes.py` → `match_count 1`, `selected_path "app/web/routes.py"`.
-- Console: no uncaught errors. Server log shows only same-origin requests —
-  **external-request count 0**.
+- Console: no uncaught errors — verified by the headless command above with
+  `--enable-logging=stderr`; stderr from the `?selftest=1` run shows no
+  `Uncaught`/`ERROR:CONSOLE` lines (observed 2026-09-17: 0 matches for either
+  pattern in the run's stderr; the `SELF-TEST` block lists 12 `PASS` lines
+  and 0 `FAIL`). `--dump-dom` alone cannot surface console messages, so the
+  logging flag owns this claim. Provenance: the capture was taken on the page
+  at PR #55's head (`09045c2`), which adds the inline script's sha256 to the
+  page CSP — before #55 lands, this same command reports a CSP-violation
+  notice instead and `SELF-TEST` stays empty.
+- Egress: external-request count 0 — verified by a second-origin probe: the
+  viewer served on `:8899` plus a probe static server on `:8898` that
+  received zero requests across a normal session and an absolute/scheme
+  `?fixture=` refusal run (observed 2026-09-17: the `:8898` log holds only
+  its `Serving HTTP on 127.0.0.1 port 8898` banner — zero requests; the
+  `:8899` log holds only same-origin GETs of the document and
+  `examples/codebase-map.valid.json`, and the two refusal loads fetched no
+  `probe.json` — same session and page as the Console bullet above). Residual
+  limit: this is server-log plus source-inspection evidence (the viewer
+  reads only relative same-origin paths), not a packet capture — a
+  same-origin log cannot observe a client's other traffic.
+
+### Second-origin egress probe
+
+Repeatable probe behind the Egress bullet — two local static servers, ports
+fixed so a reader repeats exactly:
+
+```bash
+python3 -m http.server 8899 &   # viewer origin (repository root)
+python3 -m http.server 8898 &   # probe origin (must receive zero requests)
+```
+
+1. Open `http://127.0.0.1:8899/demo/codebase-map/index.html` normally;
+   exercise focus, search hit, search miss, back, fit.
+2. Open with an absolute fixture value —
+   `?fixture=http://127.0.0.1:8898/probe.json` — and a scheme-relative one
+   (`?fixture=//127.0.0.1:8898/probe.json`); the viewer must show the visible
+   refusal panel and issue no request.
+3. Read both server logs. Expected: the `:8898` access log is empty (zero
+   requests) in both runs; the `:8899` log shows only same-origin
+   document/fixture requests.
+
+Both runs require the page's script to execute; see the Console bullet's
+provenance note above for the #55 dependency.
 
 ### Diagnostic mode
 
