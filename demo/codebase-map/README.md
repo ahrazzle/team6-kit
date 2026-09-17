@@ -63,7 +63,9 @@ never falls back to a default mode.
   the side panel. A miss shows a `no result` state and issues no request.
 - **Reload reconstruction** — focus and query are written to the URL fragment
   (`#path=…&q=…`). Reloading reconstructs the same focus from the snapshot
-  alone, e.g. `#path=app/core` or `#q=routes.py`.
+  alone, e.g. `#path=app/core` or `#q=routes.py`. Only `path` and `q` are
+  persisted — a leaf click-selection does not survive reload (reload restores
+  the focus; re-run the query to reselect).
 - **Keyboard & accessibility** — every entity is reachable (`tabindex="0"`,
   `role="button"`, an `aria-label`); the focused entity has a visible focus
   ring; the selected item has an announced text alternative in the side panel.
@@ -137,9 +139,10 @@ provenance note above for the #55 dependency.
 
 `?selftest=1` loads the real fixture, then runs the interaction and boundary
 cases through the same code paths and prints a `SELF-TEST` block: overview,
-focus, back, fit, search hit, search miss, one-leaf, nested nodes,
-empty-children fail-closed, unknown algorithm, and a malicious-label check
-(labels render as text and cannot execute markup). All 11 cases pass.
+focus, back, fit, search hit, search miss, leaf-selection non-persistence,
+one-leaf, nested nodes, empty-children fail-closed, unknown algorithm, and a
+malicious-label check (labels render as text and cannot execute markup). All 12
+cases pass.
 
 `?fixture=<relative path>` points the viewer at another local snapshot — e.g.
 `?fixture=../../examples/codebase-map.invalid.json` shows the visible rejection

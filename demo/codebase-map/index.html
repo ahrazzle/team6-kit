@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src 'self'; script-src 'self' 'sha256-HpMwZS+rUqsdBjdftCXQVz0ApmYx5PqqI5ijzuz45gI='; img-src 'self' data:; style-src 'self' 'unsafe-inline'">
 <link rel="icon" href="data:,">
 <title>Team6 codebase-map proof</title>
 <!--
@@ -814,6 +814,40 @@ function runSelfTest() {
   check("missing label yields a no-result state",
         miss.count === 0 && r4.match_count === 0 &&
         r4.search_state === "no result" && r4.selected_path === null);
+
+  // leaf click-selection is derived view state: it is not persisted, and the
+  // fragment carries only the two serialized forms (Reload reconstruction)
+  search("");
+  fit();
+  focusOn("app/core");
+  var hashFocused = window.location.hash;
+  var parsedFocused = parseHash();
+  activate("app/core/engine.py");
+  var hashAfterLeaf = window.location.hash;
+  var parsed = parseHash();
+  var leafNotPersisted =
+        parsedFocused.path === "app/core" &&
+        hashAfterLeaf === hashFocused &&
+        hashAfterLeaf.indexOf("sel=") === -1 &&
+        hashAfterLeaf.indexOf("engine.py") === -1 &&
+        Object.keys(parsed).sort().join(",") === "path,q" &&
+        parsed.path === "app/core" && parsed.q === "";
+  // the two serialized forms still reconstruct (the README's documented inputs)
+  window.location.hash = "#path=app/core";
+  var pFocus = parseHash();
+  window.location.hash = "#q=routes.py";
+  var pQuery = parseHash();
+  focusOn(pFocus.path);
+  var reloaded = receipt();
+  search(pQuery.q);
+  var rq = receipt();
+  check("leaf selection is not persisted — reload restores focus, not the leaf",
+        leafNotPersisted && pFocus.path === "app/core" && pFocus.q === "" &&
+        reloaded.selected_path === "app/core" &&
+        pQuery.path === "" && pQuery.q === "routes.py" &&
+        rq.selected_path === "app/web/routes.py" && rq.focus_path === "app/web");
+  search("");
+  fit();
 
   // ---- edge cases (inline snapshots) ------------------------------------
   search("");
