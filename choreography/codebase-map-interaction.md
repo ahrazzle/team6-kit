@@ -41,7 +41,7 @@ those three and are announced back in the receipt.
 | **No result** | A query with no match shows an explicit no-result state. It issues **no** repository or network request. |
 | **Unavailable detail** | Source text, syntax highlighting, dependency edges, entity definitions, and live source search are **out of scope** and shown as an explicit unavailable state. The viewer never infers or fabricates them. |
 | **Keyboard** | Every entity is keyboard-reachable (`tabindex`, `role="button"`, an `aria-label`). Enter/Space selects and focuses; the focused entity has a visible focus indication. The selected item has a text alternative (an announced detail region). |
-| **Reload reconstruction** | Focus and query are serialized into the URL (`#path=…&q=…`). Reloading with that fragment reconstructs the same focus and selection from the snapshot alone. |
+| **Reload reconstruction** | Focus and query are serialized into the URL (`#path=…&q=…`) — these two forms are the only persisted state. Reloading with that fragment reconstructs the same focus and the same query-derived selection from the snapshot alone. A leaf click-selection (`selected_path` set by activating a `Leaf`) is **not** persisted: it is derived view state, and a reload restores the focus, not the leaf. |
 
 ## Rendering safety
 
