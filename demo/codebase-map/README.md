@@ -44,7 +44,7 @@ never falls back to a default mode.
 |---|---|
 | fixture | `examples/codebase-map.valid.json` |
 | `source_kind` | `synthetic` |
-| sha256 | `3c56bf83cf0555946eee9f0dd888b6431a2d11b2a653c56e88a57bd9c20d5bbb` |
+| sha256 | `e4916563c214194084787e5919787f6fda28fb599b628f948ff4878866061240` |
 | viewport | 1000 × 640 (fixed logical viewBox) |
 | serialization precision | 3 decimal places |
 

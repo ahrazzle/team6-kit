@@ -88,6 +88,24 @@ typo in a required field is a failure, not a shrug.
 | `rendering` | yes | object: `algorithm` (required) — see `§ Rendering` |
 | `tree` | yes | the root entity (must be a `Node`) |
 
+### Child order
+
+The `sort` policy governs the `children` array of every `Node`, root
+included, and the checker compares the declared policy against the actual
+order. The comparison for each policy:
+
+- `lexical` — ascending code-point order of the child's `label`, compared
+  as exact strings: case-sensitive, no case folding, no locale collation
+  (the checker's default string comparison and the viewer's `<` agree on
+  this order for the snapshot's labels). Equal labels tie-break on `path`
+  ascending; paths are unique (rule 7), so the order is total.
+- `size-desc` — descending effective area: a `Leaf` contributes its `size`;
+  a `Node` contributes the sum of its descendant leaves' `size` values.
+  Ties tie-break on `label` ascending (code-point, case-sensitive), then
+  `path` ascending.
+- `size-asc` — ascending effective area, defined and tie-broken exactly as
+  `size-desc`.
+
 ## Tree grammar
 
 Each entity is an object with a `kind` of `Node` or `Leaf`.
@@ -114,7 +132,9 @@ Each entity is an object with a `kind` of `Node` or `Leaf`.
 3. `contract` equals `team6-codebase-map`; `version` is the integer `1`.
 4. Enums enforced: `source_kind`, `measure`, `sort`, `rendering.algorithm`,
    leaf `color`. An unknown enum value fails.
-5. `sort` is declared — an undeclared ordering policy fails.
+5. `sort` is declared — an undeclared ordering policy fails — and the
+   declared policy matches the actual `children` order of every `Node`
+   per `### Child order` above.
 6. Tree grammar: every entity's `kind` is `Node` or `Leaf`; every `Node` has a
    non-empty `children` array; every `Leaf` has a non-negative integer `size`
    (floats, negatives, and booleans fail) and a valid `color` token.
@@ -125,6 +145,13 @@ Each entity is an object with a `kind` of `Node` or `Leaf`.
    `rendering`).
 10. Source-bounded fields (`label`, `provenance.ref`, `excluded_patterns[]`,
     `generated_at`) must be short and relative, not absolute instance paths.
+11. Order conformance: a `Node` whose `children` are not in the declared
+    policy's order is a hard failure — exit 1 with one violation naming the
+    node's `path` and the first out-of-order adjacent pair
+    (`ORDER: <node-path>: '<label-a>' (<key-a>) precedes '<label-b>'
+    (<key-b>) under sort '<policy>'`). The checker prints the violation and
+    validates nothing further about presentation; the viewer keeps applying
+    declared order without re-sorting.
 
 Exit codes (each violation is printed with its field path):
 

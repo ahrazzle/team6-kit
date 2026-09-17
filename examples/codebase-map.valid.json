@@ -21,6 +21,13 @@
     "path": "",
     "children": [
       {
+        "kind": "Leaf",
+        "label": "README.md",
+        "path": "app/README.md",
+        "size": 1200,
+        "color": "slate"
+      },
+      {
         "kind": "Node",
         "label": "core",
         "path": "app/core",
@@ -61,13 +68,6 @@
             "color": "unknown"
           }
         ]
-      },
-      {
-        "kind": "Leaf",
-        "label": "README.md",
-        "path": "app/README.md",
-        "size": 1200,
-        "color": "slate"
       }
     ]
   }
