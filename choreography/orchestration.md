@@ -261,6 +261,29 @@ doctrine.
   deadlock returns. Fold mid-flight defects into a running pass rather than
   spawning a fresh batch.
 
+### Public-surface admission fields (mandatory)
+
+A lane that can produce public text declares six fields in its brief. A brief
+missing any one of them is incomplete in the same sense as an empty `context`:
+do not dispatch it, and do not let it reach the public-writing/QA stage. A lane
+that produces no public text records `public_surface: none` and stops there.
+
+| field | what the brief must carry |
+|---|---|
+| `public_surfaces` | every artifact path or URL the lane will publish, each with its surface class (`issue_body`, `pr_body`, `comment`, `review`, `other`) |
+| `claim_register` | per claim: claim_id, artifact line, claim class, evidence_ref, boundary, scope wording, and the public issue/PR ref where certainty is claimed |
+| `artifact_pair` | pair_id, primary, secondary, the distinct job of each, the information units the secondary may carry, and the deletion-test owner |
+| `standalone_policy` | issue and PR bodies strict standalone; for a comment or review, addressee required yes/no plus the requirement reference |
+| `qa_fixture_set` | the fixture IDs the QA pass must run for this lane |
+| `handoff_stop_condition` | all three public-QA gates PASS and the second-member proofread/fact audit recorded |
+
+The field names are the contract this template owns. The gate conditions these
+fields feed — evidence-linked public claims, cross-artifact division of labor,
+and standalone public prose — are `PQA-CLM`, `PQA-DOL`, and `PQA-STAND` in the
+QA checklist (`templates/skills/github/github-pr-audit/SKILL.md`). Read the
+conditions there, in one place: a copy here would be a second source of truth
+for the same rule, and the two copies would drift.
+
 ### Subagent read-then-die recovery
 
 The dominant CLI failure mode is a subagent that reads specs for most of its
