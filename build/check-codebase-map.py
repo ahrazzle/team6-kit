@@ -11,7 +11,11 @@ JSON snapshot and enforces the rules documented in the contract:
   3. contract token + version == 1           8. included_roots are relative
   4. enums (source_kind, measure, sort,      9. unknown fields fail
      algorithm, leaf color)
-  5. sort (ordering policy) is declared
+  5. sort is declared and matches the actual children order
+
+The declared `sort` policy is compared against the actual `children` order of
+every `Node` (contract § Child order): the first out-of-order adjacent pair is
+reported once per offending node as an `ORDER:` violation.
 
 USAGE
   python3 build/check-codebase-map.py <snapshot.json>   # validate a snapshot
@@ -220,6 +224,9 @@ def validate(doc):
         if not isinstance(tree, dict) or tree.get("kind") != "Node":
             v.append("TREE: root entity must be a Node")
         _walk(tree, "tree", 0, v, seen=set())
+        # 5/11. the declared policy is compared against the actual order
+        if so in SORT_ENUM:
+            check_order(tree, so, v)
 
     return v
 
@@ -287,6 +294,85 @@ def _walk(entity, where, depth, v, seen):
                          f"(already declared elsewhere)")
             else:
                 seen.add(path)
+
+
+# ---------------------------------------------------------------------------
+# child order — the declared `sort` policy checked against the actual order
+# (contract § Child order)
+# ---------------------------------------------------------------------------
+
+def effective_size(entity):
+    """Subtree size in the declared measure: a `Leaf` contributes its `size`;
+    a `Node` contributes the sum of its descendant leaves' `size` values.
+
+    Grammar violations are reported by `_walk`, so an unreadable size counts
+    as 0 here rather than adding a second, duplicate complaint.
+    """
+    if not isinstance(entity, dict):
+        return 0
+    if entity.get("kind") == "Leaf":
+        size = entity.get("size")
+        if isinstance(size, bool) or not isinstance(size, int) or size < 0:
+            return 0
+        return size
+    return sum(effective_size(k) for k in (entity.get("children") or []))
+
+
+def order_key(entity, policy):
+    """The comparable key for one child under `policy` (§ Child order)."""
+    label = entity.get("label")
+    path = entity.get("path")
+    if policy == "lexical":
+        return (label, path)              # code-point, case-sensitive
+    size = effective_size(entity)
+    if policy == "size-desc":
+        return (-size, label, path)
+    return (size, label, path)            # size-asc
+
+
+def order_key_text(entity, policy):
+    """The key as printed in an `ORDER:` violation: the label, or the area."""
+    if policy == "lexical":
+        return entity.get("label")
+    return effective_size(entity)
+
+
+def check_order(entity, policy, v, where="tree"):
+    """Enforce `policy` against the actual `children` order, recursively.
+
+    One violation per non-conforming Node: the node's path and its first
+    out-of-order adjacent pair. A Node whose grammar is already broken is
+    skipped — `_walk` reports those.
+    """
+    if not isinstance(entity, dict) or entity.get("kind") != "Node":
+        return
+    kids = entity.get("children")
+    if not isinstance(kids, list):
+        return
+    comparable = all(
+        isinstance(k, dict) and isinstance(k.get("label"), str)
+        and isinstance(k.get("path"), str)
+        and (k.get("kind") == "Node"
+             or (k.get("kind") == "Leaf"
+                 and isinstance(k.get("size"), int)
+                 and not isinstance(k.get("size"), bool)))
+        for k in kids)
+    if comparable:
+        keys = [order_key(k, policy) for k in kids]
+        for i in range(len(keys) - 1):
+            if keys[i] > keys[i + 1]:
+                a, b = kids[i], kids[i + 1]
+                # The root's declared path is the empty string, so the message
+                # uses the `tree` designator `_walk` already prints for it.
+                node_path = entity.get("path") or where
+                v.append(
+                    f"ORDER: {node_path}: '{a.get('label')}' "
+                    f"({order_key_text(a, policy)}) precedes "
+                    f"'{b.get('label')}' ({order_key_text(b, policy)}) "
+                    f"under sort '{policy}'")
+                break
+    for i, kid in enumerate(kids):
+        check_order(kid, policy, v, f"{where}.children[{i}]")
 
 
 def check_file(path):
@@ -369,6 +455,36 @@ ONE_LEAF_SNAPSHOT = """\
                          "color": "slate"}]}
 }
 """
+
+
+# Child-order fixtures (§ Child order): the same three children (areas 300,
+# 100, and a Node summing to 200) emitted in each policy's required order, so a
+# policy's passing and failing case differ by nothing but the emitted order.
+ORDER_CHILDREN = {
+    "a.txt": {"kind": "Leaf", "label": "a.txt", "path": "src/a.txt",
+              "size": 300, "color": "blue"},
+    "b.txt": {"kind": "Leaf", "label": "b.txt", "path": "src/b.txt",
+              "size": 100, "color": "green"},
+    "dir": {"kind": "Node", "label": "dir", "path": "src/dir",
+            "children": [{"kind": "Leaf", "label": "c.txt",
+                          "path": "src/dir/c.txt", "size": 200,
+                          "color": "amber"}]},
+}
+ORDER_EXPECTED = {
+    "lexical": ["a.txt", "b.txt", "dir"],
+    "size-desc": ["a.txt", "dir", "b.txt"],
+    "size-asc": ["b.txt", "dir", "a.txt"],
+}
+
+
+def order_snapshot(policy, names):
+    """A snapshot whose root children are `names`, in that order, under
+    `policy`."""
+    doc = json.loads(VALID_SNAPSHOT)
+    doc["sort"] = policy
+    doc["tree"]["children"] = [json.loads(json.dumps(ORDER_CHILDREN[n]))
+                               for n in names]
+    return doc
 
 
 def _sub(text, old, new):
@@ -466,6 +582,36 @@ def self_test():
     v = validate(d)
     cases.append(("unknown top-level field fails",
                   any("UNKNOWN FIELD" in x for x in v), v))
+
+    # child order (§ Child order): one correctly ordered snapshot per policy
+    # (passes) and one unordered snapshot per policy (the decided outcome:
+    # a hard ORDER failure).
+    for policy in SORT_ENUM:
+        ordered = ORDER_EXPECTED[policy]
+        v = validate(order_snapshot(policy, ordered))
+        cases.append((f"{policy}: correctly ordered children pass", v == [], v))
+        v = validate(order_snapshot(policy, list(reversed(ordered))))
+        cases.append((f"{policy}: unordered children fail",
+                      any(x.startswith("ORDER: ") for x in v), v))
+
+    # the violation reaches an operator through the same printer as any other
+    # rejection, naming the node and the first out-of-order adjacent pair
+    d = order_snapshot("lexical", list(reversed(ORDER_EXPECTED["lexical"])))
+    bad = validate(d)
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = report("inline:unordered", STATUS_INVALID, bad, d)
+    out = buf.getvalue()
+    expected_order = ("ORDER: tree: 'dir' (dir) precedes 'b.txt' (b.txt) "
+                      "under sort 'lexical'")
+    cases.append(("unordered snapshot exits 1 naming the first pair",
+                  rc == EXIT_INVALID and expected_order in out,
+                  [f"rc={rc}"] + bad))
+
+    # a Node's area is its subtree sum, so a Node is ordered by its leaves
+    d = json.loads(json.dumps(ORDER_CHILDREN))
+    cases.append(("Node effective area is the subtree leaf sum",
+                  effective_size(d["dir"]) == 200, [str(effective_size(d["dir"]))]))
 
     # no-argument usage: prints the usage text and exits 2
     buf = io.StringIO()
