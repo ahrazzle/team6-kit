@@ -275,11 +275,12 @@ that produces no public text records `public_surface: none` and stops there.
 | `artifact_pair` | pair_id, primary, secondary, the distinct job of each, the information units the secondary may carry, and the deletion-test owner |
 | `standalone_policy` | issue and PR bodies strict standalone; for a comment or review, addressee required yes/no plus the requirement reference |
 | `qa_fixture_set` | the fixture IDs the QA pass must run for this lane |
-| `handoff_stop_condition` | all three public-QA gates PASS and the second-member proofread/fact audit recorded |
+| `handoff_stop_condition` | all four public-QA gates PASS and the second-member proofread/fact audit recorded |
 
 The field names are the contract this template owns. The gate conditions these
 fields feed — evidence-linked public claims, cross-artifact division of labor,
-and standalone public prose — are `PQA-CLM`, `PQA-DOL`, and `PQA-STAND` in the
+standalone public prose, and semantic verification — are `PQA-CLM`, `PQA-DOL`,
+`PQA-STAND`, and `PQA-SEM` in the
 QA checklist (`templates/skills/github/github-pr-audit/SKILL.md`). Read the
 conditions there, in one place: a copy here would be a second source of truth
 for the same rule, and the two copies would drift.

@@ -1,7 +1,7 @@
 ---
 name: github-pr-audit
 description: "Use when auditing a GitHub PR or issue before merge."
-version: 1.3.0
+version: 1.4.0
 author: Team6
 license: MIT
 platforms: [linux, macos, windows]
@@ -105,11 +105,15 @@ With no branch protection and `admin`, merge it yourself (`gh pr merge N --repo 
   with the existing `sessions list` command — extend it instead") as
   `gh issue comment`.
 
-## Cross-artifact and public-claim gates (PQA-CLM / PQA-DOL / PQA-STAND)
+## Cross-artifact and public-claim gates (PQA-CLM / PQA-DOL / PQA-STAND / PQA-SEM)
 
-Three gate contracts cover every public artifact — issue body, PR body, comment,
+Four gate contracts cover every public artifact — issue body, PR body, comment,
 review. They sit on top of the evidence register in section 4a: that register
-proves the internal audit; these three decide what may be published. A red or
+proves the internal audit; these four decide what may be published. A CONFIRMED
+verdict on code behavior must satisfy PQA-SEM before it may be labeled as a known
+defect. PQA-SEM gates semantic justification (dispatch context, per-arm evaluation,
+independent reproduction); the others gate claim linkage, artifact division, and
+standalone prose. A red or
 missing claim register, pair manifest, standalone scan, or second-member
 proofread blocks the lane. The lane inputs these gates read are declared in the
 handoff brief; the field list is at the end of this section.
@@ -119,6 +123,7 @@ handoff brief; the field list is at the end of this section.
 | **PQA-CLM** evidence-linked public claims | every factual claim is linked, or explicitly scoped as observed in testing; `known` / `known defect` carries a claim-specific public issue/PR URL | complete claim register, boundary, scope wording, public ref where required |
 | **PQA-DOL** cross-artifact division | the primary artifact is complete; the secondary carries only new information, a pointer, the ask, and a defect absent from the primary; both deletion tests pass | pair manifest, overlap result, two deletion-test results |
 | **PQA-STAND** standalone public prose | issue/PR bodies never address a person; comments are standalone except for a recorded, required one-line handle; no second-person address, salutation, or addressed imperative | surface policy, requirement ref, scan hits, handle-removal result |
+| **PQA-SEM** semantic-verification gate | every CONFIRMED code-behavior verdict cites the semantic mechanism and passes adversarial reproduction; conditional/duplicated declarations are evaluated per dispatch context | surface shape, mechanism file:line, per-arm/per-context results, reproducing agent, commit, verdict after SEM |
 
 ### PQA-CLM — evidence-linked public claim gate
 
@@ -231,9 +236,72 @@ comment_addressee_required=yes only with the requirement reference; otherwise no
 Record prose-scan hits and the result after removing any allowed @handle. State
 that the public text is interpretable without a named reader.`
 
+### Incident (public-facing note)
+
+A CONFIRMED verdict on code behavior carried into a public artifact without
+evaluating the semantic mechanism — the `when`/mode context that makes a
+particular surface shape effective — produced a false defect report. The raw
+flat list returned by `get_config_schema()` contained duplicate `api_key` and
+`api_url` keys in declaration order, but those duplicates sit in mutually
+exclusive `when={'mode': ...}` arms (cloud vs local_external); the effective
+key set is unique in every mode. This gate pins the class by requiring that
+every CONFIRMED verdict cites the mechanism and verifies it via independent
+reproduction.
+
+### PQA-SEM — semantic-verification gate
+
+**Checklist item.** Every CONFIRMED verdict on code behavior that appears in a
+public artifact must cite the semantic mechanism that makes the observed surface
+shape effective behavior and must pass an adversarial re-check from source at
+the cited commit.
+
+**Pass/fail rule.**
+
+*SEM-1 (mechanism citation).* Before ANY public filing of a CONFIRMED code-behavior
+verdict, the report must cite the semantic mechanism — the dispatch/visibility/
+filter context under which the observed surface shape becomes effective behavior —
+with the file:line of the mechanism. Absence of that row FAILs.
+
+*SEM-2 (adversarial re-check).* Before ANY public filing of a CONFIRMED code-behavior
+verdict, a second named agent (not the verdict author) must reproduce the claim FROM
+SOURCE at the cited commit — re-deriving the semantic mechanism, not merely re-running
+the author's probe — and record the reproduction result. Absence of that row FAILs.
+
+*SEM-3 (dispatch-context evaluation).* When the evidence under the verdict contains
+conditional, mode-gated, or duplicated declarations (the same key/name declared in
+multiple arms/contexts), the verdict must evaluate each arm in its dispatch context
+and show the effective per-context result before the claim may be called a defect.
+A raw "duplicate exists" observation without that evaluation FAILs and cannot reach a
+CONFIRMED/known-defect classification.
+
+A verdict that fails SEM-1, SEM-2, or SEM-3 CANNOT be labeled CONFIRMED as a known
+defect. It may be filed as an observation linked to a tracking issue only after it
+passes the remaining gates (PQA-CLM, PQA-DOL, PQA-STAND) with scoped wording.
+
+PQA-SEM decides whether the verdict is semantically justified; a verdict failing SEM
+can never reach PQA-CLM as a known/defect-certainty claim. PQA-CLM's evidence-linkage
+rules apply AFTER semantic justification is confirmed.
+
+**Required evidence fields.** `surface_shape` (raw list contents, byte patterns,
+counts, or raw return values cited); `mechanism_file_line` (file path and line
+number of the semantic mechanism that governs visibility or dispatch); `per_arm_results`
+(effective per-context key set or behavior, with mode or condition name for each);
+`reproducing_agent` (name of the second agent that performed adversarial reproduction);
+`reproduction_commit` (commit hash used for independent verification); `verdict_after_sem`
+(the verdict after SEM evaluation, e.g., CONFIRMED known defect, CONFIRMED known
+non-defect, or OBSERVATION requiring tracker linkage); `surface_shape_source` (source
+of the raw shape: file:line or function name).
+
+**Lane prompt.** `Semantic verification gate: for every CONFIRMED code-behavior verdict
+cited in public artifacts, list the surface shape observed, the mechanism file:line
+that governs its visibility or dispatch, the per-arm/per-context effective results
+evaluated, the second reproducing agent, the commit hash used for reproduction, and
+the final verdict after SEM evaluation. Mark any verdict that lacks mechanism citation,
+reproduction, or per-arm evaluation as FAIL.`
+
 ### Historical fixture matrix (escape corpus)
 
-Six read-only fixtures keep the three escape classes covered. Run each against
+Eight read-only fixtures keep the four escape classes covered. Run each against
 its gate and record the observed result in the QA receipt. They are regression
 fixtures, not claims about any live artifact; the fixture files live outside this
 repository, so this matrix carries the IDs and the expected verdicts only.
@@ -246,6 +314,8 @@ repository, so this matrix carries the IDs and the expected verdicts only.
 | `F-DOL-114364-trim-pass-shape` | PQA-DOL | PASS | the primary already carries the defect; the secondary keeps only the pointer, the ask, and new material |
 | `F-STAND-114364-addressed` | PQA-STAND | FAIL | second-person substantive wording: as an issue body it fails unconditionally, as a comment only a recorded one-line handle may remain |
 | `F-STAND-114364-body-pass` | PQA-STAND | PASS | a neutral standalone body; the new gate must not reject it |
+| `F-SEM-114364-flatlist-shape` | PQA-SEM | FAIL | verdict cites only the flat list with duplicate keys `api_key`, `api_url` and no per-mode evaluation or mechanism citation |
+| `F-SEM-114364-arm-evaluated` | PQA-SEM | PASS | verdict shows per-mode effective keys unique (cloud: 32/32, local_external: 32/32, local_embedded: 36/36), mechanism `config_schema.py:414-459` cited, independent agent reproduction recorded, verdict reclassified as non-defect |
 
 ### Acceptance tests
 
@@ -261,6 +331,10 @@ repository, so this matrix carries the IDs and the expected verdicts only.
 | AT-9 | A comment that repeats a body number or mechanism fails PQA-DOL even when its evidence row points at the same receipt. |
 | AT-10 | Removing an allowed comment handle leaves the claim and the ask interpretable; otherwise PQA-STAND fails. |
 | AT-11 | Each public artifact receives a second-member proofread/fact-audit record before the lane stop condition can pass. |
+| AT-12 | A CONFIRMED verdict citing only the flat surface shape (duplicate keys `api_key`, `api_url`) without mechanism citation fails SEM-1 and cannot be labeled a known defect. |
+| AT-13 | A CONFIRMED verdict observing duplicated declarations without per-arm/per-context effective-key evaluation fails SEM-3 and cannot be labeled a known defect. |
+| AT-14 | A CONFIRMED verdict without the second-agent source-reproduction row (commit, agent name, reproduction result) fails SEM-2 and cannot be labeled a known defect. |
+| AT-15 | A verdict that re-evaluates the arms and finds no effective defect must be reclassified as an observation or linked to a tracker; it cannot be published as CONFIRMED known defect. |
 
 AT-7 is a lane-admission requirement, not a checklist rule: it lives in the
 handoff brief fields below.
@@ -271,8 +345,9 @@ The lane brief supplies the inputs; the canonical field definitions live in the
 handoff brief template (`choreography/orchestration.md`, section 11). A brief
 that omits any of them is incomplete and cannot enter public-writing QA:
 `public_surfaces`; `claim_register`; `artifact_pair`; `standalone_policy`;
-`qa_fixture_set`; `handoff_stop_condition` — the last meaning all three gates
-PASS with the second-member proofread and fact audit recorded. A lane producing
+`qa_fixture_set`; `handoff_stop_condition` — the last meaning all four gates
+PASS with the second-member proofread and fact audit recorded. PQA-SEM reads the
+same claim-register inputs as the other three gates; it adds no new lane fields. A lane producing
 no public text records `public_surface: none`. This checklist names the inputs
 and never redefines them; the lane template names them and never restates these
 gate conditions.
