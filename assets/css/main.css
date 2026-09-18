@@ -196,6 +196,13 @@ h3{font-size:var(--fs-h3);line-height:1.25;}
   border-right:1px solid var(--border);border-bottom:1px solid var(--border);
   background:var(--surf);transition:background-color 0.15s,border-color 0.15s;
 }
+/* 5.3 crew portraits — 96px identity badge, 4px radius matching the grid language */
+.crew-portrait{
+  display:block;width:96px;height:96px;max-width:100%;
+  border:1px solid var(--border);border-radius:4px;
+  background:var(--raised);object-fit:cover;
+  margin:0 0 0.75rem;
+}
 .crew-card h3{margin-bottom:0.6rem;}
 .crew-instance{font-family:ui-monospace,monospace;font-size:var(--fs-mono-sm);
   letter-spacing:0.08em;color:var(--accent);margin-bottom:0.5rem;}
