@@ -129,6 +129,10 @@ def main():
     gates.append(("check-internal-names",
                   [sys.executable, os.path.join(HERE, "check-internal-names.py"), ROOT]))
 
+    # 10b. path-names gate — rejects codename-bearing tracked paths
+    gates.append(("check-path-names",
+                  [sys.executable, os.path.join(HERE, "check-path-names.py"), ROOT]))
+
     # 9. review-repair checker — self-test + fixture corpus. Exercises the
     #    guarded review/repair contract (choreography/review-repair-workflow.md)
     #    across the review, adversarial, browser, and artifact lanes.
