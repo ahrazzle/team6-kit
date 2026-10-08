@@ -1,7 +1,7 @@
 ---
 name: github-pr-audit
 description: "Use when auditing a GitHub PR or issue before merge."
-version: 1.4.0
+version: 1.5.0
 author: Team6
 license: MIT
 platforms: [linux, macos, windows]
@@ -46,6 +46,37 @@ Do not accept the PR's rationale. Read the actual code on `main`:
 Confirm the broken branch/symptom the PR claims to fix REALLY exists on main.
 If it doesn't, the fix may be mischaracterized (partial, or already fixed).
 State it explicitly.
+
+### 2c. Observability lane — diagnostics emitted before logging is configured
+
+A buffer that records failures before `setup_logging()` and replays them later
+is a logging-lifecycle change, not just a formatting one. Audit it as such:
+
+- List every reader of a new buffer. If the only reader is one UI surface, FAIL
+  until a post-`setup_logging()` replay-into-logger (or per-command surfacing)
+  exists.
+- For every `logger.debug` emitted before `setup_logging()`, state where the
+  record lands after logging configures. Discarded-unless-one-surface-replays is
+  not an answer for non-TUI and file consumers.
+- For every sink named in user-facing copy (a log file, stderr, a UI), name the
+  test proving delivery to that sink. A test asserting the pointer text ("see
+  agent.log") without asserting the content reaches the file is banned as
+  sufficient.
+- Every `logger.warning` to `logger.debug` downgrade in the diff gets its own
+  justification line: who still surfaces this to the user, on which commands,
+  proven by which test. No named consumer plus test means rejecting the downgrade.
+- Enabled-but-unloadable is actionable user config, never routine gating. A
+  policy that excludes refusals from a surfaced channel must distinguish
+  disabled-by-user (may stay quiet) from enabled-but-blocked (must surface with
+  the remedy).
+- Sibling-loader consistency: for the same refusal or error primitive, grep all
+  loaders. A level split across loaders (one warns, one debugs) must be
+  justified or unified, defaulting to the more visible level for enabled entries.
+- A buffer PR may not land on single-surface-replay plus stderr-absence tests
+  alone. The file test, the non-TUI test, the overflow-resolution test, and the
+  refusal test are merge-blocking. Two adversarial shapes join them: the late-arrival test (an entry recorded after the replay or flush must still reach the user) and the boundary test (every bounded buffer driven at exactly its limit, cursor asserted independently of list shifting). An untested exclusion policy ("NOT buffered,
+  stays debug") blocks merge until a test pins the exclusion and a reviewer
+  signs off naming the affected user-visible case.
 
 ### 3. RUN the test suite — in the repo's own interpreter
 Never trust a PR body's "17 passed". Execute it.
