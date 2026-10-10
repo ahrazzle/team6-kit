@@ -1,38 +1,39 @@
-# Team6-kit
+# Team6-kit (ARCHIVED — SOP truth lives in the modular ingredients)
+This repository is archival. It is kept so existing links keep resolving; no
+content is deleted, and nothing will be removed from the tree unless the
+owner explicitly asks. The living source of the operating procedure is the
+modular ingredient set under the ASKA Digital org — install what you need
+from there, not from here.
+## Where the truth lives now
+| Need | Canonical home |
+| Full pinned kit + install | github.com/aska-digital/protean-kit |
+| Operating doctrine (five-stage pipeline, delegation map, handoff protocol, QA gates) | github.com/aska-digital/protean-doctrine |
+| GitHub workflow procedures (issue-to-PR, live-head audit, upstream contribution) | github.com/aska-digital/protean-github-flow |
+| Dispatch trigger index + preflight | github.com/aska-digital/protean-control-plane |
+| Dispatch/rotation ops records + gates | github.com/aska-digital/protean-ops |
+| Draft review pipeline | github.com/aska-digital/protean-drafts |
+| Orchestrator communication protocol | github.com/aska-digital/protean-sym2p |
+| Phone orchestration | github.com/aska-digital/protean-handoff |
+| One-crew bundled kit | github.com/aska-digital/protean-team |
 
-> **ARCHIVED — this repository is archived and no longer receives updates.**
-> **The live home of this work is the aska-digital organization: https://github.com/aska-digital/**
+## Provenance of the last live edits here
 
-## What team6-kit was
+The final content PRs on this repo survived re-destination:
 
-One AI agent engine (Hermes, from Nous Research) turned into a small team of AI agents working under clear rules — planner, builder, checker — with a supervisor, a quality checker, and a builder script.
+- PR #47 (merge `4e37686`) added the public-claim gate contracts
+  (PQA-CLM/PQA-DOL/PQA-STAND) to
+  `templates/skills/github/github-pr-audit/SKILL.md`. Ported to
+  aska-digital/protean-github-flow (skills/github-pr-audit/SKILL.md
+  1.13.0 → 1.14.0, PR #4).
+- PR #48 (merge `bc1a38a`) added the public-surface admission fields to
+  `choreography/orchestration.md` section 11. Ported to
+  aska-digital/protean-doctrine (skills/protean-operating-doctrine/SKILL.md
+  1.3.0 → 1.4.0, PR #6).
 
-That was the pitch, and this repository was the original, self-contained packaging of it: the agent profiles, the rules the team worked under, the builder that assembled a team from ready-made parts, and the choreography contracts that described how the agents handed work to one another. It is kept here as a historical record — the content did not stay in one tree, and each concern now lives in its own repository.
+Nothing else on main carries content with an org-ingredient counterpart.
 
-## Where the live system is
+## ARCHIVAL NOTICE
 
-The maintained work lives under the aska-digital organization — https://github.com/aska-digital/ — one repository per concern:
-
-- **[protean-kit](https://github.com/aska-digital/protean-kit)** — composer / install: pinned composer for the seven ingredients; installs with read-back. This is the live entry point for the whole kit system.
-- **[protean-doctrine](https://github.com/aska-digital/protean-doctrine)** — doctrine: the operating doctrine the team works under — pipeline stages, role delegation, handoff protocol, QA gates.
-- **[protean-ops](https://github.com/aska-digital/protean-ops)** — ops / rotation / in-flight records: rotation state, in-flight work, learnings, and decision reports, with their gates.
-- **[protean-control-plane](https://github.com/aska-digital/protean-control-plane)** — control plane / dispatch: the trigger index that routes a request to the minimum skill bundle.
-- **[protean-github-flow](https://github.com/aska-digital/protean-github-flow)** — GitHub workflow pack: procedures that carry a repository from inbound issue to a verified, reviewed pull request.
-- **[protean-drafts](https://github.com/aska-digital/protean-drafts)** — draft-review pipeline: renders a draft as one reviewable page and runs its prose, identifier, and render-fidelity gates.
-- **[protean-sym2p](https://github.com/aska-digital/protean-sym2p)** — SYM-2P protocol: the normative agent-messaging specification, with its validator and packet templates.
-- **[protean-handoff](https://github.com/aska-digital/protean-handoff)** — phone orchestration / handoff: inspect, steer, and approve lane work from a phone.
-- **[protean-team](https://github.com/aska-digital/protean-team)** — team org / roster view: ready-made agent profiles and the builder script.
-- **[protean-lcm](https://github.com/ahrazzle/protean-lcm)** — archived sibling: the opt-in LCM DAG context engine plugin for Hermes Agent.
-
-## Historical docs
-
-Historical docs — kept as references for the content above, not as live sites: https://team6.askaconsult.com/ (documentation site) and https://www.askaconsult.com/team6 (corporate page).
-
-## License
-
-- **Engine:** Hermes by Nous Research, MIT license. This is not a fork; we build on top of it.
-- **This kit (profiles, rules, builder):** Apache-2.0.
-- **Vertical packs (paid settings files + service):** not in this repo; proprietary.
-- Optional local models used by an adapter have their own separate license.
-
-Full details: `LICENSING.md`.
+No active work happens here. Treat every file as historical. The modular
+ingredients above are the maintained, version-gated source of the same
+procedures.
